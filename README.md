@@ -1,4 +1,4 @@
-![Run tests and publish dummy data as release](https://github.com/opensafely/hiv-research/workflows/Run%20tests%20and%20publish%20dummy%20data%20as%20release/badge.svg)
+![Tests](https://github.com/opensafely/hiv-research/workflows/Run%20tests%20and%20publish%20dummy%20data%20as%20release/badge.svg)
 
 # OpenSAFELY Research Template
 
