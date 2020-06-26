@@ -1,5 +1,3 @@
-![Tests](https://github.com/opensafely/hiv-research/workflows/Run%20tests%20and%20publish%20dummy%20data%20as%20release/badge.svg)
-
 # OpenSAFELY Research Template
 
 This is a template repository for making new OpenSAFELY resarch projects.  Eventually it'll become a framework. To get started, create a new repo using this repo as a template, delete this front matter, and edit the text that follows.
