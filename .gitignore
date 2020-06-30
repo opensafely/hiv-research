@@ -4,3 +4,13 @@ model.log
 __pycache__
 .python-version
 output/*
+.idea/
+analysis/*
+!*.do
+!*.ado
+!*.hlp
+!*.py
+!*.sthlp
+venv/
+.cache
+*.exe
