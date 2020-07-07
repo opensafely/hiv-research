@@ -3,8 +3,6 @@ model.log
 */input.csv
 __pycache__
 .python-version
-output/*
-.idea/
 analysis/*
 !*.do
 !*.ado
