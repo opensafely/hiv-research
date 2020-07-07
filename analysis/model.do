@@ -13,27 +13,6 @@ cd  analysis
 **********************************************
 do "cr_create_analysis_dataset.do"
 
-do "an_covidevidencebytime.do"
+do "an_hiv_desccodes"
 
-noi run "an_describetestingvariables"
-
-noi run "an_describetestingvariables_overlap"
-
-do "an_mortality_by_evtype.do"
-
-noi run "an_sankeynumbers"
-
-do "an_factors_assoc_with_pos_ev"
-*do "an_factors_assoc_with_pos_ev_QUICKVERSION"
-
-do "an_table_fp_ofFAWcovpos"
-
-do "an_univariate_amongtested.do"
-
-do "an_multivariate_amongtested.do"
-
-do "an_tablecontent_HRtable_HRforest_among_infected"
-
-
-
-
+do "an_hiv"
