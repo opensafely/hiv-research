@@ -36,7 +36,10 @@ local main = substr("`main'", 1, `inposm1')
 }
 
 qui tab `main' `if' `in', matcell(T)
-m: st_numscalar("checkmin", min(st_matrix("T")) )
+m: T=st_matrix("T")
+m: T=(T:+(10:*(T:==0)))
+m: st_numscalar("checkmin", min(T) )
+
 
 if checkmin>5 tab `main' `if' `in' `options'
 else noi di _n "**TABLE OF `main' REDACTED DUE TO SMALL N**" _n

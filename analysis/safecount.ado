@@ -23,7 +23,7 @@ local in = substr("`0'", `inpos',.)
 }
 
 qui cou `if' `in'
-if r(N)>5 {
+if (r(N)>5 | r(N)==0) {
 count `if' `in'
 scalar count = r(N)
 }
