@@ -19,7 +19,7 @@ local ifposm1 = `ifpos'-1
 local inpos = strpos("`main'", " in ")
 local inposm1 = `inpos'-1
 
-if `inpos'>0 & `ifpos'>1 {
+if `inpos'>0 & `ifpos'>0 {
 	noi di in red "if cannot be combined with in"
 	error 999
 	}

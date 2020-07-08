@@ -8,12 +8,19 @@ local if " if `touse'"
 local ifpos = strpos("`0'", "if ")
 local inpos = strpos("`0'", "in ")
 
-if `inpos'>0 & `ifpos'>1 {
+if `inpos'>0 & `ifpos'>0 {
 	noi di in red "if cannot be combined with in"
 	error 999
 	}
 	
-if `ifpos'>0 local if "`0' & `touse'"
+if `ifpos'>0{
+ local if "`0' & `touse'"
+ local if "`if' & `touse'"
+}
+
+if `inpos'>0{
+local in = substr("`0'", `inpos',.)
+}
 
 qui cou `if' `in'
 if r(N)>5 {
