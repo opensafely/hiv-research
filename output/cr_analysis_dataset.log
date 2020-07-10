@@ -1,0 +1,112 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\github\hiv-research\output/cr_analysis_dataset.log
+  log type:  text
+ opened on:  10 Jul 2020, 14:22:48
+
+. 
+. di "STARTING COUNT FROM IMPORT:"
+STARTING COUNT FROM IMPORT:
+
+. cou
+  7,805
+
+. 
+. 
+. ****************************
+. *  Create required cohort  *
+. ****************************
+. 
+. * Age: Exclude children
+. noi di "DROPPING AGE<18:" 
+DROPPING AGE<18:
+
+. drop if age<18
+(0 observations deleted)
+
+. 
+. 
+. * Age: Exclude those with implausible ages
+. assert age<.
+
+. noi di "DROPPING AGE<105:" 
+DROPPING AGE<105:
+
+. drop if age>105
+(0 observations deleted)
+
+. 
+. * Sex: Exclude categories other than M and F
+. assert inlist(sex, "M", "F", "I", "U")
+
+. noi di "DROPPING GENDER NOT M/F:" 
+DROPPING GENDER NOT M/F:
+
+. drop if inlist(sex, "I", "U")
+(0 observations deleted)
+
+. 
+. for var hiv hepc covid_exposure covid_negtest_1arycare_rcrd ///
+>         covid_advice_given covid_clinical_or_nos covid_had_test ///
+>         covid_isolated covid_nonspec_clin_assssmnt ///
+>         covid_positive_test covid_sequelae covid_suspected : rename X X_code
+hiv ambiguous abbreviation
+r(111);
+
+end of do-file
+
+r(111);
+
+. cd ..
+C:\github
+
+. cd hiv-research
+C:\github\hiv-research
+
+. do "C:\Users\Krish\AppData\Local\Temp\STD49a4_000000.tmp"
+
+. clear
+
+. import delimited `c(pwd)'/output/input.csv
+(74 vars, 10,000 obs)
+
+. 
+. 
+. set more off
+
+. cd  analysis
+C:\github\hiv-research\analysis
+
+. 
+end of do-file
+
+. do "C:\Github\hiv-research\analysis\cr_create_analysis_dataset.do"
+
+. ********************************************************************************
+. *
+. *       Do-file:                cr_create_analysis_dataset.do
+. *
+. *       Project:                Risk factors for poor outcomes in Covid-19
+. *
+. *       Programmed by:  Fizz & Krishnan
+. *
+. *       Data used:              Data in memory (from input.csv)
+. *
+. *       Data created:   cr_create_analysis_dataset.dta  (main analysis dataset)
+. *                                       Same data but already stset (to avoid re-doing):
+. *                                               cr_create_analysis_dataset_STSET_cpnsdeath.dta 
+. *                                               cr_create_analysis_dataset_STSET_onscoviddeath.dta
+. *
+. *       Other output:   None
+. *
+. ********************************************************************************
+. *
+. *       Purpose:                This do-file creates the variables required for the 
+. *                                       main analysis and saves into Stata datasets.
+. *  
+. ********************************************************************************
+. 
+. 
+. 
+. * Open a log file
+. cap log close
