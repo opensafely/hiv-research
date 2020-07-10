@@ -43,4 +43,4 @@ scatter revorder hr, mc(black) || rcap lci uci revorder, hor lc(black)  						//
 ||, xscale(log) xline(1, lp(dash)) xlab(.5 1 2 4) legend(off) ytitle("") ylab(none) yscale(r(-2 `rangemax')) ysize(8) ///
 xtitle("Hazard ratio and 95% CI") yscale(off)
 
-graph export ./output/an_forestplot_MC.svg, as(svg)
+graph export ./output/an_forestplot_MC.svg, as(svg) replace

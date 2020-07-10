@@ -9,7 +9,7 @@ run global
 frames reset  
 use "cr_matchedcohort_STSET_onsdeath_fail1", clear
 
-strate hiv, per(365000) output(./output/an_outcomes_MC_RATES)
+strate hiv, per(365000) output(./output/an_outcomes_MC_RATES, replace)
 
 
 ******************************
