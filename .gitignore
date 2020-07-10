@@ -3,7 +3,7 @@ model.log
 */input.csv
 __pycache__
 .python-version
-analysis/*
+
 !*.do
 !*.ado
 !*.hlp
@@ -12,3 +12,9 @@ analysis/*
 venv/
 .cache
 *.exe
+*.log
+*.ster
+*.txt
+*.dta
+*.svg
+*.gph

@@ -1,5 +1,6 @@
 
 qui adopath + "./adofiles"
+
 global adjustmentlist age1 age2 age3 		///
 			i.male 							///
 			i.obese4cat						///
