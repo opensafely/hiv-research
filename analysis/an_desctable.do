@@ -2,6 +2,8 @@
 *an_desctable
 *KB 9/7/2020
 
+run global
+
 *******************************************************************************
 *Generic code to output one row of table
 cap prog drop generaterow

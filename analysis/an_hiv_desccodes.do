@@ -1,3 +1,4 @@
+run global
 
 clear
 insheet using ../codelists/opensafely-hiv.csv
