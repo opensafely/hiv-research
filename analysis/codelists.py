@@ -13,6 +13,13 @@ hiv_codes = codelist_from_csv(
     "local-codelists/hiv_corrected.csv", system="ctv3", column="CTV3ID", category_column="CTV3ID"
 )
 
+hepc_codes = codelist_from_csv(
+    "codelists/opensafely-hepatitis-c.csv",
+    system="ctv3", 
+    column="CTV3ID", 
+    category_column="CTV3ID"
+)
+
 permanent_immune_codes = codelist_from_csv(
     "codelists/opensafely-permanent-immunosuppresion.csv",
     system="ctv3",

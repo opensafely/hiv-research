@@ -1,0 +1,28 @@
+CTV3ID,CTV3PreferredTermDesc,CTV3Source,history_code_1yes_2possible
+A7040,Viral hepatitis C with coma,CTV3Map_Code_And_Term,0
+A7050,Viral hepatitis C without mention of hepatic coma,CTV3Map_Code_And_Term,0
+A7072,Chronic viral hepatitis C,High_Level_SNOMED,0
+A70z0,Hepatitis C,CTV3Map_Code_And_Term,0
+X306e,Acute hepatitis C,CTV3Map_Code_And_Term,0
+X306k,Chronic viral hepatitis C,CTV3Map_Code_And_Term,0
+Xa0v1,Hepatitis C non-immune,CTV3Map_Code_And_Term,0
+XaFDz,Hepatitis C antibody test positive,CTV3Map_Code_And_Term,0
+XaIrY,Hepatitis C viral load,CTV3Map_Code_And_Term,0
+XaIrZ,Hepatitis C virus genotype,CTV3Map_Code_And_Term,0
+XaJX1,[V]Hepatitis C carrier,CTV3Map_Code_And_Term,0
+XaMEl,RSV treatment and Hepatitis C treatment drugs Band 1,CTV3Map_Code_And_Term,2
+XaPLl,Hepatitis C screening positive,CTV3Map_Code_And_Term,0
+XaPLl,Hepatitis C screening positive,CTV3Map_Code_Only,0
+XaXBp,Hepatitis C viral ribonucleic acid PCR positive,CTV3Map_Code_And_Term,0
+XaXBp,Hepatitis C viral ribonucleic acid PCR positive,CTV3Map_Code_Only,0
+XaXET,Hepatitis C resolved,CTV3Map_Code_And_Term,1
+XaYbh,Hepatitis C antigen positive,CTV3Map_Code_And_Term,0
+XaZ5P,Hepatitis C genotype 1,CTV3Map_Code_And_Term,0
+XaZ5Q,Hepatitis C genotype 2,CTV3Map_Code_And_Term,0
+XaZ5S,Hepatitis C genotype 3,CTV3Map_Code_And_Term,0
+XaZ5T,Hepatitis C genotype 4,CTV3Map_Code_And_Term,0
+XaZ5U,Hepatitis C genotype 5,CTV3Map_Code_And_Term,0
+XaZ5V,Hepatitis C genotype 6,CTV3Map_Code_And_Term,0
+XaZBl,12 week virologic response to hepatitis C treatment,CTV3Map_Code_And_Term,2
+XaZDB,H/O hepatitis C antiviral drug therapy,CTV3Map_Code_And_Term,1
+XaZDE,On hepatitis C treatment plan,CTV3Map_Code_And_Term,2

@@ -32,6 +32,8 @@ file write descdeathstable _n _n
 generaterow, variable(hypertension) condition(==1)
 generaterow, variable(diabetes) condition(==1)
 generaterow, variable(reduced_kidney_function) condition(>=2)
+generaterow, variable(hepc) condition(==1)
+
 
 
 file close descdeathstable

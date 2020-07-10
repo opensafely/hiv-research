@@ -49,21 +49,30 @@ if _rc==0 {
 *  Multivariable Cox model  *
 ******************************
 
-capture stcox 	i.hiv i.ethnicity $adjustmentlist_MC , strata(setid)
+
+capture stcox 	i.hiv i.ethnicity $adjustmentlist , strata(stp)
 if _rc==0 {
 		noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES)" _n 
 		estimates
-		estimates save ./output/models/an_outcomes_MC_adjfull_inceth, replace
+		estimates save ./output/models/an_outcomes_adjfull_inceth, replace
 		}
 	else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
 
-capture stcox 	i.hiv $adjustmentlist_MC , strata(setid)
+capture stcox 	i.hiv $adjustmentlist , strata(stp)
 if _rc==0 {
-		noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+		noi di _n "FULLY ADJUSTED MODEL NO ETHNICITY " _n 
 		estimates
-		estimates save ./output/models/an_outcomes_MC_adjfull_noeth, replace
+		estimates save ./output/models/an_outcomes_adjfull_noeth, replace
 		}
 	else di "WARNING - hiv full adj exc eth MODEL DID NOT SUCCESSFULLY FIT"
+
+capture stcox 	i.hiv  i.ethnicity i.hepc $adjustmentlist , strata(stp)
+if _rc==0 {
+		noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES) PLUS HEP C" _n 
+		estimates
+		estimates save ./output/models/an_outcomes_adjfull_plushepc_inceth, replace
+		}
+	else di "WARNING - hiv full adj plus hepc inc eth MODEL DID NOT SUCCESSFULLY FIT"
 
 log close
 

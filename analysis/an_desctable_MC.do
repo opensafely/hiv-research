@@ -113,6 +113,8 @@ tabulatevariable, variable(spleen) start(1) end(1)
 tabulatevariable, variable(ra_sle_psoriasis) start(1) end(1) 
 *OTHER IMMUNOSUPPRESSION
 tabulatevariable, variable(other_imm_except_hiv) start(1) end(1) 
+*HEPATITIS C
+tabulatevariable, variable(hepc) start(1) end(1) 
 
 cou if bmicat==. & hiv==0
 file write tablecontent _n _n ("*missing BMI included in 'not obese' (non-HIV group: ") (r(N)) 

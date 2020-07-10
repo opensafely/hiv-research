@@ -51,7 +51,7 @@ assert inlist(sex, "M", "F", "I", "U")
 noi di "DROPPING GENDER NOT M/F:" 
 drop if inlist(sex, "I", "U")
 
-for var hiv covid_exposure covid_negtest_1arycare_rcrd ///
+for var hiv hepc covid_exposure covid_negtest_1arycare_rcrd ///
 	covid_advice_given covid_clinical_or_nos covid_had_test ///
 	covid_isolated covid_nonspec_clin_assssmnt ///
 	covid_positive_test covid_sequelae covid_suspected : rename X X_code
@@ -83,6 +83,7 @@ foreach var of varlist 	bp_sys_date 					///
 						sickle_cell 					///
 						aplastic_anaemia 				///
 						hiv_date						///
+						hepc_date						///
 						permanent_immunodeficiency 		///
 						temporary_immunodeficiency		///
 						ra_sle_psoriasis  dialysis 	{
@@ -102,6 +103,8 @@ rename bp_sys_date_measured_date   bp_sys_date
 rename hba1c_percentage_date_date  hba1c_percentage_date
 rename hba1c_mmol_per_mol_date_date  hba1c_mmol_per_mol_date
 rename hiv_date_date hiv_date
+rename hepc_date_date hepc_date
+
 
 * Dates of: CPNS death, ONS-covid death
 foreach var of varlist 	died_date_ons died_date_cpns ///
@@ -407,6 +410,7 @@ foreach var of varlist	chronic_respiratory_disease_date 	///
 						dysplenia_date 						///
 						sickle_cell_date 					///
 						hiv_date							///
+						hepc_date							///
 						permanent_immunodeficiency_date		///
 						temporary_immunodeficiency_date		///
 						ra_sle_psoriasis_date dialysis_date {
@@ -718,6 +722,7 @@ label var spleen						"Spleen problems (dysplenia, sickle cell)"
 label var ra_sle_psoriasis				"RA, SLE, Psoriasis (autoimmune disease)"
 label var aplastic_anaemia				"Aplastic anaemia"
 label var hiv 							"HIV"
+label var hepc 							"Hepatitis C"
 label var permanent_immunodeficiency 	"Permanent immunodeficiency"
 label var temporary_immunodeficiency 	"Temporary immunosuppression"
 label var other_immunosuppression		"Immunosuppressed (combination algorithm)"
@@ -736,7 +741,8 @@ label var dysplenia_date				"Splenectomy etc, date"
 label var sickle_cell_date 				"Sickle cell, date"
 label var ra_sle_psoriasis_date			"RA, SLE, Psoriasis (autoimmune disease), date"
 label var aplastic_anaemia_date			"Aplastic anaemia, date"
-label var hiv_date 						"HIV, date"
+label var hiv_date 						"HIV, date (earliest recorded)"
+label var hepc_date 					"HepC, date (earliest recorded)"
 label var permanent_immunodeficiency_date "Permanent immunodeficiency, date"
 label var temporary_immunodeficiency_date "Temporary immunosuppression, date"
 label var dialysis						"Dialysis"
@@ -772,7 +778,7 @@ keep patient_id imd stp region enter_date  									///
 	chronic_liver_disease organ_transplant spleen ra_sle_psoriasis 			///
 	reduced_kidney_function_cat stroke dementia stroke_dementia 			///
 	other_neuro other_immunosuppression  hiv* other_imm_except_hiv			///
-	creatinine egfr egfr_cat ckd dialysis 
+	creatinine egfr egfr_cat ckd dialysis hepc*
 
 
 ***************

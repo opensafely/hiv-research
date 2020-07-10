@@ -26,25 +26,25 @@ study = StudyDefinition(
     ),
     # Outcomes
     died_date_cpns=patients.with_death_recorded_in_cpns(
-        on_or_before="2020-06-01",
+        on_or_before="2020-07-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
     ),
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
-        on_or_before="2020-06-01",
+        on_or_before="2020-07-01",
         match_only_underlying_cause=False,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     died_ons_covid_flag_underlying=patients.with_these_codes_on_death_certificate(
         covid_codelist,
-        on_or_before="2020-06-01",
+        on_or_before="2020-07-01",
         match_only_underlying_cause=True,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     died_date_ons=patients.died_from_any_cause(
-        on_or_before="2020-06-01",
+        on_or_before="2020-07-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
@@ -457,12 +457,23 @@ study = StudyDefinition(
     ),
     hiv=patients.with_these_clinical_events(
         hiv_codes,
-        returning="category", 
+        returning="category",
+        on_or_before="2020-02-01",
         find_first_match_in_period=True, 
         include_date_of_match=True,
         include_month=True,
         return_expectations={
             "category": {"ratios": {"Xa0ye": 0.8, "43C3.": 0.2}},
+            },
+    ),   
+    hepc=patients.with_these_clinical_events(
+        hepc_codes,
+        returning="category",
+        find_first_match_in_period=True,
+        include_date_of_match=True,
+        include_month=True,
+        return_expectations={
+            "category": {"ratios": {"A70z0": 0.8, "X306e": 0.2}},
             },
     ),   
     permanent_immunodeficiency=patients.with_these_clinical_events(
