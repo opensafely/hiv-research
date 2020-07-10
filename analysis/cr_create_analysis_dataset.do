@@ -780,12 +780,14 @@ keep patient_id imd stp region enter_date  									///
 ***************
 
 sort patient_id
-label data "Analysis dataset Covid positives project"
+label data "Analysis dataset HIV project"
 save "cr_create_analysis_dataset.dta", replace
 
-* Save a version with those infected only
-keep if covid_composite_deforsus_date >=enter_date &  covid_composite_deforsus_date<.
-save "cr_create_analysis_dataset_infected.dta", replace
+* Save a version set on ONS covid death outcome
+stset stime_onsdeath, fail(onsdeath=1) 				///
+	id(patient_id) enter(enter_date) origin(enter_date)
+
+save "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1", replace
 
 log close
 
