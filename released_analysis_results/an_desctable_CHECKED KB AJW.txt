@@ -1,0 +1,71 @@
+cons	==1	17255425 (100.0)	27480 (100.0)
+
+agegroup	==1	5908794 (34.2)	6625 (24.1)
+agegroup	==2	2842155 (16.5)	8486 (30.9)
+agegroup	==3	3043868 (17.6)	8093 (29.5)
+agegroup	==4	2390044 (13.9)	3130 (11.4)
+agegroup	==5	1938734 (11.2)	937 (3.4)
+agegroup	==6	1131830 (6.6)	209 (0.8)
+age	median-iqr	 49 (34-64)		 48 (40-55)
+
+male	==1	8614886 (49.9)	17780 (64.7)
+male	==0	8640539 (50.1)	9700 (35.3)
+
+obese4cat	==1	13488390 (78.2)	21539 (78.4)
+obese4cat	==2	2381893 (13.8)	3777 (13.7)
+obese4cat	==3	921864 (5.3)	1475 (5.4)
+obese4cat	==4	463278 (2.7)	689 (2.5)
+
+smoke_nomiss	==1	8634105 (50.0)	13398 (48.8)
+smoke_nomiss	==2	5685069 (32.9)	7922 (28.8)
+smoke_nomiss	==3	2936251 (17.0)	6160 (22.4)
+
+ethnicity	==1	10859301 (62.9)	12708 (46.2)
+ethnicity	==2	168649 (1.0)	1390 (5.1)
+ethnicity	==3	1021252 (5.9)	1175 (4.3)
+ethnicity	==4	332971 (1.9)	7143 (26.0)
+ethnicity	==5	319845 (1.9)	645 (2.3)
+ethnicity	>=.	4553407 (26.4)	4419 (16.1)
+
+imd	==1	3494398 (20.3)	2790 (10.2)
+imd	==2	3473416 (20.1)	4127 (15.0)
+imd	==3	3480657 (20.2)	5108 (18.6)
+imd	==4	3475019 (20.1)	6863 (25.0)
+imd	==5	3331935 (19.3)	8592 (31.3)
+
+
+hypertension	==1	3666002 (21.2)	5290 (19.3)
+chronic_respiratory_disease	==1	703335 (4.1)	1095 (4.0)
+asthmacat	==2	2454236 (14.2)	3460 (12.6)
+asthmacat	==3	291606 (1.7)	433 (1.6)
+chronic_cardiac_disease	==1	1167008 (6.8)	1444 (5.3)
+diabcat	==2	1037513 (6.0)	1521 (5.5)
+diabcat	==3	485895 (2.8)	739 (2.7)
+diabcat	==4	193665 (1.1)	449 (1.6)
+
+cancer_exhaem_cat	==2	80004 (0.5)	108 (0.4)
+cancer_exhaem_cat	==3	233977 (1.4)	372 (1.4)
+cancer_exhaem_cat	==4	541921 (3.1)	804 (2.9)
+
+cancer_haem_cat	==2	8691 (0.1)	30 (0.1)
+cancer_haem_cat	==3	27648 (0.2)	114 (0.4)
+cancer_haem_cat	==4	63076 (0.4)	421 (1.5)
+
+reduced_kidney_function_cat	==2	1006298 (5.8)	1427 (5.2)
+reduced_kidney_function_cat	==3	77964 (0.5)	134 (0.5)
+chronic_liver_disease	==1	99214 (0.6)	921 (3.4)
+stroke_dementia	==1	389828 (2.3)	559 (2.0)
+other_neuro	==1	170336 (1.0)	239 (0.9)
+organ_transplant	==1	19933 (0.1)	72 (0.3)
+spleen	==1	27845 (0.2)	89 (0.3)
+ra_sle_psoriasis	==1	877666 (5.1)	1233 (4.5)
+other_imm_except_hiv	==1	4211 (0.0)	53 (0.2)
+
+
+*missing BMI included in 'not obese' (non-HIV group: 3737207, HIV group: 4550;missing smoking included in 'never smoker' (non-HIV group: 3737207, HIV group: 4550)
+
+N with any comorbidity in non-HIV group = 7914272(45.87%); 
+N with any comorbidity in HIV group = 12984(47.25%)
+
+N with ever hepatitis C in non-HIV group = 38235(0.22%); 
+N with ever hepatitis C in HIV group = 1491(5.43%); 

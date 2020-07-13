@@ -1,0 +1,346 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_imputed_take2_cuminc.log
+  log type:  text
+ opened on:  12 Jul 2020, 22:34:24
+
+. 
+. ********************************   NOTES  **************************************
+. 
+. *  Assumes region is string, taking  values: 
+. *    East, East Midlands, London, North East, North West, South East, 
+. *    South West, West Midlands, and Yorkshire and The Humber
+. *
+. *  Assumes ethnicity is numeric, taking values: 
+. *       1, 2, 3, 4, 5, (missing: . or .u)
+. *       in the order White, Black, Asian, Mixed, Other
+. *       with value labels exactly as above. 
+. *       (NB: this is now intially recoded from ordering: 
+. *      White, Mixed, Asian, Black, Other)       
+. *
+. *
+. *  Assumes a complete case sample other than ethnicity
+. *
+. ********************************************************************************
+. 
+. run global
+
+. 
+. * Add imputations to the full dataset
+. use "an_impute_take2", clear
+(Analysis dataset HIV project)
+
+. 
+. **************************
+. *  Analyse imputed data  *
+. **************************
+. 
+. // Declare imputed data as survival
+. 
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. 
+. 
+. if "`1'"=="demog"{
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
+. estimates save "./output/models/an_imputed_take2_demog", replace                                                
+. }
+
+. 
+. if "`1'"=="full"{
+. mi estimate: stcox i.hiv i.ethnicity $adjustmentlist, strata(stp)
+. estimates save "./output/models/an_imputed_take2_full", replace
+. mi estimate, eform                                              
+. }
+
+. 
+. if "`1'"=="byage"{
+. gen ageover60 = agegroup>=4
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60, strata(stp)
+. estimates save "./output/models/an_imputed_take2_byage", replace
+. mi estimate, eform                                              
+. }
+
+. 
+. if "`1'"=="bysex"{
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.male, strata(stp)
+. estimates save "./output/models/an_imputed_take2_bysex", replace        
+. mi estimate, eform                                      
+. }
+
+. 
+. if "`1'"=="byethnicity"{
+. gen nonblack = (ethnicity != 4) if ethnicity<.
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.nonblack, strata(stp)
+. estimates save "./output/models/an_imputed_take2_byethnicity", replace  
+. mi estimate, eform                                      
+. }
+
+. 
+. if "`1'"=="bycomorbidities"{
+. gen anycomorbidity =                                            ///
+>         hypertension                                    ///
+>         |chronic_respiratory_disease    ///
+>         |(asthmacat>1)                                  ///
+>         |chronic_cardiac_disease                ///
+>         |(diabcat>1)                                    ///
+>         |(cancer_exhaem_cat>1)                  ///
+>         |(cancer_haem_cat>1)                    ///
+>         |chronic_liver_disease                  ///
+>         |stroke_dementia                                ///
+>         |other_neuro                                    ///
+>         |(reduced_kidney_function_cat>1)        ///
+>         |organ_transplant                               ///
+>         |spleen                                                 ///
+>         |ra_sle_psoriasis                               ///
+>         |other_imm_except_hiv           
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity, strata(stp)
+. estimates save "./output/models/an_imputed_take2_bycomorbidities", replace
+. mi estimate, eform                                              
+. }
+
+. 
+. if "`1'"=="cuminc"{
+. xi $adjustmentlist
+i.male            _Imale_0-1          (naturally coded; _Imale_0 omitted)
+i.obese4cat       _Iobese4cat_1-4     (naturally coded; _Iobese4cat_1 omitted)
+i.smoke_nomiss    _Ismoke_nom_1-3     (naturally coded; _Ismoke_nom_1 omitted)
+i.imd             _Iimd_1-5           (naturally coded; _Iimd_1 omitted)
+i.hypertension    _Ihypertens_0-1     (naturally coded; _Ihypertens_0 omitted)
+i.chronic_res~e   _Ichronic_r_0-1     (naturally coded; _Ichronic_r_0 omitted)
+i.asthmacat       _Iasthmacat_1-3     (naturally coded; _Iasthmacat_1 omitted)
+i.chronic_car~e   _Ichronic_c_0-1     (naturally coded; _Ichronic_c_0 omitted)
+i.diabcat         _Idiabcat_1-4       (naturally coded; _Idiabcat_1 omitted)
+i.cancer_exha~t   _Icancer_ex_1-4     (naturally coded; _Icancer_ex_1 omitted)
+i.cancer_haem~t   _Icancer_ha_1-4     (naturally coded; _Icancer_ha_1 omitted)
+i.chronic_liv~e   _Ichronic_l_0-1     (naturally coded; _Ichronic_l_0 omitted)
+i.stroke_deme~a   _Istroke_de_0-1     (naturally coded; _Istroke_de_0 omitted)
+i.other_neuro     _Iother_neu_0-1     (naturally coded; _Iother_neu_0 omitted)
+i.reduced_kid~t   _Ireduced_k_1-3     (naturally coded; _Ireduced_k_1 omitted)
+i.organ_trans~t   _Iorgan_tra_0-1     (naturally coded; _Iorgan_tra_0 omitted)
+i.spleen          _Ispleen_0-1        (naturally coded; _Ispleen_0 omitted)
+i.ra_sle_psor~s   _Ira_sle_ps_0-1     (naturally coded; _Ira_sle_ps_0 omitted)
+i.other_imm_e~v   _Iother_imm_0-1     (naturally coded; _Iother_imm_0 omitted)
+. for num 2/5: mi passive: gen _Iethnicity_X=(ethnicity==X) 
+
+->  mi passive: gen _Iethnicity_2=(ethnicity==2)
+m=0:
+m=1:
+m=2:
+m=3:
+m=4:
+m=5:
+m=6:
+m=7:
+m=8:
+m=9:
+m=10:
+
+->  mi passive: gen _Iethnicity_3=(ethnicity==3)
+m=0:
+m=1:
+m=2:
+m=3:
+m=4:
+m=5:
+m=6:
+m=7:
+m=8:
+m=9:
+m=10:
+
+->  mi passive: gen _Iethnicity_4=(ethnicity==4)
+m=0:
+m=1:
+m=2:
+m=3:
+m=4:
+m=5:
+m=6:
+m=7:
+m=8:
+m=9:
+m=10:
+
+->  mi passive: gen _Iethnicity_5=(ethnicity==5)
+m=0:
+m=1:
+m=2:
+m=3:
+m=4:
+m=5:
+m=6:
+m=7:
+m=8:
+m=9:
+m=10:
+. mi estimate, cmdok: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
+
+Multiple-imputation estimates                   Imputations       =         10
+                                                Number of obs     = 17,282,435
+                                                Average RVI       =     0.0229
+                                                Largest FMI       =     0.4033
+DF adjustment:   Large sample                   DF:     min       =      61.00
+                                                        avg       =   4.62e+14
+Within VCE type:          OIM                           max       =   4.93e+15
+
+ ( 1)  [xb]_rcs1 - [dxb]_d_rcs1 = 0
+ ( 2)  [xb]_rcs2 - [dxb]_d_rcs2 = 0
+ ( 3)  [xb]_rcs3 - [dxb]_d_rcs3 = 0
+-------------------------------------------------------------------------------
+              |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+xb            |
+          hiv |   .8604255   .2013225     4.27   0.000     .4658407     1.25501
+         age1 |   .1766704   .0200076     8.83   0.000     .1374562    .2158845
+         age2 |  -.1747667     .04316    -4.05   0.000    -.2593587   -.0901747
+         age3 |   .4259075   .0994737     4.28   0.000     .2309426    .6208724
+     _Imale_1 |   .3893161   .0173029    22.50   0.000      .355403    .4232291
+_Iobese4cat_2 |  -.0114299   .0233409    -0.49   0.624    -.0571772    .0343175
+_Iobese4cat_3 |   .2919218   .0341946     8.54   0.000     .2249016     .358942
+_Iobese4cat_4 |   .6072941   .0474752    12.79   0.000     .5142443    .7003438
+_Ismoke_nom_2 |    .190157   .0187806    10.13   0.000     .1533476    .2269664
+_Ismoke_nom_3 |  -.0111421   .0362957    -0.31   0.759    -.0822803    .0599962
+      _Iimd_2 |   .1034878   .0271588     3.81   0.000     .0502576    .1567181
+      _Iimd_3 |   .1469606   .0271082     5.42   0.000     .0938295    .2000916
+      _Iimd_4 |   .3854178   .0265465    14.52   0.000     .3333877    .4374479
+      _Iimd_5 |   .5668054   .0268131    21.14   0.000     .5142528     .619358
+_Ihypertens_1 |  -.0146841   .0188618    -0.78   0.436    -.0516524    .0222843
+_Ichronic_r_1 |   .5020287   .0215335    23.31   0.000     .4598239    .5442335
+_Iasthmacat_2 |  -.0111387   .0264256    -0.42   0.673     -.062932    .0406546
+_Iasthmacat_3 |   .0937954   .0488821     1.92   0.055    -.0020117    .1896025
+_Ichronic_c_1 |   .1746927   .0184296     9.48   0.000     .1385714     .210814
+  _Idiabcat_2 |   .2573587   .0215957    11.92   0.000     .2150318    .2996856
+  _Idiabcat_3 |   .6128763   .0280427    21.86   0.000     .5579135     .667839
+  _Idiabcat_4 |    .640689   .0430326    14.89   0.000     .5563467    .7250314
+_Icancer_ex_2 |     .56891   .0582961     9.76   0.000     .4546518    .6831682
+_Icancer_ex_3 |   .1797711   .0411865     4.36   0.000      .099047    .2604951
+_Icancer_ex_4 |  -.0051298   .0268766    -0.19   0.849     -.057807    .0475474
+_Icancer_ha_2 |   1.069576   .1277571     8.37   0.000     .8191767    1.319975
+_Icancer_ha_3 |    .822407   .0822019    10.00   0.000     .6612942    .9835198
+_Icancer_ha_4 |    .473306   .0660863     7.16   0.000     .3437792    .6028328
+_Ichronic_l_1 |   .6595485   .0634095    10.40   0.000     .5352683    .7838288
+_Istroke_de_1 |   .7553701   .0205934    36.68   0.000     .7150078    .7957324
+_Iother_neu_1 |   .9991271   .0340537    29.34   0.000     .9323831    1.065871
+_Ireduced_k_2 |   .2335552   .0194628    12.00   0.000     .1954088    .2717016
+_Ireduced_k_3 |     .85599    .033326    25.69   0.000     .7906722    .9213077
+_Iorgan_tra_1 |    1.15173   .1134224    10.15   0.000     .9294263    1.374034
+   _Ispleen_1 |   .2021247   .1405681     1.44   0.150    -.0733836     .477633
+_Ira_sle_ps_1 |   .1878594   .0290001     6.48   0.000     .1310203    .2446986
+_Iother_imm_1 |   1.221199   .1867297     6.54   0.000     .8552151    1.587182
+_Iethnicity_2 |   .5432761    .129331     4.20   0.000      .284663    .8018891
+_Iethnicity_3 |   .4872897   .0389987    12.50   0.000     .4106606    .5639187
+_Iethnicity_4 |   .6192546   .0555114    11.16   0.000     .5104087    .7281005
+_Iethnicity_5 |   .4003705   .0857044     4.67   0.000     .2318831    .5688579
+        _rcs1 |   .8669085   .0139867    61.98   0.000     .8394952    .8943219
+        _rcs2 |    .342187   .0066753    51.26   0.000     .3291037    .3552703
+        _rcs3 |  -.0143503   .0006325   -22.69   0.000    -.0155899   -.0131107
+        _cons |  -17.67053   .7296757   -24.22   0.000    -19.10067   -16.24039
+--------------+----------------------------------------------------------------
+dxb           |
+      _d_rcs1 |   .8669085   .0139867    61.98   0.000     .8394952    .8943219
+      _d_rcs2 |    .342187   .0066753    51.26   0.000     .3291037    .3552703
+      _d_rcs3 |  -.0143503   .0006325   -22.69   0.000    -.0155899   -.0131107
+-------------------------------------------------------------------------------
+. estimates save "./output/models/an_imputed_take2_cuminc", replace
+(note: file ./output/models/an_imputed_take2_cuminc.ster not found)
+file ./output/models/an_imputed_take2_cuminc.ster saved
+. mi estimate, eform      
+
+Multiple-imputation estimates                   Imputations       =         10
+                                                Number of obs     = 17,282,435
+                                                Average RVI       =     0.0229
+                                                Largest FMI       =     0.4033
+DF adjustment:   Large sample                   DF:     min       =      61.00
+                                                        avg       =   4.62e+14
+Within VCE type:          OIM                           max       =   4.93e+15
+
+ ( 1)  [xb]_rcs1 - [dxb]_d_rcs1 = 0
+ ( 2)  [xb]_rcs2 - [dxb]_d_rcs2 = 0
+ ( 3)  [xb]_rcs3 - [dxb]_d_rcs3 = 0
+-------------------------------------------------------------------------------
+              |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+xb            |
+          hiv |   2.364166   .4759598     4.27   0.000     1.593353    3.507874
+         age1 |   1.193238   .0238738     8.83   0.000     1.147351    1.240959
+         age2 |   .8396529   .0362394    -4.05   0.000     .7715462    .9137715
+         age3 |   1.530979   .1522922     4.28   0.000     1.259787    1.860551
+     _Imale_1 |   1.475971   .0255386    22.50   0.000     1.426755    1.526884
+_Iobese4cat_2 |   .9886352   .0230756    -0.49   0.624     .9444267    1.034913
+_Iobese4cat_3 |   1.338998   .0457865     8.54   0.000     1.252199    1.431814
+_Iobese4cat_4 |   1.835458   .0871388    12.79   0.000     1.672374    2.014445
+_Ismoke_nom_2 |   1.209439    .022714    10.13   0.000      1.16573    1.254788
+_Ismoke_nom_3 |   .9889198   .0358935    -0.31   0.759     .9210137    1.061832
+      _Iimd_2 |   1.109032     .03012     3.81   0.000     1.051542    1.169666
+      _Iimd_3 |   1.158308   .0313996     5.42   0.000     1.098372    1.221515
+      _Iimd_4 |   1.470228   .0390294    14.52   0.000     1.395688     1.54875
+      _Iimd_5 |   1.762627   .0472614    21.14   0.000     1.672388    1.857735
+_Ihypertens_1 |   .9854232   .0185868    -0.78   0.436     .9496589    1.022534
+_Ichronic_r_1 |   1.652069   .0355748    23.31   0.000     1.583795    1.723287
+_Iasthmacat_2 |   .9889231   .0261329    -0.42   0.673     .9390074    1.041492
+_Iasthmacat_3 |   1.098335   .0536889     1.92   0.055     .9979904    1.208769
+_Ichronic_c_1 |    1.19088   .0219474     9.48   0.000     1.148632    1.234683
+  _Idiabcat_2 |   1.293509   .0279343    11.92   0.000     1.239901    1.349434
+  _Idiabcat_3 |   1.845733   .0517594    21.86   0.000     1.747024    1.950019
+  _Idiabcat_4 |   1.897788   .0816668    14.89   0.000     1.744288    2.064796
+_Icancer_ex_2 |   1.766341   .1029707     9.76   0.000     1.575625    1.980141
+_Icancer_ex_3 |   1.196943   .0492979     4.36   0.000     1.104118    1.297572
+_Icancer_ex_4 |   .9948833   .0267391    -0.19   0.849     .9438321    1.048696
+_Icancer_ha_2 |   2.914144   .3723025     8.37   0.000     2.268631    3.743329
+_Icancer_ha_3 |   2.275972   .1870893    10.00   0.000     1.937298    2.673851
+_Icancer_ha_4 |   1.605292   .1060879     7.16   0.000     1.410267    1.827288
+_Ichronic_l_1 |   1.933919   .1226288    10.40   0.000     1.707906    2.189841
+_Istroke_de_1 |   2.128399    .043831    36.68   0.000     2.044203    2.216063
+_Iother_neu_1 |    2.71591   .0924868    29.34   0.000     2.540556    2.903367
+_Ireduced_k_2 |   1.263083   .0245831    12.00   0.000     1.215808    1.312195
+_Ireduced_k_3 |   2.353703   .0784395    25.69   0.000     2.204878    2.512574
+_Iorgan_tra_1 |   3.163661   .3588299    10.15   0.000     2.533055    3.951257
+   _Ispleen_1 |   1.224001   .1720554     1.44   0.150     .9292443    1.612254
+_Ira_sle_ps_1 |   1.206664   .0349934     6.48   0.000     1.139991    1.277236
+_Iother_imm_1 |    3.39125   .6332472     6.54   0.000      2.35188    4.889951
+_Iethnicity_2 |   1.721638   .2226612     4.20   0.000     1.329314    2.229749
+_Iethnicity_3 |   1.627898    .063486    12.50   0.000     1.507814    1.757546
+_Iethnicity_4 |   1.857543   .1031149    11.16   0.000     1.665972    2.071143
+_Iethnicity_5 |   1.492378   .1279033     4.67   0.000     1.260972    1.766249
+        _rcs1 |   2.379543   .0332818    61.98   0.000     2.315198    2.445677
+        _rcs2 |   1.408024    .009399    51.26   0.000     1.389722    1.426566
+        _rcs3 |   .9857522   .0006235   -22.69   0.000      .984531    .9869749
+        _cons |   2.12e-08   1.54e-08   -24.22   0.000     5.07e-09    8.85e-08
+--------------+----------------------------------------------------------------
+dxb           |
+      _d_rcs1 |   .8669085   .0139867    61.98   0.000     .8394952    .8943219
+      _d_rcs2 |    .342187   .0066753    51.26   0.000     .3291037    .3552703
+      _d_rcs3 |  -.0143503   .0006325   -22.69   0.000    -.0155899   -.0131107
+-------------------------------------------------------------------------------
+Note: Estimates are transformed only in the first equation.
+. }
+
+.         
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_imputed_take2_cuminc.log
+  log type:  text
+ closed on:  13 Jul 2020, 05:05:09
+----------------------------------------------------------------------------------------------------------------------------------
