@@ -1,0 +1,41 @@
+N deaths		25
+
+agegroup	<4	10 (40)
+agegroup	>=4	15 (60)
+
+
+male	==1	18 (72)
+male	==0	7 (28)
+
+
+obese4cat	==1	15 (60)
+obese4cat	>=2	10 (40)
+
+
+ethnicity	==4	11 (44)
+ethnicity	!=4	14 (56)
+
+
+hypertension	==1	15 (60)
+diabetes	==1	14 (56)
+reduced_kidney_function_cat	>=2	9 (36)
+
+
+
+ALL comorbs (counts under 5 redacted to . )
+hypertension	==1	15 (60)
+chronic_respiratory_disease	==1	. ( .)
+chronic_cardiac_disease	==1	. ( .)
+chronic_liver_disease	==1	. ( .)
+stroke_dementia	==1	. ( .)
+other_neuro	==1	. ( .)
+organ_transplant	==1	. ( .)
+spleen	==1	0 ( 0)
+ra_sle_psoriasis	==1	. ( .)
+other_imm_except_hiv	==1	. ( .)
+hepc	==1	0 ( 0)
+asthmacat	>=2	. ( .)
+diabcat	>=2	14 (56)
+cancer_exhaem_cat	>=2	. ( .)
+cancer_haem_cat	>=2	0 ( 0)
+reduced_kidney_function_cat	>=2	9 (36)

@@ -79,7 +79,7 @@ file write tablecontent _n
 
 **COMORBIDITIES
 *HYPERTENSION
-tabulatevariable, variable(htdiag_or_highbp) start(1) end(1) 			
+tabulatevariable, variable(hypertension) start(1) end(1) 			
 *RESPIRATORY
 tabulatevariable, variable(chronic_respiratory_disease) start(1) end(1) 
 *ASTHMA
@@ -123,7 +123,34 @@ file write tablecontent (", HIV group: ") (r(N)) (";")
 cou if bmicat==. & hiv==0
 file write tablecontent ("missing smoking included in 'never smoker' (non-HIV group: ") (r(N)) 
 cou if bmicat==. & hiv==1
-file write tablecontent (", HIV group: ") (r(N)) (")")
+file write tablecontent (", HIV group: ") (r(N)) (")") _n 
+
+
+gen anycomorbidity = 						///
+			hypertension					///
+			|chronic_respiratory_disease 	///
+			|(asthmacat>1)					///
+			|chronic_cardiac_disease 		///
+			|(diabcat>1)					///
+			|(cancer_exhaem_cat>1) 			///
+			|(cancer_haem_cat>1)			///
+			|chronic_liver_disease 			///
+			|stroke_dementia		 		///
+			|other_neuro					///
+			|(reduced_kidney_function_cat>1)	///
+			|organ_transplant 				///
+			|spleen 						///
+			|ra_sle_psoriasis  				///
+			|other_imm_except_hiv		
+
+cou if hiv==0
+local denomnohiv=r(N)
+safecount if anycomorbidity ==1 & hiv==0			
+file write tablecontent _n ("N with any comorbidity in non-HIV group = ") (r(N)) ("(") %4.2f (100*r(N)/`denomnohiv') ("%); ")
+cou if hiv==1
+local denomhiv=r(N)
+safecount if anycomorbidity ==1 & hiv==1
+file write tablecontent _n ("N with any comorbidity in HIV group = ") (r(N)) ("(") %4.2f (100*r(N)/`denomhiv') ("%)") _n
 
 
 file close tablecontent

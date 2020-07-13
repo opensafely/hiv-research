@@ -1,0 +1,65 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_impute_take2.log
+  log type:  text
+ opened on:  12 Jul 2020, 21:56:05
+
+. 
+. run global 
+
+. 
+. frames reset
+
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. drop if _st==0
+(470 observations deleted)
+
+. 
+. mi set wide
+
+. mi register imputed ethnicity
+
+. 
+. *Gen NA Cum Haz
+. sts generate cumh = na
+
+. egen cumhgp = cut(cumh), group(5)
+
+. replace cumhgp = cumhgp + 1
+(17,282,435 real changes made)
+
+. 
+. mi impute mlogit ethnicity i.hiv i.stp $adjustmentlist i.cumhgp _d, add(10) rseed(3040985)
+
+Univariate imputation                       Imputations =       10
+Multinomial logistic regression                   added =       10
+Imputed: m=1 through m=10                       updated =        0
+
+------------------------------------------------------------------
+                   |               Observations per m             
+                   |----------------------------------------------
+          Variable |   Complete   Incomplete   Imputed |     Total
+-------------------+-----------------------------------+----------
+         ethnicity |   12724742      4557693   4557693 |  17282435
+------------------------------------------------------------------
+(complete + incomplete = total; imputed is the minimum across m
+ of the number of filled-in observations.)
+
+. 
+. save an_impute_take2, replace
+file an_impute_take2.dta saved
+
+. 
+. 
+end of do-file
+
+
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_impute_take2.log
+  log type:  text
+ closed on:  13 Jul 2020, 14:58:33
+----------------------------------------------------------------------------------------------------------------------------------

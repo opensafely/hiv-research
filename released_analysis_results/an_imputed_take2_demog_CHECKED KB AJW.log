@@ -1,0 +1,172 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_imputed_take2_demog.log
+  log type:  text
+ opened on:  12 Jul 2020, 22:34:23
+
+. 
+. ********************************   NOTES  **************************************
+. 
+. *  Assumes region is string, taking  values: 
+. *    East, East Midlands, London, North East, North West, South East, 
+. *    South West, West Midlands, and Yorkshire and The Humber
+. *
+. *  Assumes ethnicity is numeric, taking values: 
+. *       1, 2, 3, 4, 5, (missing: . or .u)
+. *       in the order White, Black, Asian, Mixed, Other
+. *       with value labels exactly as above. 
+. *       (NB: this is now intially recoded from ordering: 
+. *      White, Mixed, Asian, Black, Other)       
+. *
+. *
+. *  Assumes a complete case sample other than ethnicity
+. *
+. ********************************************************************************
+. 
+. run global
+
+. 
+. * Add imputations to the full dataset
+. use "an_impute_take2", clear
+(Analysis dataset HIV project)
+
+. 
+. **************************
+. *  Analyse imputed data  *
+. **************************
+. 
+. // Declare imputed data as survival
+. 
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. 
+. 
+. if "`1'"=="demog"{
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0842
+                                                Largest FMI       =     0.4271
+DF adjustment:   Large sample                   DF:     min       =      54.48
+                                                        avg       =   2.50e+10
+                                                        max       =   2.11e+11
+Model F test:       Equal FMI                   F(  13,18155.0)   =    2192.50
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                  1.hiv |   2.516821   .5063835     4.59   0.000     1.696645     3.73348
+                   age1 |   1.167648   .0222827     8.12   0.000     1.124782    1.212149
+                   age2 |   .9208401   .0380833    -1.99   0.046     .8491432    .9985907
+                   age3 |   1.224859   .1170063     2.12   0.034      1.01572    1.477061
+                 1.male |   1.686831   .0280968    31.39   0.000     1.632651    1.742808
+                        |
+                    imd |
+                     2  |   1.168962   .0318604     5.73   0.000     1.108156    1.233106
+                     3  |   1.302516   .0355864     9.67   0.000     1.234603    1.374166
+                     4  |   1.652875   .0443964    18.71   0.000      1.56811    1.742221
+       5 most deprived  |    1.97468   .0542898    24.75   0.000      1.87109    2.084005
+                        |
+              ethnicity |
+                 Mixed  |   1.483334   .1960848     2.98   0.004      1.13805    1.933377
+Asian or Asian British  |   1.375629   .0551914     7.95   0.000     1.271265    1.488561
+                 Black  |   1.539267   .0863413     7.69   0.000     1.378973    1.718193
+                 Other  |   1.193093   .1024721     2.06   0.040     1.007791    1.412467
+-----------------------------------------------------------------------------------------
+. estimates save "./output/models/an_imputed_take2_demog", replace                                                
+(note: file ./output/models/an_imputed_take2_demog.ster not found)
+file ./output/models/an_imputed_take2_demog.ster saved
+. }
+
+. 
+. if "`1'"=="full"{
+. mi estimate: stcox i.hiv i.ethnicity $adjustmentlist, strata(stp)
+. estimates save "./output/models/an_imputed_take2_full", replace
+. mi estimate, eform                                              
+. }
+
+. 
+. if "`1'"=="byage"{
+. gen ageover60 = agegroup>=4
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60, strata(stp)
+. estimates save "./output/models/an_imputed_take2_byage", replace
+. mi estimate, eform                                              
+. }
+
+. 
+. if "`1'"=="bysex"{
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.male, strata(stp)
+. estimates save "./output/models/an_imputed_take2_bysex", replace        
+. mi estimate, eform                                      
+. }
+
+. 
+. if "`1'"=="byethnicity"{
+. gen nonblack = (ethnicity != 4) if ethnicity<.
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.nonblack, strata(stp)
+. estimates save "./output/models/an_imputed_take2_byethnicity", replace  
+. mi estimate, eform                                      
+. }
+
+. 
+. if "`1'"=="bycomorbidities"{
+. gen anycomorbidity =                                            ///
+>         hypertension                                    ///
+>         |chronic_respiratory_disease    ///
+>         |(asthmacat>1)                                  ///
+>         |chronic_cardiac_disease                ///
+>         |(diabcat>1)                                    ///
+>         |(cancer_exhaem_cat>1)                  ///
+>         |(cancer_haem_cat>1)                    ///
+>         |chronic_liver_disease                  ///
+>         |stroke_dementia                                ///
+>         |other_neuro                                    ///
+>         |(reduced_kidney_function_cat>1)        ///
+>         |organ_transplant                               ///
+>         |spleen                                                 ///
+>         |ra_sle_psoriasis                               ///
+>         |other_imm_except_hiv           
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity, strata(stp)
+. estimates save "./output/models/an_imputed_take2_bycomorbidities", replace
+. mi estimate, eform                                              
+. }
+
+. 
+. if "`1'"=="cuminc"{
+. xi $adjustmentlist
+. for num 2/5: mi passive: gen _Iethnicity_X=(ethnicity==X) 
+. mi estimate, cmdok: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
+. estimates save "./output/models/an_imputed_take2_cuminc", replace
+. mi estimate, eform      
+. }
+
+.         
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_imputed_take2_demog.log
+  log type:  text
+ closed on:  13 Jul 2020, 01:29:25
+----------------------------------------------------------------------------------------------------------------------------------

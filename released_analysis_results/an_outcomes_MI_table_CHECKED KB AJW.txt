@@ -1,0 +1,27 @@
+HIV=1 Events/1000py	25 / 10.68
+HIV=1 Rate/1000py	2.34 (1.58-3.47)
+
+
+HIV=0 Events/1000py	14857 / 6696
+HIV=0 Rate/1000py	2.22 (2.18-2.25)
+
+
+HR (Age-sex_adjusted,)	2.90 (1.96-4.30)
+HR (+IMD/ethnicity,)	2.52 (1.70-3.73)
+HR (+obesity/smoking/comorbidities,)	2.30 (1.55-3.41)
+
+
+HR (interac_NOTageover60,)	2.86 (1.53-5.33)
+HR (interac_ageover60,)	2.03 (1.22-3.38)
+
+
+HR (interac_NOTfemale,)	2.78 (1.32-5.86)
+HR (interac_female,)	2.15 (1.35-3.42)
+
+
+HR (interac_NOTnonblack,)	4.02 (2.20-7.35)
+HR (interac_nonblack,)	1.44 (0.75-2.77)
+
+
+HR (interac_NOTanycomorbidity,)	1.02 (0.26-4.10)
+HR (interac_anycomorbidity,)	2.57 (1.71-3.88)
