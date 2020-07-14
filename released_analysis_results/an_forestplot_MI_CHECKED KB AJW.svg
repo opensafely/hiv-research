@@ -65,10 +65,10 @@
 	<circle cx="2549.52" cy="2680.74" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
 	<circle cx="2375.46" cy="2885.22" r="36.18" style="fill:#000000"/>
 	<circle cx="2375.46" cy="2885.22" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
-	<circle cx="2798.82" cy="3499.02" r="36.18" style="fill:#000000"/>
-	<circle cx="2798.82" cy="3499.02" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
-	<circle cx="2102.04" cy="3703.68" r="36.18" style="fill:#000000"/>
-	<circle cx="2102.04" cy="3703.68" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
+	<circle cx="2761.02" cy="3499.02" r="36.18" style="fill:#000000"/>
+	<circle cx="2761.02" cy="3499.02" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
+	<circle cx="2190.06" cy="3703.68" r="36.18" style="fill:#000000"/>
+	<circle cx="2190.06" cy="3703.68" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
 	<circle cx="1872.90" cy="4317.30" r="36.18" style="fill:#000000"/>
 	<circle cx="1872.90" cy="4317.30" r="30.24" style="fill:none;stroke:#000000;stroke-width:11.88"/>
 	<circle cx="2496.78" cy="4521.96" r="36.18" style="fill:#000000"/>
@@ -94,12 +94,12 @@
 	<line x1="2061.18" y1="2885.22" x2="2689.74" y2="2885.22" style="stroke:#000000;stroke-width:11.88"/>
 	<line x1="2689.74" y1="2915.46" x2="2689.74" y2="2854.98" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
 	<line x1="2061.18" y1="2915.46" x2="2061.18" y2="2854.98" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
-	<line x1="2390.22" y1="3499.02" x2="3207.78" y2="3499.02" style="stroke:#000000;stroke-width:11.88"/>
-	<line x1="3207.78" y1="3529.26" x2="3207.78" y2="3468.78" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
-	<line x1="2390.22" y1="3529.26" x2="2390.22" y2="3468.78" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
-	<line x1="1658.88" y1="3703.50" x2="2545.56" y2="3703.50" style="stroke:#000000;stroke-width:11.88"/>
-	<line x1="2545.56" y1="3733.74" x2="2545.56" y2="3673.26" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
-	<line x1="1658.88" y1="3733.74" x2="1658.88" y2="3673.26" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
+	<line x1="2373.48" y1="3499.02" x2="3148.92" y2="3499.02" style="stroke:#000000;stroke-width:11.88"/>
+	<line x1="3148.92" y1="3529.26" x2="3148.92" y2="3468.78" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
+	<line x1="2373.48" y1="3529.26" x2="2373.48" y2="3468.78" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
+	<line x1="1801.98" y1="3703.50" x2="2578.32" y2="3703.50" style="stroke:#000000;stroke-width:11.88"/>
+	<line x1="2578.32" y1="3733.74" x2="2578.32" y2="3673.26" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
+	<line x1="1801.98" y1="3733.74" x2="1801.98" y2="3673.26" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
 	<line x1="933.48" y1="4317.30" x2="2812.68" y2="4317.30" style="stroke:#000000;stroke-width:11.88"/>
 	<line x1="2812.68" y1="4347.54" x2="2812.68" y2="4287.06" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
 	<line x1="933.48" y1="4347.54" x2="933.48" y2="4287.06" stroke-linecap="round" style="stroke:#000000;stroke-width:11.88"/>
@@ -121,10 +121,10 @@
 	<text x="283.50" y="2504.98" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By sex</text>
 	<text x="283.50" y="3323.26" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By ethnicity</text>
 	<text x="283.50" y="4141.54" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By comorbidities</text>
-	<text x="3004.38" y="1686.70" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.41</text>
-	<text x="3004.38" y="2504.98" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.56</text>
-	<text x="3004.38" y="3323.26" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.02</text>
-	<text x="3004.38" y="4141.54" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.21</text>
+	<text x="3004.38" y="1686.70" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.407</text>
+	<text x="3004.38" y="2504.98" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.564</text>
+	<text x="3004.38" y="3323.26" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.045</text>
+	<text x="3004.38" y="4141.54" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">p-interaction 0.212</text>
 	<line x1="138.60" y1="5222.70" x2="3821.40" y2="5222.70" style="stroke:#000000;stroke-width:7.92"/>
 	<line x1="1387.08" y1="5222.70" x2="1387.08" y2="5277.60" style="stroke:#000000;stroke-width:7.92"/>
 	<text x="1387.08" y="5401.31" style="font-family:'Helvetica';font-size:137.52px;fill:#000000" text-anchor="middle">.5</text>

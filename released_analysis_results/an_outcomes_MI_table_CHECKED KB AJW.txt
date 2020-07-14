@@ -19,8 +19,8 @@ HR (interac_NOTfemale,)	2.78 (1.32-5.86)
 HR (interac_female,)	2.15 (1.35-3.42)
 
 
-HR (interac_NOTnonblack,)	4.02 (2.20-7.35)
-HR (interac_nonblack,)	1.44 (0.75-2.77)
+HR (interac_NOTnonblack,)	3.80 (2.15-6.74)
+HR (interac_nonblack,)	1.64 (0.92-2.90)
 
 
 HR (interac_NOTanycomorbidity,)	1.02 (0.26-4.10)
