@@ -36,6 +36,14 @@ do "an_imputed" bycomorbidities
 do "an_imputed" cuminc
 
 do "an_outcomes_table"
-do "an_outcomes_mi_table"
+do "an_outcomes_MI_table"
 do "an_forestplot_MI"
 
+
+***TO DO
+/*
+comorb interaction without hypertension
+ethnicity interaction with black vs white
+PH check
+CC analysis for bmi and smoking
+*/
