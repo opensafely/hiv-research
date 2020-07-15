@@ -40,7 +40,7 @@ gen headertextpos = .09
 gen pinttextpos = 5
 local rangemax = _N+3
 
-gen pintstr = "p-interaction " + string(pint, "%4.2f")
+gen pintstr = "p-interaction " + string(pint, "%5.3f")
 
 scatter revorder hr, mc(black) || rcap lci uci revorder, hor lc(black)  						///
 || scatter revorder modeltextpos if _n>3, m(i) mlab(desc) mlabsize(vsmall)	mlabcol(black)	///

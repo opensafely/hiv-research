@@ -6,7 +6,7 @@ log using ./output/an_interactions, replace t
 
 run global
 
-use "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1", clear
+use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
 *By age
 gen ageover60 = agegroup>=4

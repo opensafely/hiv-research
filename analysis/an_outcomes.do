@@ -7,7 +7,7 @@ log using ./output/an_outcomes, replace t
 run global 
 
 frames reset  
-use "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1", clear
+use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
 strate hiv, per(365000) output(./output/an_outcomes_RATES, replace)
 

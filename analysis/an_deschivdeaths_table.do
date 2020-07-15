@@ -12,7 +12,7 @@ safecount if `variable' `condition'
 file write descdeathstable ("`variable'") _tab ("`condition'") _tab (r(N)) (" (") %2.0f (100*(r(N))/_N) (")") _n
 end
 
-use "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1" if hiv==1 & _d==1, clear
+use "cr_create_analysis_dataset_STSET_onsdeath_fail1" if hiv==1 & _d==1, clear
 
 cap file close descdeathstable
 file open descdeathstable using ./output/an_deschivdeaths_table.txt, write text replace

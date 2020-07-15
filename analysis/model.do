@@ -13,21 +13,13 @@ cd  analysis
 **********************************************
 do "cr_create_analysis_dataset.do" 
 
-
-
 do "an_hiv_desccodes" 
-
-*do "an_hiv"
 
 do "an_desctable" 
 
 do "an_outcomes" 
 
 do "an_interactions" 
-
-do "an_outcomes_table" 
-
-do "an_forestplot" 
 
 do "an_deschivdeaths_table" 
 
@@ -45,5 +37,5 @@ do "an_imputed" cuminc
 
 do "an_outcomes_table"
 do "an_outcomes_mi_table"
-do "an_foresplot_MI"
+do "an_forestplot_MI"
 

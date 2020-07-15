@@ -116,7 +116,7 @@ mi estimate, eform
 if "`1'"=="cuminc"{
 xi $adjustmentlist
 for num 2/5: mi passive: gen _Iethnicity_X=(ethnicity==X) 
-mi estimate, cmdok: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
+mi estimate, cmdok post: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
 estimates save "./output/models/an_imputed_cuminc", replace
 mi estimate, eform	
 }

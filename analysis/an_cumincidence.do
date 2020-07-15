@@ -6,7 +6,7 @@ run global
 cap log close
 log using ./output/an_cumincidence, replace t
 
-use "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1", clear
+use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
 *xi: stpm2 hiv i.ethnicity $adjustmentlist, df(3) scale(hazard) eform
 xi i.ethnicity $adjustmentlist 
@@ -17,7 +17,7 @@ local tmax=r(max)
 local tmaxplus1=r(max)+1
 
 range timevar 0 `tmax' `tmaxplus1'
-stpm2_standsurv if hiv==1, at1(hiv 0) at2(hiv 1) timevar(timevar) ci contrast(difference) fail
+stpm2_standsurv if hiv==1 & ethnicity<., at1(hiv 0) at2(hiv 1) timevar(timevar) ci contrast(difference) fail
 
 gen date = d(1/2/2020)+ timevar
 format date %tddd_Month
