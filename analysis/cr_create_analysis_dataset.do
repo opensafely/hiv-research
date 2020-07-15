@@ -793,7 +793,7 @@ save "cr_create_analysis_dataset.dta", replace
 stset stime_onsdeath, fail(onsdeath=1) 				///
 	id(patient_id) enter(enter_date) origin(enter_date)
 
-save "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1", replace
+save "cr_create_analysis_dataset_STSET_onsdeath_fail1.dta", replace
 
 log close
 
