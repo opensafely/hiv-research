@@ -43,9 +43,8 @@ if _rc==0{
 	}
 	else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
 
-cap estimates use ./output/models/an_imputed_take2_demog
+cap estimates use ./output/models/an_imputed_demog
 if _rc==0{
-	*lincom 1.hiv, eform
 	local estimate = exp( el(e(b_mi),1,2) )
 	local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
 	local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
@@ -53,9 +52,8 @@ if _rc==0{
 	}
 	else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
 		
-cap estimates use ./output/models/an_imputed_take2_full
+cap estimates use ./output/models/an_imputed_full
 if _rc==0{
-	*lincom 1.hiv, eform
 	local estimate = exp( el(e(b_mi),1,2) )
 	local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
 	local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
@@ -69,20 +67,17 @@ foreach var of any ageover60 female nonblack anycomorbidity{
 	if "`var'"=="female" local filesuffix "sex"
 	if "`var'"=="nonblack" local filesuffix "ethnicity"
 	if "`var'"=="anycomorbidity" local filesuffix "comorbidities"
-	cap estimates use ./output/models/an_imputed_take2_by`filesuffix'
+	cap estimates use ./output/models/an_imputed_by`filesuffix'
 	if _rc==0{
 	file write outcometable _n _n
-	*lincom 1.hiv, eform
 	local estimate = exp( el(e(b_mi),1,2) )
 	local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
 	local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
 	writehrci interac_NOT`var', estimate(`estimate') lci(`lci') uci(`uci')
-	*lincom 1.hiv + 1.hiv#1.`var', eform
 	local estimate = exp( el(e(b_Q_mi),1,1) )
 	local lci = exp( el(e(b_Q_mi),1,1) - 1.96* sqrt(el(e(V_Q_mi),1,1)) )
 	local uci = exp( el(e(b_Q_mi),1,1) + 1.96* sqrt(el(e(V_Q_mi),1,1)) )
 	writehrci interac_`var', estimate(`estimate') lci(`lci') uci(`uci')
-	*lincom 1.hiv#1.`var'
 	local pint = 2*(1-normal( abs(el ( e(b_mi), 1, colsof(e(b_mi))))/ sqrt( el ( e(V_mi), colsof(e(V_mi)), colsof(e(V_mi))) )))
 	frame post estimates ("int_`var'") (.) (.) (.) (`pint')
 	}

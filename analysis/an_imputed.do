@@ -25,7 +25,7 @@
 
 * Open a log file
 capture log close
-log using "./output/an_imputed_take2_`1'", text replace
+log using "./output/an_imputed_`1'", text replace
 
 ********************************   NOTES  **************************************
 
@@ -48,7 +48,7 @@ log using "./output/an_imputed_take2_`1'", text replace
 run global
 
 * Add imputations to the full dataset
-use "an_impute_take2", clear
+use "an_impute_imputeddata", clear
 
 **************************
 *  Analyse imputed data  *
@@ -62,32 +62,32 @@ mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)	///
 
 if "`1'"=="demog"{
 mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
-estimates save "./output/models/an_imputed_take2_demog", replace						
+estimates save "./output/models/an_imputed_demog", replace						
 }
 
 if "`1'"=="full"{
 mi estimate: stcox i.hiv i.ethnicity $adjustmentlist, strata(stp)
-estimates save "./output/models/an_imputed_take2_full", replace
+estimates save "./output/models/an_imputed_full", replace
 mi estimate, eform 						
 }
 
 if "`1'"=="byage"{
 gen ageover60 = agegroup>=4
 mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60, strata(stp)
-estimates save "./output/models/an_imputed_take2_byage", replace
+estimates save "./output/models/an_imputed_byage", replace
 mi estimate, eform						
 }
 
 if "`1'"=="bysex"{
 mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.male, strata(stp)
-estimates save "./output/models/an_imputed_take2_bysex", replace	
+estimates save "./output/models/an_imputed_bysex", replace	
 mi estimate, eform					
 }
 
 if "`1'"=="byethnicity"{
-gen nonblack = (ethnicity != 4) if ethnicity<.
+mi passive: gen nonblack = (ethnicity != 4) if ethnicity<.
 mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.nonblack, strata(stp)
-estimates save "./output/models/an_imputed_take2_byethnicity", replace	
+estimates save "./output/models/an_imputed_byethnicity", replace	
 mi estimate, eform					
 }
 
@@ -109,7 +109,7 @@ gen anycomorbidity = 						///
 	|ra_sle_psoriasis  				///
 	|other_imm_except_hiv		
 mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity, strata(stp)
-estimates save "./output/models/an_imputed_take2_bycomorbidities", replace
+estimates save "./output/models/an_imputed_bycomorbidities", replace
 mi estimate, eform						
 }
 
@@ -117,7 +117,7 @@ if "`1'"=="cuminc"{
 xi $adjustmentlist
 for num 2/5: mi passive: gen _Iethnicity_X=(ethnicity==X) 
 mi estimate, cmdok: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
-estimates save "./output/models/an_imputed_take2_cuminc", replace
+estimates save "./output/models/an_imputed_cuminc", replace
 mi estimate, eform	
 }
 	

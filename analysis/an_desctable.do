@@ -113,8 +113,6 @@ tabulatevariable, variable(spleen) start(1) end(1)
 tabulatevariable, variable(ra_sle_psoriasis) start(1) end(1) 
 *OTHER IMMUNOSUPPRESSION
 tabulatevariable, variable(other_imm_except_hiv) start(1) end(1) 
-*HEPATITIS C
-tabulatevariable, variable(hepc) start(1) end(1) 
 
 cou if bmicat==. & hiv==0
 file write tablecontent _n _n ("*missing BMI included in 'not obese' (non-HIV group: ") (r(N)) 
@@ -123,8 +121,7 @@ file write tablecontent (", HIV group: ") (r(N)) (";")
 cou if bmicat==. & hiv==0
 file write tablecontent ("missing smoking included in 'never smoker' (non-HIV group: ") (r(N)) 
 cou if bmicat==. & hiv==1
-file write tablecontent (", HIV group: ") (r(N)) (")") _n 
-
+file write tablecontent (", HIV group: ") (r(N)) (")")
 
 gen anycomorbidity = 						///
 			hypertension					///
@@ -141,18 +138,23 @@ gen anycomorbidity = 						///
 			|organ_transplant 				///
 			|spleen 						///
 			|ra_sle_psoriasis  				///
-			|other_imm_except_hiv		
+			|other_imm_except_hiv	
 
 cou if hiv==0
 local denomnohiv=r(N)
-safecount if anycomorbidity ==1 & hiv==0			
-file write tablecontent _n ("N with any comorbidity in non-HIV group = ") (r(N)) ("(") %4.2f (100*r(N)/`denomnohiv') ("%); ")
 cou if hiv==1
 local denomhiv=r(N)
-safecount if anycomorbidity ==1 & hiv==1
-file write tablecontent _n ("N with any comorbidity in HIV group = ") (r(N)) ("(") %4.2f (100*r(N)/`denomhiv') ("%)") _n
-
-
+*any comorb footnote
+safecount if anycomorbidity==1 & hiv==0
+file write tablecontent _n ("N with any comorbidity in non-HIV group = ") (r(N)) ("(") %3.1f (100*r(N)/`denomnohiv') ("%); ")
+safecount if anycomorbidity==1 & hiv==1
+file write tablecontent ("N with any comorbidity in HIV group = ") (r(N)) ("(") %3.1f (100*r(N)/`denomhiv') ("%).")
+*hep c footnote
+safecount if hepc==1 & hiv==0
+file write tablecontent _n ("N with ever hepatitic C in non-HIV group = ") (r(N)) ("(") %3.1f (100*r(N)/`denomnohiv') ("%); ")
+safecount if hepc==1 & hiv==1
+file write tablecontent ("N with ever hepatitic C in HIV group = ") (r(N)) ("(") %3.1f (100*r(N)/`denomhiv') ("%).")
+			
 file close tablecontent
 
 
