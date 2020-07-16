@@ -17,9 +17,19 @@ do "an_hiv_desccodes"
 
 do "an_desctable" 
 
-do "an_outcomes" 
+do "an_outcomes" rates_agesex 
+do "an_outcomes" demog_cceth
+do "an_outcomes" demog_noeth
+do "an_outcomes" mv_cceth
+do "an_outcomes" mv_noeth
+do "an_outcomes" mv_addhepc
 
-do "an_interactions" 
+do "an_interactions" byage
+do "an_interactions" bysex
+do "an_interactions" byethnicity
+do "an_interactions" byethnicity_wvsb
+do "an_interactions" bycomorbidities
+
 
 do "an_deschivdeaths_table" 
 
@@ -33,6 +43,7 @@ do "an_imputed" byage
 do "an_imputed" bysex
 do "an_imputed" byethnicity
 do "an_imputed" bycomorbidities
+do "an_imputed" bycomorbidities_exht
 do "an_imputed" cuminc
 
 do "an_outcomes_table"
@@ -42,7 +53,6 @@ do "an_forestplot_MI"
 
 ***TO DO
 /*
-comorb interaction without hypertension
 ethnicity interaction with black vs white
 PH check
 CC analysis for bmi and smoking

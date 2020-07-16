@@ -1,27 +1,5 @@
-********************************************************************************
-*
-*	Do-file:		an_checkassumptions_3c.do
-*
-*	Project:		Risk factors for poor outcomes in Covid-19; Ethnicity MNAR
-*
-*	Programmed by:	Elizabeth Williamson
-*
-*	Data used:		cr_create_analysis_dataset.dta
-*					imputed.dta (imputed data, combined across regions)
-*
-*	Data created:	None. Models on screen.
-*
-*	Other output:	Log file output/an_checkassumptions_MI_estimate
-*
-********************************************************************************
-*
-*	Purpose:		This do-file fits a sensitivity analysis for missing 
-*					ethnicity, using multiple imputation incorporating 
-*					information from external data sources (e.g. census)
-*					about the marginal proportions of ethnic groups 
-*					within broad geographical regions. 
-*  
-********************************************************************************
+*KB
+*16/07/2020
 
 * Open a log file
 capture log close
@@ -91,6 +69,7 @@ estimates save "./output/models/an_imputed_byethnicity", replace
 mi estimate, eform					
 }
 
+
 if "`1'"=="bycomorbidities"{
 gen anycomorbidity = 						///
 	hypertension					///
@@ -110,6 +89,27 @@ gen anycomorbidity = 						///
 	|other_imm_except_hiv		
 mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity, strata(stp)
 estimates save "./output/models/an_imputed_bycomorbidities", replace
+mi estimate, eform						
+}
+
+if "`1'"=="bycomorbidities_exht"{
+gen anycomorbidity_exht = 			///			
+	chronic_respiratory_disease 	///
+	|(asthmacat>1)					///
+	|chronic_cardiac_disease 		///
+	|(diabcat>1)					///
+	|(cancer_exhaem_cat>1) 			///
+	|(cancer_haem_cat>1)			///
+	|chronic_liver_disease 			///
+	|stroke_dementia		 		///
+	|other_neuro					///
+	|(reduced_kidney_function_cat>1)	///
+	|organ_transplant 				///
+	|spleen 						///
+	|ra_sle_psoriasis  				///
+	|other_imm_except_hiv		
+mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity_exht, strata(stp)
+estimates save "./output/models/an_imputed_bycomorbidities_exht", replace
 mi estimate, eform						
 }
 
