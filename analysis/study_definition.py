@@ -324,7 +324,7 @@ study = StudyDefinition(
         find_last_match_in_period=True,
         include_date_of_match=True,
         return_expectations={
-            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
+            "category": {"ratios": {"1": 0.8, "2":0.05, "3":0.05, "4":0.05, "5": 0.05}},
             "incidence": 0.75,
         },
     ),
@@ -371,7 +371,7 @@ study = StudyDefinition(
                 
             """,
         },
-        return_expectations={"category": {"ratios": {"0": 0.8, "1": 0.1, "2": 0.1}},},
+        return_expectations={"category": {"ratios": {"0": 0.8, "1": 0.1, "2": 0.1}}, "incidence": 1.00,},
         recent_asthma_code=patients.with_these_clinical_events(
             asthma_codes, between=["2017-02-01", "2020-02-01"],
         ),
@@ -401,9 +401,15 @@ study = StudyDefinition(
     ),
     haem_cancer=patients.with_these_clinical_events(
         haem_cancer_codes, return_first_date_in_period=True, include_month=True,
+        return_expectations={
+           "date": {"earliest": "2010-01-01", "latest": "2020-02-01"},
+        },
     ),
     other_cancer=patients.with_these_clinical_events(
         other_cancer_codes, return_first_date_in_period=True, include_month=True,
+        return_expectations={
+           "date": {"earliest": "2010-01-01", "latest": "2020-02-01"},
+        },
     ),
 
     # # https://github.com/ebmdatalab/tpp-sql-notebook/issues/12
@@ -432,7 +438,7 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
         return_expectations={
-            "float": {"distribution": "normal", "mean": 60.0, "stddev": 15},
+            "float": {"distribution": "normal", "mean": 60.0, "stddev": 60},
             "date": {"earliest": "2019-02-28", "latest": "2020-02-29"},
             "incidence": 0.95,
         },
@@ -522,9 +528,9 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
         return_expectations={
-            "date": {"latest": "2020-02-29"},
+            "date": {"earliest": "2019-01-01", "latest": "2020-02-01"},
             "float": {"distribution": "normal", "mean": 40.0, "stddev": 20},
-            "incidence": 0.95,
+            "incidence": 0.70,
         },
     ),
     hba1c_percentage=patients.with_these_clinical_events(
@@ -535,9 +541,9 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
         return_expectations={
-            "date": {"latest": "2020-02-29"},
+            "date": {"earliest": "2019-01-01", "latest": "2020-02-01"},
             "float": {"distribution": "normal", "mean": 5, "stddev": 2},
-            "incidence": 0.95,
+            "incidence": 0.70,
         },
     ),
     # # https://github.com/ebmdatalab/tpp-sql-notebook/issues/49

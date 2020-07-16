@@ -7,7 +7,7 @@ run global
 cap prog drop writehrci
 prog define writehrci
 	file write outcometable ("HR (`0')") _tab (string(round(r(estimate), .01), "%4.2f")) (" (") (string(round(r(lb), .01), "%4.2f")) ("-") (string(round(r(ub), .01), "%4.2f")) (")") _n
-	frame post estimates ("`0'") (r(estimate)) (r(lb)) (r(ub))
+	frame post estimates ("`0'") (r(estimate)) (r(lb)) (r(ub)) (.)
 end
 
 *Set up output file/frame
@@ -15,7 +15,7 @@ cap file close outcometable
 file open outcometable using ./output/an_outcomes_table.txt, write text replace
 
 frames reset
-frame create estimates str40 desc hr lci uci
+frame create estimates str40 desc hr lci uci pint
 
 *Get rates ready
 use ./output/an_outcomes_RATES, clear
@@ -62,11 +62,18 @@ foreach var of any ageover60 female nonblack anycomorbidity{
 	writehrci interac_NOT`var'
 	lincom 1.hiv + 1.hiv#1.`var', eform
 	writehrci interac_`var'
+	lincom 1.hiv#1.`var'
+	frame post estimates ("int_`var'") (.) (.) (.) (r(p))
 	}
 	else file write outcometable _n _n ("`var'_interaction _tab MODEL NOT FOUND")
 	}
 	
 file close outcometable
+
+*Put p-int onto the right rows and tidy
+frame estimates: replace pint = pint[_n+1] if pint==.
+frame estimates: replace pint = pint[_n+1] if pint==.
+frame estimates: drop if hr==.
 
 frame estimates: save ./output/an_outcomes_table_ESTIMATES, replace
 
