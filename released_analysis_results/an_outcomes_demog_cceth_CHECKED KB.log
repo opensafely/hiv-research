@@ -1,0 +1,144 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_outcomes_demog_cceth.log
+  log type:  text
+ opened on:  16 Jul 2020, 19:21:35
+
+. 
+. run global 
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. if "`1'"=="rates_agesex"{
+. strate hiv, per(365000) output(./output/an_outcomes_RATES, replace)
+. 
+. 
+. ******************************
+. *  Age-sex Cox model  *
+. ******************************
+. capture stcox age1 age2 age3 i.male i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "AGE-SEX ADJUSTED (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_agesex, replace
+.                 }
+.         else {
+.         di "WARNING - AGESEX MODEL DID NOT SUCCESSFULLY FIT"
+.         }
+. 
+. }
+
+. 
+. 
+. **************************************
+. *  Demographics +/- ethnicity model  *
+. **************************************
+. 
+. if "`1'"=="demog_cceth"{
+. capture stcox age1 age2 age3 i.male i.imd i.ethnicity i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n "DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)" _n 
+
+DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)
+
+.                 estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,724,742                  Number of obs    =  12,724,742
+No. of failures =       11,091
+Time at risk    =   1802666381
+                                                LR chi2(13)      =    35960.04
+Log likelihood  =   -128450.09                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                   age1 |   1.168376   .0258462     7.03   0.000     1.118801    1.220148
+                   age2 |   .9119671   .0436272    -1.93   0.054     .8303456    1.001612
+                   age3 |   1.265558   .1396713     2.13   0.033     1.019391    1.571172
+                 1.male |    1.66672   .0321062    26.52   0.000     1.604967    1.730851
+                        |
+                    imd |
+                     2  |   1.226097   .0399771     6.25   0.000     1.150195    1.307009
+                     3  |   1.370178    .044638     9.67   0.000     1.285424    1.460521
+                     4  |   1.735653   .0552593    17.32   0.000     1.630657     1.84741
+       5 most deprived  |   2.068038   .0668315    22.48   0.000     1.941113    2.203262
+                        |
+              ethnicity |
+                 Mixed  |    1.42352   .1640451     3.06   0.002     1.135722    1.784249
+Asian or Asian British  |   1.361255   .0563029     7.46   0.000     1.255258    1.476203
+                 Black  |   1.474797   .0908527     6.31   0.000     1.307059    1.664061
+                 Other  |   1.200131   .1069845     2.05   0.041     1.007741     1.42925
+                        |
+                  1.hiv |   2.456816   .5524757     4.00   0.000     1.581099    3.817564
+-----------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.                 estimates save ./output/models/an_outcomes_adjdemographics_inceth, replace
+file ./output/models/an_outcomes_adjdemographics_inceth.ster saved
+.                 }
+.         else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="demog_noeth"{
+. capture stcox age1 age2 age3 i.male i.imd i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "DEMOGRAPHICS ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjdemographics_noeth, replace
+.                 }
+.         else di "WARNING - hiv adj demog no eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. ******************************
+. *  Multivariable Cox model  *
+. ******************************
+. 
+. if "`1'"=="mv_cceth"{
+. capture stcox   i.hiv i.ethnicity $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_inceth, replace
+.                 }
+.         else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="mv_noeth"{
+. capture stcox   i.hiv $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL NO ETHNICITY " _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_noeth, replace
+.                 }
+.         else di "WARNING - hiv full adj exc eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="mv_addhepc"{
+. capture stcox   i.hiv  i.ethnicity i.hepc $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES) PLUS HEP C" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_plushepc_inceth, replace
+.                 }
+.         else di "WARNING - hiv full adj plus hepc inc eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+.         
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_outcomes_demog_cceth.log
+  log type:  text
+ closed on:  16 Jul 2020, 19:40:44
+----------------------------------------------------------------------------------------------------------------------------------

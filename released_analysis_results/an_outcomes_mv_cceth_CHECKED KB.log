@@ -1,0 +1,190 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_outcomes_mv_cceth.log
+  log type:  text
+ opened on:  16 Jul 2020, 19:21:37
+
+. 
+. run global 
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. if "`1'"=="rates_agesex"{
+. strate hiv, per(365000) output(./output/an_outcomes_RATES, replace)
+. 
+. 
+. ******************************
+. *  Age-sex Cox model  *
+. ******************************
+. capture stcox age1 age2 age3 i.male i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "AGE-SEX ADJUSTED (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_agesex, replace
+.                 }
+.         else {
+.         di "WARNING - AGESEX MODEL DID NOT SUCCESSFULLY FIT"
+.         }
+. 
+. }
+
+. 
+. 
+. **************************************
+. *  Demographics +/- ethnicity model  *
+. **************************************
+. 
+. if "`1'"=="demog_cceth"{
+. capture stcox age1 age2 age3 i.male i.imd i.ethnicity i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n "DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjdemographics_inceth, replace
+.                 }
+.         else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="demog_noeth"{
+. capture stcox age1 age2 age3 i.male i.imd i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "DEMOGRAPHICS ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjdemographics_noeth, replace
+.                 }
+.         else di "WARNING - hiv adj demog no eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. ******************************
+. *  Multivariable Cox model  *
+. ******************************
+. 
+. if "`1'"=="mv_cceth"{
+. capture stcox   i.hiv i.ethnicity $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+
+FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES)
+
+.                 estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,724,742                  Number of obs    =  12,724,742
+No. of failures =       11,091
+Time at risk    =   1802666381
+                                                LR chi2(41)      =    40368.73
+Log likelihood  =   -126245.75                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   2.212484   .4978852     3.53   0.000     1.423412    3.438982
+                              |
+                    ethnicity |
+                       Mixed  |   1.402674   .1618213     2.93   0.003     1.118812    1.758558
+      Asian or Asian British  |   1.317905   .0559612     6.50   0.000     1.212663    1.432281
+                       Black  |   1.391721    .086499     5.32   0.000     1.232106    1.572015
+                       Other  |   1.252722   .1119162     2.52   0.012     1.051501    1.492449
+                              |
+                         age1 |   1.187293   .0272843     7.47   0.000     1.135003    1.241992
+                         age2 |   .8474426    .041993    -3.34   0.001     .7690082    .9338768
+                         age3 |   1.503066   .1716033     3.57   0.000     1.201703    1.880004
+                       1.male |   1.461396     .02925    18.96   0.000     1.405177    1.519865
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9983607   .0265816    -0.06   0.951     .9475979    1.051843
+          Obese II (35-39.9)  |   1.346286   .0523727     7.64   0.000     1.247454     1.45295
+             Obese III (40+)  |   1.808365   .0986329    10.86   0.000     1.625022    2.012393
+                              |
+                 smoke_nomiss |
+                      Former  |   1.212512   .0265186     8.81   0.000     1.161635    1.265617
+                     Current  |   .9875482   .0410398    -0.30   0.763     .9103002    1.071351
+                              |
+                          imd |
+                           2  |   1.184176   .0386257     5.18   0.000      1.11084    1.262353
+                           3  |   1.276847    .041691     7.48   0.000     1.197694    1.361231
+                           4  |    1.55622   .0498159    13.82   0.000     1.461583    1.656986
+             5 most deprived  |   1.749982   .0573279    17.08   0.000     1.641153    1.866028
+                              |
+               1.hypertension |   .9819846   .0217648    -0.82   0.412     .9402397    1.025583
+1.chronic_respiratory_disease |   1.623472   .0399594    19.69   0.000     1.547012    1.703711
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9459411   .0289226    -1.82   0.069     .8909189    1.004361
+                Yes with OCS  |    1.09065   .0599897     1.58   0.115     .9791888      1.2148
+                              |
+    1.chronic_cardiac_disease |   1.182266   .0252542     7.84   0.000      1.13379    1.232814
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.254814   .0311388     9.15   0.000     1.195244    1.317354
+       Uncontrolled diabetes  |   1.832777   .0587892    18.89   0.000       1.7211    1.951701
+  Diabetes, no hba1c measure  |   1.807061   .0892179    11.98   0.000     1.640391    1.990665
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.733108   .1177636     8.09   0.000     1.517005    1.979996
+               2-5 years ago  |   1.227899   .0580637     4.34   0.000     1.119211    1.347142
+                    5+ years  |   1.009054    .031452     0.29   0.772     .9492542    1.072621
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.723372   .4176505     6.53   0.000     2.016362    3.678285
+               2-5 years ago  |   2.372966   .2228447     9.20   0.000     1.974038    2.852514
+                    5+ years  |   1.622337   .1236379     6.35   0.000     1.397241    1.883697
+                              |
+      1.chronic_liver_disease |   1.914812   .1373859     9.05   0.000     1.663617    2.203936
+            1.stroke_dementia |   2.180807   .0518073    32.82   0.000     2.081594    2.284748
+                1.other_neuro |   2.631442   .1041587    24.44   0.000     2.435013    2.843717
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.311843   .0298029    11.95   0.000     1.254712    1.371576
+           Stage 4/5 egfr<30  |   2.421106   .0937597    22.83   0.000     2.244141    2.612025
+                              |
+           1.organ_transplant |   3.134443   .4063419     8.81   0.000     2.431155     4.04118
+                     1.spleen |   1.178279   .1944078     0.99   0.320     .8527187    1.628135
+           1.ra_sle_psoriasis |   1.152446   .0390035     4.19   0.000     1.078481    1.231484
+       1.other_imm_except_hiv |   3.389135   .7434778     5.56   0.000     2.204753    5.209761
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.                 estimates save ./output/models/an_outcomes_adjfull_inceth, replace
+file ./output/models/an_outcomes_adjfull_inceth.ster saved
+.                 }
+.         else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="mv_noeth"{
+. capture stcox   i.hiv $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL NO ETHNICITY " _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_noeth, replace
+.                 }
+.         else di "WARNING - hiv full adj exc eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="mv_addhepc"{
+. capture stcox   i.hiv  i.ethnicity i.hepc $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES) PLUS HEP C" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_plushepc_inceth, replace
+.                 }
+.         else di "WARNING - hiv full adj plus hepc inc eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+.         
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_outcomes_mv_cceth.log
+  log type:  text
+ closed on:  16 Jul 2020, 20:19:22
+----------------------------------------------------------------------------------------------------------------------------------

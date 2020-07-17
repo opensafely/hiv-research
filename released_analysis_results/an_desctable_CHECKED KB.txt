@@ -63,9 +63,5 @@ other_imm_except_hiv	==1	4211 (0.0)	53 (0.2)
 
 
 *missing BMI included in 'not obese' (non-HIV group: 3737207, HIV group: 4550;missing smoking included in 'never smoker' (non-HIV group: 3737207, HIV group: 4550)
-
-N with any comorbidity in non-HIV group = 7914272(45.87%); 
-N with any comorbidity in HIV group = 12984(47.25%)
-
-N with ever hepatitis C in non-HIV group = 38235(0.22%); 
-N with ever hepatitis C in HIV group = 1491(5.43%); 
+N with any comorbidity in non-HIV group = 7914272(45.9%); N with any comorbidity in HIV group = 12984(47.2%).
+N with ever hepatitic C in non-HIV group = 38235(0.2%); N with ever hepatitic C in HIV group = 1491(5.4%).

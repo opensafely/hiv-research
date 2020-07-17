@@ -2,10 +2,10 @@
       name:  <unnamed>
        log:  E:\analyses\hiv-research\analysis\output/an_cumincidence.log
   log type:  text
- opened on:  11 Jul 2020, 18:25:27
+ opened on:  16 Jul 2020, 19:21:40
 
 . 
-. use "cr_create_analysis_dataset.dta_STSET_onsdeath_fail1", clear
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 (Analysis dataset HIV project)
 
 . 
@@ -100,15 +100,15 @@ Note: Estimates are transformed only in the first equation.
 -------------+---------------------------------------------------------
           _t | 17,282,435    141.6546    5.584015          1        142
 
-. local tmax = r(max)
+. local tmax=r(max)
 
-. local tmaxplus1 = r(max) + 1
+. local tmaxplus1=r(max)+1
 
 . 
 . range timevar 0 `tmax' `tmaxplus1'
 (17,282,762 missing values generated)
 
-. stpm2_standsurv if hiv==1, at1(hiv 0) at2(hiv 1) timevar(timevar) ci contrast(difference) fail
+. stpm2_standsurv if hiv==1 & ethnicity<., at1(hiv 0) at2(hiv 1) timevar(timevar) ci contrast(difference) fail
 
 . 
 . gen date = d(1/2/2020)+ timevar
@@ -117,24 +117,24 @@ Note: Estimates are transformed only in the first equation.
 . format date %tddd_Month
 
 . 
-. for var _at1 _at2 _at1_lci _at1_uci _at2_lci _at2_uci: replace X = 100*X
+. for var _at1 _at2 _at1_lci _at1_uci _at2_lci _at2_uci: replace X=100*X
 
-->  replace _at1 = 100*_at1
+->  replace _at1=100*_at1
 (142 real changes made)
 
-->  replace _at2 = 100*_at2
+->  replace _at2=100*_at2
 (142 real changes made)
 
-->  replace _at1_lci = 100*_at1_lci
+->  replace _at1_lci=100*_at1_lci
 (127 real changes made)
 
-->  replace _at1_uci = 100*_at1_uci
+->  replace _at1_uci=100*_at1_uci
 (127 real changes made)
 
-->  replace _at2_lci = 100*_at2_lci
+->  replace _at2_lci=100*_at2_lci
 (128 real changes made)
 
-->  replace _at2_uci = 100*_at2_uci
+->  replace _at2_uci=100*_at2_uci
 (128 real changes made)
 
 . 
@@ -159,16 +159,16 @@ Note: Estimates are transformed only in the first equation.
       12. | 12 February        11   -7.105e-13           .           .   -7.105e-13           .           . |
       13. | 13 February        12   -7.105e-13           .           .   -7.105e-13           .           . |
       14. | 14 February        13   -7.105e-13           .           .   -6.883e-13           .           . |
-      15. | 15 February        14   -6.439e-13           .           .   -5.773e-13           .           . |
+      15. | 15 February        14   -6.661e-13           .           .   -5.773e-13           .           . |
           |-------------------------------------------------------------------------------------------------|
       16. | 16 February        15   -4.885e-13           .           .    9.992e-14   7.208e-27   1.3851506 |
-      17. | 17 February        16    4.441e-13   2.371e-16   8.317e-10    3.453e-12   2.855e-13   4.175e-11 |
-      18. | 18 February        17    4.685e-12   7.108e-13   3.088e-11    1.638e-11   4.028e-12   6.657e-11 |
-      19. | 19 February        18    1.982e-11   6.525e-12   6.019e-11    5.610e-11   1.999e-11   1.574e-10 |
-      20. | 20 February        19    6.189e-11   2.668e-11   1.436e-10    1.564e-10   6.445e-11   3.796e-10 |
+      17. | 17 February        16    4.663e-13   3.564e-16   6.100e-10    3.475e-12   2.920e-13   4.136e-11 |
+      18. | 18 February        17    4.674e-12   7.060e-13   3.095e-11    1.634e-11   4.009e-12   6.663e-11 |
+      19. | 19 February        18    1.992e-11   6.595e-12   6.015e-11    5.621e-11   2.007e-11   1.574e-10 |
+      20. | 20 February        19    6.217e-11   2.690e-11   1.437e-10    1.567e-10   6.465e-11   3.796e-10 |
           |-------------------------------------------------------------------------------------------------|
-      21. | 21 February        20    1.627e-10   7.895e-11   3.354e-10    3.827e-10   1.670e-10   8.770e-10 |
-      22. | 22 February        21    3.804e-10   1.947e-10   7.435e-10    8.751e-10   3.946e-10   1.941e-09 |
+      21. | 21 February        20    1.627e-10   7.896e-11   3.354e-10    3.826e-10   1.669e-10   8.769e-10 |
+      22. | 22 February        21    3.803e-10   1.945e-10   7.434e-10    8.753e-10   3.947e-10   1.941e-09 |
       23. | 23 February        22    8.369e-10   4.435e-10   1.579e-09    1.917e-09   8.879e-10   4.138e-09 |
       24. | 24 February        23    1.770e-09   9.670e-10   3.240e-09    4.052e-09   1.924e-09   8.533e-09 |
       25. | 25 February        24    3.625e-09   2.039e-09   6.445e-09    8.295e-09   4.031e-09   1.707e-08 |
@@ -335,5 +335,5 @@ Note: Estimates are transformed only in the first equation.
       name:  <unnamed>
        log:  E:\analyses\hiv-research\analysis\output/an_cumincidence.log
   log type:  text
- closed on:  11 Jul 2020, 22:15:08
+ closed on:  17 Jul 2020, 00:01:08
 ----------------------------------------------------------------------------------------------------------------------------------
