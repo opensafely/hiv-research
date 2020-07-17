@@ -1,8 +1,8 @@
 ----------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\hiv-research\analysis\output/an_imputed_take2_bycomorbidities.log
+       log:  E:\analyses\hiv-research\analysis\output/an_imputed_bycomorbidities.log
   log type:  text
- opened on:  12 Jul 2020, 22:34:24
+ opened on:  16 Jul 2020, 21:19:32
 
 . 
 . ********************************   NOTES  **************************************
@@ -27,7 +27,7 @@
 
 . 
 . * Add imputations to the full dataset
-. use "an_impute_take2", clear
+. use "an_impute_imputeddata", clear
 (Analysis dataset HIV project)
 
 . 
@@ -64,13 +64,13 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 . 
 . if "`1'"=="demog"{
 . mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
-. estimates save "./output/models/an_imputed_take2_demog", replace                                                
+. estimates save "./output/models/an_imputed_demog", replace                                              
 . }
 
 . 
 . if "`1'"=="full"{
 . mi estimate: stcox i.hiv i.ethnicity $adjustmentlist, strata(stp)
-. estimates save "./output/models/an_imputed_take2_full", replace
+. estimates save "./output/models/an_imputed_full", replace
 . mi estimate, eform                                              
 . }
 
@@ -78,25 +78,26 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 . if "`1'"=="byage"{
 . gen ageover60 = agegroup>=4
 . mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60, strata(stp)
-. estimates save "./output/models/an_imputed_take2_byage", replace
+. estimates save "./output/models/an_imputed_byage", replace
 . mi estimate, eform                                              
 . }
 
 . 
 . if "`1'"=="bysex"{
 . mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.male, strata(stp)
-. estimates save "./output/models/an_imputed_take2_bysex", replace        
+. estimates save "./output/models/an_imputed_bysex", replace      
 . mi estimate, eform                                      
 . }
 
 . 
 . if "`1'"=="byethnicity"{
-. gen nonblack = (ethnicity != 4) if ethnicity<.
+. mi passive: gen nonblack = (ethnicity != 4) if ethnicity<.
 . mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.nonblack, strata(stp)
-. estimates save "./output/models/an_imputed_take2_byethnicity", replace  
+. estimates save "./output/models/an_imputed_byethnicity", replace        
 . mi estimate, eform                                      
 . }
 
+. 
 . 
 . if "`1'"=="bycomorbidities"{
 . gen anycomorbidity =                                            ///
@@ -212,9 +213,8 @@ Within VCE type:          OIM                           max       =   3.58e+07
 -------------+----------------------------------------------------------------
        _mi_1 |   .9455649    .209717     4.51   0.000     .5345272    1.356603
 ------------------------------------------------------------------------------
-. estimates save "./output/models/an_imputed_take2_bycomorbidities", replace
-(note: file ./output/models/an_imputed_take2_bycomorbidities.ster not found)
-file ./output/models/an_imputed_take2_bycomorbidities.ster saved
+. estimates save "./output/models/an_imputed_bycomorbidities", replace
+file ./output/models/an_imputed_bycomorbidities.ster saved
 . mi estimate, eform                                              
 
 Multiple-imputation estimates                   Imputations       =         10
@@ -315,18 +315,41 @@ Within VCE type:          OIM                           max       =   3.58e+07
 . }
 
 . 
+. if "`1'"=="bycomorbidities_exht"{
+. gen anycomorbidity_exht =                       ///                     
+>         chronic_respiratory_disease     ///
+>         |(asthmacat>1)                                  ///
+>         |chronic_cardiac_disease                ///
+>         |(diabcat>1)                                    ///
+>         |(cancer_exhaem_cat>1)                  ///
+>         |(cancer_haem_cat>1)                    ///
+>         |chronic_liver_disease                  ///
+>         |stroke_dementia                                ///
+>         |other_neuro                                    ///
+>         |(reduced_kidney_function_cat>1)        ///
+>         |organ_transplant                               ///
+>         |spleen                                                 ///
+>         |ra_sle_psoriasis                               ///
+>         |other_imm_except_hiv           
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity_exht, st
+> rata(stp)
+. estimates save "./output/models/an_imputed_bycomorbidities_exht", replace
+. mi estimate, eform                                              
+. }
+
+. 
 . if "`1'"=="cuminc"{
 . xi $adjustmentlist
 . for num 2/5: mi passive: gen _Iethnicity_X=(ethnicity==X) 
-. mi estimate, cmdok: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
-. estimates save "./output/models/an_imputed_take2_cuminc", replace
+. mi estimate, cmdok post: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
+. estimates save "./output/models/an_imputed_cuminc", replace
 . mi estimate, eform      
 . }
 
 .         
 . log close
       name:  <unnamed>
-       log:  E:\analyses\hiv-research\analysis\output/an_imputed_take2_bycomorbidities.log
+       log:  E:\analyses\hiv-research\analysis\output/an_imputed_bycomorbidities.log
   log type:  text
- closed on:  13 Jul 2020, 07:40:55
+ closed on:  17 Jul 2020, 07:19:56
 ----------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,586 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_phcheck_mi.log
+  log type:  text
+ opened on:  16 Jul 2020, 21:19:33
+
+. 
+. use "an_impute_imputeddata", clear
+(Analysis dataset HIV project)
+
+. 
+. // Declare imputed data as survival
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+.         
+. 
+. foreach extract of numlist 1 5 10 {
+  2.         frame copy default extract
+  3.         frame change extract
+  4.         mi extract `extract'
+  5.         stcox i.hiv i.ethnicity $adjustmentlist, strata(stp)
+  6. 
+.         estat phtest, d
+  7. 
+.         estat phtest, plot(1.hiv) name(phtest`extract', replace) title("Schoenfeld residuals plot:" "imputation `extract'")
+  8. 
+.         stphplot, by(hiv) name(stphplot`extract', replace) title("Log-log plot:" "imputation `extract'")
+  9. 
+.         frame change default
+ 10.         frame drop extract
+ 11. 
+. }
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -181160.19
+Iteration 2:   log likelihood = -173918.25
+Iteration 3:   log likelihood = -173498.29
+Iteration 4:   log likelihood = -173435.15
+Iteration 5:   log likelihood = -173418.57
+Iteration 6:   log likelihood =  -173416.3
+Iteration 7:   log likelihood = -173416.24
+Iteration 8:   log likelihood = -173416.24
+Refining estimates:
+Iteration 0:   log likelihood = -173416.24
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(41)      =    54158.75
+Log likelihood  =   -173416.24                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   2.310597   .4650144     4.16   0.000     1.557462    3.427923
+                              |
+                    ethnicity |
+                       Mixed  |   1.363366   .1436311     2.94   0.003     1.109016    1.676049
+      Asian or Asian British  |   1.328049   .0501117     7.52   0.000     1.233376    1.429989
+                       Black  |   1.441748   .0800378     6.59   0.000      1.29311    1.607472
+                       Other  |   1.263221   .1009061     2.93   0.003     1.080153    1.477315
+                              |
+                         age1 |   1.191144   .0238203     8.75   0.000      1.14536    1.238758
+                         age2 |   .8453967   .0364798    -3.89   0.000     .7768376    .9200063
+                         age3 |   1.505537   .1497501     4.11   0.000      1.23887    1.829605
+                       1.male |   1.484826   .0256716    22.86   0.000     1.435354    1.536004
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9953542   .0232393    -0.20   0.842     .9508324    1.041961
+          Obese II (35-39.9)  |   1.345924   .0460229     8.69   0.000     1.258677    1.439218
+             Obese III (40+)  |   1.846765   .0876648    12.92   0.000     1.682696    2.026832
+                              |
+                 smoke_nomiss |
+                      Former  |    1.22123   .0229025    10.66   0.000     1.177157    1.266954
+                     Current  |   .9836656   .0356617    -0.45   0.650     .9161954    1.056104
+                              |
+                          imd |
+                           2  |   1.133736   .0309115     4.60   0.000     1.074741     1.19597
+                           3  |   1.220155   .0334026     7.27   0.000     1.156412    1.287411
+                           4  |   1.492993   .0402998    14.85   0.000     1.416059    1.574106
+             5 most deprived  |   1.694986   .0471891    18.95   0.000     1.604975    1.790045
+                              |
+               1.hypertension |   .9686826   .0182842    -1.69   0.092     .9335009     1.00519
+1.chronic_respiratory_disease |   1.620148   .0349033    22.40   0.000     1.553162    1.690022
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9929121    .026244    -0.27   0.788     .9427844    1.045705
+                Yes with OCS  |   1.108109   .0541694     2.10   0.036     1.006867    1.219532
+                              |
+    1.chronic_cardiac_disease |   1.199349   .0221313     9.85   0.000     1.156748     1.24352
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.234928   .0268357     9.71   0.000     1.183435    1.288661
+       Uncontrolled diabetes  |   1.845384   .0517649    21.84   0.000     1.746665    1.949682
+  Diabetes, no hba1c measure  |   1.793043   .0773971    13.53   0.000     1.647588    1.951341
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.769623   .1031592     9.79   0.000     1.578557    1.983814
+               2-5 years ago  |   1.200919   .0494626     4.45   0.000     1.107783    1.301884
+                    5+ years  |   1.002793   .0269523     0.10   0.917     .9513347    1.057035
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.922462   .3734419     8.39   0.000      2.27499    3.754207
+               2-5 years ago  |   2.284714   .1878454    10.05   0.000     1.944677    2.684208
+                    5+ years  |   1.620442   .1070845     7.30   0.000     1.423584    1.844522
+                              |
+      1.chronic_liver_disease |   1.931567   .1224742    10.38   0.000     1.705839    2.187165
+            1.stroke_dementia |   2.149157   .0443272    37.09   0.000      2.06401    2.237817
+                1.other_neuro |    2.70996   .0923265    29.26   0.000     2.534913    2.897095
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.283219   .0250453    12.78   0.000     1.235058    1.333258
+           Stage 4/5 egfr<30  |   2.411387    .080463    26.38   0.000     2.258729    2.574363
+                              |
+           1.organ_transplant |   3.135821   .3556577    10.08   0.000     2.510787     3.91645
+                     1.spleen |   1.254615   .1763387     1.61   0.107     .9525166    1.652527
+           1.ra_sle_psoriasis |   1.195107   .0346593     6.15   0.000      1.12907    1.265005
+       1.other_imm_except_hiv |   3.532818   .6598121     6.76   0.000     2.449883    5.094449
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.hiv      |            .            .        1             .
+      1.hiv       |      0.00053         0.00        1         0.9491
+      1b.ethnicity|            .            .        1             .
+      2.ethnicity |     -0.00710         0.74        1         0.3887
+      3.ethnicity |     -0.02534         9.28        1         0.0023
+      4.ethnicity |     -0.01535         3.47        1         0.0624
+      5.ethnicity |     -0.00994         1.46        1         0.2265
+      age1        |      0.01064         1.96        1         0.1618
+      age2        |     -0.01399         3.31        1         0.0690
+      age3        |      0.01691         4.77        1         0.0289
+      0b.male     |            .            .        1             .
+      1.male      |     -0.06956        71.47        1         0.0000
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |     -0.04966        36.42        1         0.0000
+      3.obese4cat |     -0.02505         9.22        1         0.0024
+      4.obese4cat |     -0.03219        15.22        1         0.0001
+      1b.smoke_n~s|            .            .        1             .
+      2.smoke_no~s|     -0.00499         0.37        1         0.5456
+      3.smoke_no~s|      0.02403         8.62        1         0.0033
+      1b.imd      |            .            .        1             .
+      2.imd       |      0.01559         3.61        1         0.0575
+      3.imd       |      0.01328         2.61        1         0.1064
+      4.imd       |      0.01440         3.06        1         0.0801
+      5.imd       |      0.00688         0.70        1         0.4026
+      0b.hyperte~n|            .            .        1             .
+      1.hyperten~n|      0.00085         0.01        1         0.9145
+      0b.c~respi~e|            .            .        1             .
+      1.c~respir~e|     -0.02246         7.69        1         0.0056
+      1b.asthmacat|            .            .        1             .
+      2.asthmacat |     -0.00313         0.15        1         0.7029
+      3.asthmacat |     -0.00787         0.93        1         0.3356
+      0b.c~cardi~e|            .            .        1             .
+      1.c~cardia~e|     -0.00123         0.02        1         0.8775
+      1b.diabcat  |            .            .        1             .
+      2.diabcat   |     -0.01935         5.60        1         0.0179
+      3.diabcat   |     -0.02015         6.08        1         0.0136
+      4.diabcat   |     -0.00008         0.00        1         0.9921
+      1b.c~exhae~t|            .            .        1             .
+      2.cancer_e~t|      0.00077         0.01        1         0.9250
+      3.cancer_e~t|      0.00416         0.26        1         0.6108
+      4.cancer_e~t|      0.01521         3.46        1         0.0627
+      1b.cancer_h~|            .            .        1             .
+      2.cancer_h~t|      0.00842         1.07        1         0.3012
+      3.cancer_h~t|     -0.01243         2.30        1         0.1293
+      4.cancer_h~t|      0.00498         0.37        1         0.5430
+      0b.c~liver~e|            .            .        1             .
+      1.c~liver_~e|      0.01709         4.48        1         0.0344
+      0b.stroke_~a|            .            .        1             .
+      1.stroke_d~a|      0.01573         3.94        1         0.0471
+      0b.other_n~o|            .            .        1             .
+      1.other_ne~o|      0.02508         9.70        1         0.0018
+      1b.reduced~t|            .            .        1             .
+      2.reduced_~t|     -0.02488         9.94        1         0.0016
+      3.reduced_~t|     -0.01292         2.70        1         0.1002
+      0b.organ_t~t|            .            .        1             .
+      1.organ_tr~t|     -0.00827         1.04        1         0.3088
+      0b.spleen   |            .            .        1             .
+      1.spleen    |     -0.00267         0.11        1         0.7444
+      0b.ra_sle_~s|            .            .        1             .
+      1.ra_sle_p~s|      0.00023         0.00        1         0.9774
+      0b.other_i~v|            .            .        1             .
+      1.other_im~v|      0.00250         0.09        1         0.7590
+      ------------+---------------------------------------------------
+      global test |                    506.91       41         0.0000
+      ----------------------------------------------------------------
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -181158.34
+Iteration 2:   log likelihood = -173909.29
+Iteration 3:   log likelihood = -173488.71
+Iteration 4:   log likelihood = -173425.52
+Iteration 5:   log likelihood = -173408.92
+Iteration 6:   log likelihood = -173406.65
+Iteration 7:   log likelihood = -173406.59
+Iteration 8:   log likelihood = -173406.59
+Refining estimates:
+Iteration 0:   log likelihood = -173406.59
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(41)      =    54178.04
+Log likelihood  =   -173406.59                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |    2.30425   .4637391     4.15   0.000     1.553181    3.418513
+                              |
+                    ethnicity |
+                       Mixed  |   1.500706   .1510083     4.03   0.000     1.232093    1.827879
+      Asian or Asian British  |   1.366776   .0511839     8.34   0.000      1.27005    1.470867
+                       Black  |   1.458764   .0810956     6.79   0.000     1.308173    1.626691
+                       Other  |   1.298717   .1028332     3.30   0.001     1.112029    1.516747
+                              |
+                         age1 |    1.19101   .0238162     8.74   0.000     1.145234    1.238616
+                         age2 |   .8460512   .0365063    -3.87   0.000     .7774422     .920715
+                         age3 |   1.502366   .1494284     4.09   0.000      1.23627    1.825736
+                       1.male |    1.48409   .0256603    22.83   0.000     1.434639    1.535245
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9961672   .0232573    -0.16   0.869     .9516109     1.04281
+          Obese II (35-39.9)  |   1.348277   .0461042     8.74   0.000     1.260876    1.441736
+             Obese III (40+)  |   1.849625    .087797    12.96   0.000     1.685308    2.029963
+                              |
+                 smoke_nomiss |
+                      Former  |   1.224477   .0229741    10.79   0.000     1.180266    1.270344
+                     Current  |   .9865898   .0357735    -0.37   0.710     .9189085    1.059256
+                              |
+                          imd |
+                           2  |   1.133677   .0309098     4.60   0.000     1.074685    1.195907
+                           3  |   1.219239   .0333781     7.24   0.000     1.155543    1.286445
+                           4  |   1.490342   .0402323    14.78   0.000     1.413538    1.571319
+             5 most deprived  |   1.690129   .0470613    18.85   0.000     1.600362    1.784931
+                              |
+               1.hypertension |   .9684529    .018279    -1.70   0.089     .9332814     1.00495
+1.chronic_respiratory_disease |   1.620653   .0349123    22.41   0.000     1.553651    1.690545
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9927219   .0262383    -0.28   0.782     .9426052    1.045503
+                Yes with OCS  |   1.106604   .0540956     2.07   0.038     1.005499    1.217875
+                              |
+    1.chronic_cardiac_disease |   1.198854   .0221219     9.83   0.000      1.15627    1.243005
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.232365   .0267817     9.61   0.000     1.180976     1.28599
+       Uncontrolled diabetes  |   1.840108   .0516226    21.74   0.000     1.741661     1.94412
+  Diabetes, no hba1c measure  |   1.788355   .0772028    13.47   0.000     1.643265    1.946255
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.770692   .1032225     9.80   0.000      1.57951    1.985015
+               2-5 years ago  |   1.201711   .0494959     4.46   0.000     1.108513    1.302744
+                    5+ years  |   1.003515   .0269726     0.13   0.896     .9520178    1.057797
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.928485   .3742005     8.41   0.000     2.279695    3.761917
+               2-5 years ago  |   2.284504   .1878342    10.05   0.000     1.944488    2.683976
+                    5+ years  |   1.621158   .1071311     7.31   0.000     1.424214    1.845336
+                              |
+      1.chronic_liver_disease |   1.932807    .122555    10.39   0.000      1.70693    2.188574
+            1.stroke_dementia |   2.149056   .0443255    37.09   0.000     2.063912    2.237712
+                1.other_neuro |   2.711846   .0923901    29.28   0.000     2.536678     2.89911
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |    1.28322    .025045    12.78   0.000     1.235059    1.333258
+           Stage 4/5 egfr<30  |   2.409746   .0804079    26.36   0.000     2.257193    2.572611
+                              |
+           1.organ_transplant |   3.131297   .3551631    10.06   0.000     2.507136    3.910845
+                     1.spleen |   1.252928   .1761002     1.60   0.109     .9512373    1.650301
+           1.ra_sle_psoriasis |   1.195228   .0346624     6.15   0.000     1.129186    1.265133
+       1.other_imm_except_hiv |   3.527848   .6588852     6.75   0.000     2.446434    5.087285
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.hiv      |            .            .        1             .
+      1.hiv       |      0.00016         0.00        1         0.9845
+      1b.ethnicity|            .            .        1             .
+      2.ethnicity |     -0.00842         1.05        1         0.3061
+      3.ethnicity |     -0.02734        10.86        1         0.0010
+      4.ethnicity |     -0.01105         1.80        1         0.1802
+      5.ethnicity |     -0.01020         1.54        1         0.2143
+      age1        |      0.01062         1.95        1         0.1628
+      age2        |     -0.01397         3.30        1         0.0694
+      age3        |      0.01689         4.76        1         0.0291
+      0b.male     |            .            .        1             .
+      1.male      |     -0.06953        71.40        1         0.0000
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |     -0.04986        36.70        1         0.0000
+      3.obese4cat |     -0.02528         9.39        1         0.0022
+      4.obese4cat |     -0.03236        15.38        1         0.0001
+      1b.smoke_n~s|            .            .        1             .
+      2.smoke_no~s|     -0.00530         0.41        1         0.5206
+      3.smoke_no~s|      0.02385         8.50        1         0.0036
+      1b.imd      |            .            .        1             .
+      2.imd       |      0.01559         3.61        1         0.0575
+      3.imd       |      0.01335         2.63        1         0.1046
+      4.imd       |      0.01451         3.11        1         0.0780
+      5.imd       |      0.00683         0.69        1         0.4059
+      0b.hyperte~n|            .            .        1             .
+      1.hyperten~n|      0.00083         0.01        1         0.9174
+      0b.c~respi~e|            .            .        1             .
+      1.c~respir~e|     -0.02242         7.66        1         0.0056
+      1b.asthmacat|            .            .        1             .
+      2.asthmacat |     -0.00311         0.14        1         0.7041
+      3.asthmacat |     -0.00778         0.91        1         0.3410
+      0b.c~cardi~e|            .            .        1             .
+      1.c~cardia~e|     -0.00095         0.01        1         0.9052
+      1b.diabcat  |            .            .        1             .
+      2.diabcat   |     -0.01919         5.51        1         0.0189
+      3.diabcat   |     -0.01995         5.95        1         0.0147
+      4.diabcat   |      0.00003         0.00        1         0.9968
+      1b.c~exhae~t|            .            .        1             .
+      2.cancer_e~t|      0.00073         0.01        1         0.9287
+      3.cancer_e~t|      0.00411         0.25        1         0.6148
+      4.cancer_e~t|      0.01510         3.41        1         0.0647
+      1b.cancer_h~|            .            .        1             .
+      2.cancer_h~t|      0.00827         1.03        1         0.3098
+      3.cancer_h~t|     -0.01246         2.31        1         0.1287
+      4.cancer_h~t|      0.00494         0.36        1         0.5461
+      0b.c~liver~e|            .            .        1             .
+      1.c~liver_~e|      0.01709         4.48        1         0.0343
+      0b.stroke_~a|            .            .        1             .
+      1.stroke_d~a|      0.01568         3.92        1         0.0478
+      0b.other_n~o|            .            .        1             .
+      1.other_ne~o|      0.02501         9.64        1         0.0019
+      1b.reduced~t|            .            .        1             .
+      2.reduced_~t|     -0.02498        10.03        1         0.0015
+      3.reduced_~t|     -0.01297         2.72        1         0.0990
+      0b.organ_t~t|            .            .        1             .
+      1.organ_tr~t|     -0.00820         1.02        1         0.3128
+      0b.spleen   |            .            .        1             .
+      1.spleen    |     -0.00273         0.11        1         0.7390
+      0b.ra_sle_~s|            .            .        1             .
+      1.ra_sle_p~s|      0.00034         0.00        1         0.9669
+      0b.other_i~v|            .            .        1             .
+      1.other_im~v|      0.00248         0.09        1         0.7609
+      ------------+---------------------------------------------------
+      global test |                    507.12       41         0.0000
+      ----------------------------------------------------------------
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -181158.57
+Iteration 2:   log likelihood = -173912.84
+Iteration 3:   log likelihood = -173492.36
+Iteration 4:   log likelihood =  -173429.2
+Iteration 5:   log likelihood = -173412.62
+Iteration 6:   log likelihood = -173410.36
+Iteration 7:   log likelihood =  -173410.3
+Iteration 8:   log likelihood =  -173410.3
+Refining estimates:
+Iteration 0:   log likelihood =  -173410.3
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(41)      =    54170.63
+Log likelihood  =    -173410.3                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   2.279684   .4588214     4.09   0.000     1.536587    3.382144
+                              |
+                    ethnicity |
+                       Mixed  |   1.575301   .1548253     4.62   0.000     1.299287    1.909951
+      Asian or Asian British  |    1.32518   .0501722     7.44   0.000     1.230404    1.427256
+                       Black  |   1.482485   .0816468     7.15   0.000     1.330794    1.651466
+                       Other  |   1.216795   .0986456     2.42   0.016     1.038032    1.426345
+                              |
+                         age1 |   1.190966   .0238063     8.74   0.000     1.145209    1.238551
+                         age2 |   .8458746   .0364864    -3.88   0.000      .777302    .9204965
+                         age3 |   1.503352   .1494797     4.10   0.000     1.237157    1.826823
+                       1.male |   1.484696   .0256699    22.86   0.000     1.435227    1.535871
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9950965   .0232322    -0.21   0.833     .9505883    1.041689
+          Obese II (35-39.9)  |   1.345921   .0460254     8.69   0.000     1.258669    1.439221
+             Obese III (40+)  |   1.844718   .0875624    12.90   0.000      1.68084    2.024573
+                              |
+                 smoke_nomiss |
+                      Former  |   1.221809   .0229158    10.68   0.000      1.17771    1.267559
+                     Current  |   .9842579   .0356856    -0.44   0.662     .9167427    1.056745
+                              |
+                          imd |
+                           2  |   1.133645    .030909     4.60   0.000     1.074655    1.195873
+                           3  |   1.219761   .0333925     7.26   0.000     1.156038    1.286996
+                           4  |   1.491946   .0402734    14.82   0.000     1.415064    1.573006
+             5 most deprived  |   1.692435   .0471236    18.90   0.000      1.60255    1.787363
+                              |
+               1.hypertension |    .968421   .0182785    -1.70   0.089     .9332504    1.004917
+1.chronic_respiratory_disease |    1.62077   .0349176    22.41   0.000     1.553758    1.690673
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9929346   .0262441    -0.27   0.788     .9428067    1.045728
+                Yes with OCS  |   1.108015   .0541654     2.10   0.036      1.00678     1.21943
+                              |
+    1.chronic_cardiac_disease |   1.199791   .0221382     9.87   0.000     1.157176    1.243975
+                              |
+                      diabcat |
+         Controlled diabetes  |    1.23494   .0268293     9.71   0.000     1.183459     1.28866
+       Uncontrolled diabetes  |   1.844428   .0517362    21.82   0.000     1.745763    1.948668
+  Diabetes, no hba1c measure  |   1.792986   .0773855    13.53   0.000     1.647551    1.951259
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.768708   .1031048     9.78   0.000     1.577743    1.982786
+               2-5 years ago  |   1.200943   .0494631     4.45   0.000     1.107807    1.301909
+                    5+ years  |   1.002791   .0269523     0.10   0.917      .951333    1.057033
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.925275   .3737823     8.40   0.000     2.277209    3.757773
+               2-5 years ago  |   2.285551   .1879143    10.05   0.000     1.945389    2.685191
+                    5+ years  |   1.620622   .1070957     7.31   0.000     1.423744    1.844726
+                              |
+      1.chronic_liver_disease |   1.932835   .1225493    10.39   0.000     1.706968    2.188589
+            1.stroke_dementia |   2.148785   .0443192    37.09   0.000     2.063653    2.237429
+                1.other_neuro |    2.70986   .0923233    29.26   0.000     2.534819    2.896988
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.282821   .0250362    12.76   0.000     1.234678    1.332842
+           Stage 4/5 egfr<30  |    2.41031   .0804233    26.37   0.000     2.257727    2.573205
+                              |
+           1.organ_transplant |   3.137844   .3558857    10.08   0.000     2.512409    3.918973
+                     1.spleen |   1.251748   .1759395     1.60   0.110     .9503339     1.64876
+           1.ra_sle_psoriasis |   1.195368   .0346664     6.15   0.000     1.129318    1.265281
+       1.other_imm_except_hiv |   3.538088    .660779     6.77   0.000     2.453561    5.101999
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.hiv      |            .            .        1             .
+      1.hiv       |      0.00009         0.00        1         0.9914
+      1b.ethnicity|            .            .        1             .
+      2.ethnicity |     -0.00811         0.97        1         0.3239
+      3.ethnicity |     -0.02929        12.44        1         0.0004
+      4.ethnicity |     -0.01003         1.48        1         0.2243
+      5.ethnicity |     -0.01313         2.55        1         0.1102
+      age1        |      0.01060         1.94        1         0.1636
+      age2        |     -0.01397         3.30        1         0.0694
+      age3        |      0.01689         4.76        1         0.0291
+      0b.male     |            .            .        1             .
+      1.male      |     -0.06953        71.40        1         0.0000
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |     -0.04987        36.71        1         0.0000
+      3.obese4cat |     -0.02530         9.41        1         0.0022
+      4.obese4cat |     -0.03238        15.41        1         0.0001
+      1b.smoke_n~s|            .            .        1             .
+      2.smoke_no~s|     -0.00538         0.42        1         0.5147
+      3.smoke_no~s|      0.02382         8.47        1         0.0036
+      1b.imd      |            .            .        1             .
+      2.imd       |      0.01558         3.60        1         0.0577
+      3.imd       |      0.01337         2.64        1         0.1042
+      4.imd       |      0.01454         3.12        1         0.0772
+      5.imd       |      0.00696         0.72        1         0.3971
+      0b.hyperte~n|            .            .        1             .
+      1.hyperten~n|      0.00078         0.01        1         0.9216
+      0b.c~respi~e|            .            .        1             .
+      1.c~respir~e|     -0.02247         7.70        1         0.0055
+      1b.asthmacat|            .            .        1             .
+      2.asthmacat |     -0.00311         0.14        1         0.7046
+      3.asthmacat |     -0.00778         0.91        1         0.3413
+      0b.c~cardi~e|            .            .        1             .
+      1.c~cardia~e|     -0.00100         0.02        1         0.9010
+      1b.diabcat  |            .            .        1             .
+      2.diabcat   |     -0.01914         5.47        1         0.0194
+      3.diabcat   |     -0.01983         5.89        1         0.0152
+      4.diabcat   |     -0.00003         0.00        1         0.9971
+      1b.c~exhae~t|            .            .        1             .
+      2.cancer_e~t|      0.00075         0.01        1         0.9268
+      3.cancer_e~t|      0.00411         0.25        1         0.6153
+      4.cancer_e~t|      0.01504         3.39        1         0.0657
+      1b.cancer_h~|            .            .        1             .
+      2.cancer_h~t|      0.00826         1.03        1         0.3101
+      3.cancer_h~t|     -0.01249         2.32        1         0.1278
+      4.cancer_h~t|      0.00491         0.36        1         0.5481
+      0b.c~liver~e|            .            .        1             .
+      1.c~liver_~e|      0.01710         4.48        1         0.0343
+      0b.stroke_~a|            .            .        1             .
+      1.stroke_d~a|      0.01564         3.90        1         0.0484
+      0b.other_n~o|            .            .        1             .
+      1.other_ne~o|      0.02506         9.69        1         0.0019
+      1b.reduced~t|            .            .        1             .
+      2.reduced_~t|     -0.02499        10.03        1         0.0015
+      3.reduced_~t|     -0.01297         2.72        1         0.0988
+      0b.organ_t~t|            .            .        1             .
+      1.organ_tr~t|     -0.00821         1.02        1         0.3126
+      0b.spleen   |            .            .        1             .
+      1.spleen    |     -0.00273         0.11        1         0.7387
+      0b.ra_sle_~s|            .            .        1             .
+      1.ra_sle_p~s|      0.00029         0.00        1         0.9722
+      0b.other_i~v|            .            .        1             .
+      1.other_im~v|      0.00242         0.09        1         0.7670
+      ------------+---------------------------------------------------
+      global test |                    509.46       41         0.0000
+      ----------------------------------------------------------------
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+. 
+. graph combine phtest1 phtest5 phtest10
+
+. graph export ./output/an_phcheck_mi_schoenplot.svg, as(svg) replace
+(note: file ./output/an_phcheck_mi_schoenplot.svg not found)
+(file ./output/an_phcheck_mi_schoenplot.svg written in SVG format)
+
+. 
+. graph combine stphplot1 stphplot5 stphplot10
+

@@ -1,0 +1,190 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_interactions_byage.log
+  log type:  text
+ opened on:  16 Jul 2020, 19:21:39
+
+. 
+. run global
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. *By age
+. if "`1'"=="byage"{
+. gen ageover60 = agegroup>=4
+. capture stcox   i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60 , strata(stp)
+. if _rc==0 {
+.                 noi di _n "AGE INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+
+AGE INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)
+
+.                 estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,724,742                  Number of obs    =  12,724,742
+No. of failures =       11,091
+Time at risk    =   1802666381
+                                                LR chi2(42)      =    40368.76
+Log likelihood  =   -126245.73                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   2.337564   .8890207     2.23   0.026     1.109264    4.925971
+                              |
+                    ethnicity |
+                       Mixed  |   1.402496   .1618049     2.93   0.003     1.118662    1.758345
+      Asian or Asian British  |   1.317912   .0559615     6.50   0.000      1.21267    1.432288
+                       Black  |   1.391458   .0864992     5.31   0.000     1.231844    1.571754
+                       Other  |   1.252677   .1119126     2.52   0.012     1.051463    1.492397
+                              |
+                         age1 |    1.18714   .0272903     7.46   0.000     1.134839    1.241851
+                         age2 |   .8477506   .0420396    -3.33   0.001     .7692321    .9342838
+                         age3 |   1.501711   .1716029     3.56   0.000     1.200379    1.878688
+                       1.male |   1.461417   .0292507    18.96   0.000     1.405197    1.519887
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9983587   .0265815    -0.06   0.951      .947596    1.051841
+          Obese II (35-39.9)  |   1.346284   .0523726     7.64   0.000     1.247451    1.452947
+             Obese III (40+)  |   1.808352   .0986322    10.86   0.000      1.62501    2.012378
+                              |
+                 smoke_nomiss |
+                      Former  |   1.212511   .0265187     8.81   0.000     1.161634    1.265617
+                     Current  |   .9875508     .04104    -0.30   0.763     .9103026    1.071354
+                              |
+                          imd |
+                           2  |   1.184176   .0386257     5.18   0.000      1.11084    1.262353
+                           3  |   1.276841   .0416908     7.48   0.000     1.197688    1.361224
+                           4  |   1.556207   .0498156    13.82   0.000      1.46157    1.656972
+             5 most deprived  |   1.749979   .0573278    17.08   0.000      1.64115    1.866025
+                              |
+               1.hypertension |   .9819749   .0217646    -0.82   0.412     .9402304    1.025573
+1.chronic_respiratory_disease |   1.623485   .0399598    19.69   0.000     1.547025    1.703725
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9459562   .0289232    -1.82   0.069     .8909329    1.004378
+                Yes with OCS  |   1.090642   .0599892     1.58   0.115     .9791816    1.214791
+                              |
+    1.chronic_cardiac_disease |   1.182256    .025254     7.84   0.000      1.13378    1.232803
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.254811   .0311387     9.15   0.000     1.195241    1.317351
+       Uncontrolled diabetes  |   1.832778   .0587894    18.89   0.000       1.7211    1.951702
+  Diabetes, no hba1c measure  |    1.80713   .0892219    11.99   0.000     1.640453    1.990742
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.733084    .117762     8.09   0.000     1.516984    1.979969
+               2-5 years ago  |   1.227905    .058064     4.34   0.000     1.119216    1.347149
+                    5+ years  |   1.009046   .0314518     0.29   0.773     .9492464    1.072612
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.723307   .4176411     6.53   0.000     2.016313    3.678199
+               2-5 years ago  |   2.372847   .2228345     9.20   0.000     1.973936    2.852372
+                    5+ years  |   1.622495   .1236522     6.35   0.000     1.397373    1.883885
+                              |
+      1.chronic_liver_disease |   1.914692   .1373796     9.05   0.000     1.663508    2.203803
+            1.stroke_dementia |   2.180813   .0518075    32.82   0.000       2.0816    2.284755
+                1.other_neuro |   2.631482   .1041605    24.44   0.000     2.435049     2.84376
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.311855   .0298032    11.95   0.000     1.254723    1.371588
+           Stage 4/5 egfr<30  |   2.421202   .0937648    22.83   0.000     2.244228    2.612132
+                              |
+           1.organ_transplant |   3.134706   .4063794     8.81   0.000     2.431354    4.041528
+                     1.spleen |   1.178267    .194406     0.99   0.320     .8527101    1.628119
+           1.ra_sle_psoriasis |   1.152448   .0390035     4.19   0.000     1.078483    1.231486
+       1.other_imm_except_hiv |   3.389719    .743612     5.56   0.000     2.205126    5.210677
+                              |
+                hiv#ageover60 |
+                         1 1  |   .9201898   .4327232    -0.18   0.860     .3660971    2.312909
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.                 estimates save ./output/models/an_interactions_ageover60, replace
+file ./output/models/an_interactions_ageover60.ster saved
+.                 }
+.         else di "WARNING - hiv age-interaction MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. *By sex
+. if "`1'"=="bysex"{
+. gen female = 1-male
+. capture stcox   i.hiv i.ethnicity $adjustmentlist 1.hiv#1.female, strata(stp)
+. if _rc==0 {
+.                 noi di _n "AGE INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_interactions_female, replace
+.                 }
+.         else di "WARNING - hiv male interaction MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. *By black/non-black
+. if "`1'"=="byethnicity"{
+. gen nonblack = (ethnicity != 4) if ethnicity<.
+. capture stcox   i.hiv i.ethnicity $adjustmentlist 1.hiv#1.nonblack, strata(stp)
+. if _rc==0 {
+.                 noi di _n "BLACK/NON-BLACK INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_interactions_nonblack, replace
+.                 }
+.         else di "WARNING - hiv black/non-black interaction MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. *By black/white 
+. if "`1'"=="byethnicity_wvsb"{
+. gen whitevsblack = (ethnicity != 4) if ethnicity<.
+. capture stcox   i.hiv i.ethnicity $adjustmentlist 1.hiv#1.whitevsblack if (ethnicity==1|ethnicity==4), strata(stp)
+. if _rc==0 {
+.                 noi di _n "BLACK/NON-BLACK INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_interactions_whitevsblack, replace
+.                 lincom 1.hiv + 1.hiv#1.whitevsblack, eform
+.                 }
+.         else di "WARNING - hiv black/white interaction MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+.         
+. *By comorbidity status
+. if "`1'"=="bycomorbidities"{
+. gen anycomorbidity =                                            ///
+>                         hypertension                                    ///
+>                         |chronic_respiratory_disease    ///
+>                         |(asthmacat>1)                                  ///
+>                         |chronic_cardiac_disease                ///
+>                         |(diabcat>1)                                    ///
+>                         |(cancer_exhaem_cat>1)                  ///
+>                         |(cancer_haem_cat>1)                    ///
+>                         |chronic_liver_disease                  ///
+>                         |stroke_dementia                                ///
+>                         |other_neuro                                    ///
+>                         |(reduced_kidney_function_cat>1)        ///
+>                         |organ_transplant                               ///
+>                         |spleen                                                 ///
+>                         |ra_sle_psoriasis                               ///
+>                         |other_imm_except_hiv           
+. capture stcox   i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity, strata(stp)
+. if _rc==0 {
+.                 noi di _n "ANY_COMORBIDITY INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_interactions_anycomorbidity, replace
+.                 }
+.         else di "WARNING - hiv any_comorbidity interaction MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_interactions_byage.log
+  log type:  text
+ closed on:  16 Jul 2020, 20:20:59
+----------------------------------------------------------------------------------------------------------------------------------

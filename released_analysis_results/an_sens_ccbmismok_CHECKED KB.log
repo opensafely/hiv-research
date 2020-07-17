@@ -1,0 +1,226 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_ccbmismok.log
+  log type:  text
+ opened on:  16 Jul 2020, 19:21:43
+
+. 
+. run global 
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. replace obese4cat = . if bmicat==.
+(3,741,757 real changes made, 3,741,757 to missing)
+
+. replace smoke_nomiss = smoke 
+(720,959 real changes made, 720,959 to missing)
+
+. 
+. capture stcox   i.hiv i.ethnicity $adjustmentlist , strata(stp)
+
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL COMPLETE CASE FOR ETHNICITY AND BMI AND SMOKING" _n 
+
+FULLY ADJUSTED MODEL COMPLETE CASE FOR ETHNICITY AND BMI AND SMOKING
+
+.                 noi di _n "note - ignore that smoking var is still called smoke_nomiss - missing are omitted here" _n 
+
+note - ignore that smoking var is still called smoke_nomiss - missing are omitted here
+
+.                 estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   10,730,872                  Number of obs    =  10,730,872
+No. of failures =       10,289
+Time at risk    =   1519881010
+                                                LR chi2(41)      =    35594.17
+Log likelihood  =   -116321.96                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   1.818182   .4719075     2.30   0.021     1.093223     3.02389
+                              |
+                    ethnicity |
+                       Mixed  |   1.365733   .1675845     2.54   0.011     1.073786    1.737056
+      Asian or Asian British  |   1.378882   .0600492     7.38   0.000     1.266071    1.501745
+                       Black  |   1.397183   .0904601     5.17   0.000     1.230673    1.586222
+                       Other  |   1.324601   .1217435     3.06   0.002     1.106245    1.586056
+                              |
+                         age1 |   1.166117   .0295956     6.06   0.000      1.10953     1.22559
+                         age2 |   .8809826   .0479949    -2.33   0.020     .7917624    .9802565
+                         age3 |   1.377543   .1725337     2.56   0.011     1.077691    1.760824
+                       1.male |   1.502322   .0312882    19.54   0.000     1.442233    1.564914
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |    1.02776   .0276181     1.02   0.308     .9750308    1.083342
+          Obese II (35-39.9)  |   1.395573   .0545716     8.52   0.000     1.292611    1.506737
+             Obese III (40+)  |   1.886882   .1033053    11.60   0.000     1.694892    2.100619
+                              |
+                 smoke_nomiss |
+                      Former  |   1.225118   .0279933     8.89   0.000     1.171463    1.281231
+                     Current  |   1.013826   .0439302     0.32   0.751      .931279    1.103689
+                              |
+                          imd |
+                           2  |   1.162315   .0394694     4.43   0.000     1.087475    1.242306
+                           3  |   1.256857   .0426776     6.73   0.000     1.175933    1.343349
+                           4  |   1.542002   .0512065    13.04   0.000     1.444835    1.645703
+             5 most deprived  |   1.747275   .0592585    16.45   0.000     1.634907    1.867367
+                              |
+               1.hypertension |   .9732935   .0224751    -1.17   0.241     .9302251    1.018356
+1.chronic_respiratory_disease |   1.588501   .0402506    18.26   0.000     1.511538    1.669382
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9369902   .0295441    -2.06   0.039     .8808378    .9967223
+                Yes with OCS  |   1.054017   .0601747     0.92   0.357     .9424356    1.178809
+                              |
+    1.chronic_cardiac_disease |   1.185666   .0260782     7.74   0.000      1.13564    1.237896
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.243748   .0316098     8.58   0.000     1.183312    1.307271
+       Uncontrolled diabetes  |   1.795376   .0588905    17.84   0.000     1.683584     1.91459
+  Diabetes, no hba1c measure  |   1.818987   .0925709    11.76   0.000     1.646306     2.00978
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.731868    .121015     7.86   0.000     1.510207    1.986062
+               2-5 years ago  |   1.241424   .0600295     4.47   0.000     1.129171    1.364835
+                    5+ years  |   1.012751   .0325758     0.39   0.694     .9508746    1.078654
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.790578   .4330527     6.61   0.000     2.058739    3.782569
+               2-5 years ago  |   2.260025    .223128     8.26   0.000     1.862412    2.742527
+                    5+ years  |   1.622618   .1277218     6.15   0.000     1.390642     1.89329
+                              |
+      1.chronic_liver_disease |   1.905338   .1405789     8.74   0.000     1.648804    2.201786
+            1.stroke_dementia |   2.140744   .0527339    30.90   0.000     2.039843    2.246636
+                1.other_neuro |   2.589366   .1073042    22.96   0.000     2.387368    2.808456
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.322515    .031122    11.88   0.000     1.262902    1.384941
+           Stage 4/5 egfr<30  |   2.425315   .0969027    22.17   0.000     2.242635    2.622875
+                              |
+           1.organ_transplant |   3.203477   .4224217     8.83   0.000     2.473883    4.148241
+                     1.spleen |   1.152962   .1984427     0.83   0.408     .8228301    1.615549
+           1.ra_sle_psoriasis |   1.146224   .0400903     3.90   0.000     1.070281    1.227555
+       1.other_imm_except_hiv |   3.228341   .7443397     5.08   0.000     2.054579    5.072663
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.                 estimates save ./output/models/an_sens_ccbmismok_inceth, replace
+(note: file ./output/models/an_sens_ccbmismok_inceth.ster not found)
+file ./output/models/an_sens_ccbmismok_inceth.ster saved
+.                 }
+
+.         else di "WARNING - cc analysis for bmi/smok/eth DID NOT SUCCESSFULLY FIT"
+
+. 
+. 
+. capture stcox   i.hiv $adjustmentlist , strata(stp)
+
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL COMPLETE CASE FOR BMI AND SMOKING, OMITTING ETH" _n 
+
+FULLY ADJUSTED MODEL COMPLETE CASE FOR BMI AND SMOKING, OMITTING ETH
+
+.                 noi di _n "note - ignore that smoking var is still called smoke_nomiss - missing are omitted here" _n 
+
+note - ignore that smoking var is still called smoke_nomiss - missing are omitted here
+
+.                 estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   13,466,171                  Number of obs    =  13,466,171
+No. of failures =       13,468
+Time at risk    =   1906883014
+                                                LR chi2(37)      =    45245.83
+Log likelihood  =   -155482.75                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |    2.05499   .4730178     3.13   0.002      1.30882    3.226557
+                         age1 |   1.176206   .0269167     7.09   0.000     1.124616    1.230163
+                         age2 |   .8604711   .0421652    -3.07   0.002     .7816734    .9472122
+                         age3 |   1.457742   .1640538     3.35   0.001     1.169194    1.817501
+                       1.male |   1.541524   .0280795    23.76   0.000      1.48746    1.597553
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   1.011385   .0238725     0.48   0.631     .9656618    1.059274
+          Obese II (35-39.9)  |   1.370085   .0471293     9.15   0.000     1.280759    1.465642
+             Obese III (40+)  |     1.8786   .0895101    13.23   0.000     1.711106     2.06249
+                              |
+                 smoke_nomiss |
+                      Former  |   1.185704   .0232688     8.68   0.000     1.140964    1.232198
+                     Current  |   .9728164    .037143    -0.72   0.470     .9026746    1.048408
+                              |
+                          imd |
+                           2  |   1.126951   .0324306     4.15   0.000     1.065147     1.19234
+                           3  |    1.22495   .0353299     7.03   0.000     1.157626     1.29619
+                           4  |   1.513149    .042887    14.61   0.000     1.431384    1.599584
+             5 most deprived  |   1.747907   .0507607    19.23   0.000     1.651197    1.850282
+                              |
+               1.hypertension |   .9634834   .0192247    -1.86   0.062     .9265308     1.00191
+1.chronic_respiratory_disease |     1.5648   .0349297    20.06   0.000     1.497815     1.63478
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9885332   .0270822    -0.42   0.674     .9368531    1.043064
+                Yes with OCS  |   1.089996    .055319     1.70   0.090     .9867905    1.203995
+                              |
+    1.chronic_cardiac_disease |   1.193208   .0228314     9.23   0.000     1.149288    1.238806
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.248984   .0276731    10.03   0.000     1.195907    1.304417
+       Uncontrolled diabetes  |   1.852581   .0529043    21.59   0.000     1.751739    1.959228
+  Diabetes, no hba1c measure  |   1.844043   .0825861    13.66   0.000     1.689078    2.013226
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.706548   .1044124     8.74   0.000     1.513698    1.923969
+               2-5 years ago  |   1.192087   .0508204     4.12   0.000     1.096529    1.295973
+                    5+ years  |   1.002096   .0279598     0.08   0.940     .9487668    1.058422
+                              |
+              cancer_haem_cat |
+                   Last year  |   3.044276   .3954629     8.57   0.000     2.359988    3.926977
+               2-5 years ago  |   2.231647   .1919695     9.33   0.000     1.885402    2.641478
+                    5+ years  |   1.600966   .1103806     6.83   0.000     1.398604    1.832607
+                              |
+      1.chronic_liver_disease |   1.906549   .1253808     9.81   0.000     1.675985    2.168831
+            1.stroke_dementia |   2.115897   .0455819    34.79   0.000     2.028418    2.207148
+                1.other_neuro |     2.5985   .0944064    26.28   0.000     2.419901     2.79028
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.285608   .0263088    12.28   0.000     1.235064     1.33822
+           Stage 4/5 egfr<30  |   2.414788   .0839293    25.37   0.000     2.255767    2.585018
+                              |
+           1.organ_transplant |   3.308162   .3804152    10.40   0.000     2.640612    4.144469
+                     1.spleen |   1.246426   .1824865     1.50   0.132     .9355003    1.660692
+           1.ra_sle_psoriasis |   1.178271   .0356073     5.43   0.000     1.110508    1.250168
+       1.other_imm_except_hiv |   3.412279   .6729157     6.22   0.000     2.318377    5.022328
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.                 estimates save ./output/models/an_sens_ccbmismok_noeth, replace
+(note: file ./output/models/an_sens_ccbmismok_noeth.ster not found)
+file ./output/models/an_sens_ccbmismok_noeth.ster saved
+.                 }
+
+.         else di "WARNING - cc analysis for bmi/smok, OMITTING ETH DID NOT SUCCESSFULLY FIT"
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_ccbmismok.log
+  log type:  text
+ closed on:  16 Jul 2020, 20:51:55
+----------------------------------------------------------------------------------------------------------------------------------
