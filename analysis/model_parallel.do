@@ -29,7 +29,11 @@ winexec "c:\program files\stata16\statamp-64.exe" do "an_interactions" bycomorbi
 winexec "c:\program files\stata16\statamp-64.exe" do "an_cumincidence" 
 
 winexec "c:\program files\stata16\statamp-64.exe" do "an_phcheck_cc"
+*posthoc
+winexec "c:\program files\stata16\statamp-64.exe" do an_phcheck_addtimeinteractions_cc
+
 winexec "c:\program files\stata16\statamp-64.exe" do "an_sens_ccbmismok"
+
 winexec "c:\program files\stata16\statamp-64.exe" do "an_impute" 
 
 do "an_hiv_desccodes" 
@@ -52,6 +56,14 @@ winexec "c:\program files\stata16\statamp-64.exe" do "an_imputed" byethnicity
 winexec "c:\program files\stata16\statamp-64.exe" do "an_imputed" bycomorbidities
 winexec "c:\program files\stata16\statamp-64.exe" do "an_imputed" bycomorbidities_exht
 winexec "c:\program files\stata16\statamp-64.exe" do "an_imputed" cuminc
+
+*posthoc (on bmi smok missingness)
+winexec "c:\program files\stata16\statamp-64.exe" do "an_sens_furtherexploration_bmismok" omitbmismok
+winexec "c:\program files\stata16\statamp-64.exe" do "an_sens_furtherexploration_bmismok" omitbmismokinccpop
+winexec "c:\program files\stata16\statamp-64.exe" do "an_sens_furtherexploration_bmismok" ccbmismok
+winexec "c:\program files\stata16\statamp-64.exe" do "an_sens_furtherexploration_bmismok" ccbmionly
+winexec "c:\program files\stata16\statamp-64.exe" do "an_sens_furtherexploration_bmismok" ccsmokonly
+
 
 winexec "c:\program files\stata16\statamp-64.exe" do "an_phcheck_mi"
 

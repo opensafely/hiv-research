@@ -7,8 +7,6 @@ run global
 cap log close
 log using ./output/an_phcheck_cc, replace t
 
-use "an_impute_imputeddata", clear
-
 use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
 stcox 	i.hiv i.ethnicity $adjustmentlist , strata(stp)
