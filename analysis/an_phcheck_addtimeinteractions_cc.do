@@ -1,6 +1,8 @@
 *KB 
 *20/7/2020
 
+*an_phcheck_addtimeinteractions_cc
+
 run global
 
 cap log close
