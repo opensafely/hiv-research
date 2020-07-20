@@ -20,9 +20,9 @@ gen highimd = imd>=3
 stcox 	i.hiv i.ethnicity $adjustmentlist 60.timeperiod#3.ethnicity  	///
 	60.timeperiod#3.ethnicity											///
 	60.timeperiod#1.male												///
-	60.timeperiod#2.anyobesity											///
+	60.timeperiod#1.anyobesity											///
 	60.timeperiod#3.smoke_nomiss										///
-	60.timeperiod#2.highimd												///			
+	60.timeperiod#1.highimd												///			
 	60.timeperiod#1.chronic_respiratory_disease							///
 	60.timeperiod#1.diabetes											///
 	60.timeperiod#1.chronic_liver_disease								///
