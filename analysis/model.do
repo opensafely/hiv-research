@@ -48,8 +48,17 @@ do "an_imputed" cuminc
 
 do "an_phcheck_cc"
 do "an_phcheck_mi"
+*posthoc
+do an_phcheck_addtimeinteractions_cc
 
 do "an_sens_ccbmismok"
+*posthoc
+do "an_sens_furtherexploration_bmismok" omitbmismok
+do "an_sens_furtherexploration_bmismok" omitbmismokinccpop
+do "an_sens_furtherexploration_bmismok" ccbmismok
+do "an_sens_furtherexploration_bmismok" ccbmionly
+do "an_sens_furtherexploration_bmismok" ccsmokonly
+
 
 do "an_outcomes_table"
 do "an_outcomes_MI_table"
