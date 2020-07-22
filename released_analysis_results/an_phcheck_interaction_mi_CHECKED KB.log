@@ -1,0 +1,208 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\output/an_phcheck_interaction_mi.log
+  log type:  text
+ opened on:  20 Jul 2020, 23:51:47
+
+. 
+. run global 
+
+. 
+. use "an_impute_imputeddata", clear
+(Analysis dataset HIV project)
+
+. 
+. **************************
+. *  Analyse imputed data  *
+. **************************
+. 
+. // Declare imputed data as survival
+. 
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. 
+. mi stsplit timeperiod, at(60 90)
+
+performing stsplit on m=0:
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=1)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=2)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=3)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=4)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=5)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=6)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=7)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=8)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=9)
+(34,474,950 observations (episodes) created)
+
+(performing stsplit on m=10)
+(34,474,950 observations (episodes) created)
+
+(combining results)
+
+.         
+. mi estimate (_b[1.hiv]+_b[60.timeperiod#1.hiv]) (_b[1.hiv]+_b[60.timeperiod#1.hiv] + _b[90.timeperiod#1.hiv]), eform: stcox i.hi
+> v i.ethnicity $adjustmentlist 60.timeperiod#1.hiv 90.timeperiod#1.hiv, strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 51,757,385
+                                                Average RVI       =     0.0247
+                                                Largest FMI       =     0.4104
+DF adjustment:   Large sample                   DF:     min       =      58.96
+                                                        avg       =   9.26e+10
+                                                        max       =   3.29e+12
+Model F test:       Equal FMI                   F(  43,652088.3)  =     884.39
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   4.046954   1.661231     3.41   0.001      1.81017    9.047681
+                              |
+                    ethnicity |
+                       Mixed  |   1.461976   .1909388     2.91   0.005      1.12575    1.898623
+      Asian or Asian British  |   1.333821   .0544242     7.06   0.000     1.231026    1.445201
+                       Black  |   1.462793   .0831774     6.69   0.000     1.308469    1.635318
+                       Other  |   1.268351   .1100671     2.74   0.006     1.069384    1.504337
+                              |
+                         age1 |    1.19105   .0238136     8.74   0.000     1.145278     1.23865
+                         age2 |   .8457325   .0364886    -3.88   0.000     .7771564    .9203596
+                         age3 |   1.503946    .149572     4.10   0.000     1.237592    1.827623
+                       1.male |   1.484653   .0256709    22.85   0.000     1.435182     1.53583
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9954435   .0232453    -0.20   0.845     .9509105    1.042062
+          Obese II (35-39.9)  |   1.346518   .0460555     8.70   0.000     1.259211     1.43988
+             Obese III (40+)  |   1.846874   .0876862    12.92   0.000     1.682766    2.026986
+                              |
+                 smoke_nomiss |
+                      Former  |   1.222168   .0229608    10.68   0.000     1.177984     1.26801
+                     Current  |   .9846692   .0357229    -0.43   0.670      .917085    1.057234
+                              |
+                          imd |
+                           2  |   1.133617   .0309083     4.60   0.000     1.074628    1.195844
+                           3  |   1.219937   .0333989     7.26   0.000     1.156201    1.287186
+                           4  |   1.491977    .040287    14.82   0.000     1.415069    1.573065
+             5 most deprived  |   1.692954    .047169    18.90   0.000     1.602983    1.787974
+                              |
+               1.hypertension |   .9684891    .018281    -1.70   0.090     .9333136     1.00499
+1.chronic_respiratory_disease |   1.620457   .0349121    22.41   0.000     1.553455    1.690349
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9929471   .0262455    -0.27   0.789     .9428165    1.045743
+                Yes with OCS  |   1.107557   .0541488     2.09   0.037     1.006354    1.218938
+                              |
+    1.chronic_cardiac_disease |   1.199462   .0221368     9.85   0.000      1.15685    1.243643
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.234348   .0268456     9.68   0.000     1.182837    1.288102
+       Uncontrolled diabetes  |   1.844097   .0517778    21.80   0.000     1.745356    1.948424
+  Diabetes, no hba1c measure  |   1.791819   .0773646    13.51   0.000     1.646426    1.950052
+                              |
+            cancer_exhaem_cat |
+                   Last year  |    1.76948   .1031537     9.79   0.000     1.578425     1.98366
+               2-5 years ago  |   1.201191   .0494762     4.45   0.000      1.10803    1.302184
+                    5+ years  |   1.002899   .0269592     0.11   0.914     .9514278    1.057155
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.926944   .3740215     8.40   0.000     2.278468    3.759981
+               2-5 years ago  |   2.285878   .1879455    10.06   0.000      1.94566    2.685586
+                    5+ years  |   1.620509   .1070922     7.30   0.000     1.423637    1.844605
+                              |
+      1.chronic_liver_disease |   1.931913   .1224988    10.39   0.000     1.706139    2.187563
+            1.stroke_dementia |   2.149045   .0443266    37.09   0.000       2.0639    2.237704
+                1.other_neuro |   2.710092    .092334    29.26   0.000     2.535031    2.897243
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.283107   .0250437    12.77   0.000     1.234949    1.333143
+           Stage 4/5 egfr<30  |   2.410529   .0804402    26.37   0.000     2.257915    2.573459
+                              |
+           1.organ_transplant |   3.135163   .3556161    10.07   0.000     2.510208    3.915709
+                     1.spleen |   1.252563   .1760555     1.60   0.109     .9509502    1.649837
+           1.ra_sle_psoriasis |   1.195242   .0346639     6.15   0.000     1.129197     1.26515
+       1.other_imm_except_hiv |   3.534246   .6601151     6.76   0.000     2.450824    5.096611
+                              |
+               timeperiod#hiv |
+                        60 1  |   .4417584   .2216191    -1.63   0.103     .1652564    1.180895
+                        90 1  |   .6436268   .3591385    -0.79   0.430     .2156108    1.921311
+-----------------------------------------------------------------------------------------------
+
+Transformations                                 Average RVI       =     0.0001
+                                                Largest FMI       =     0.0003
+DF adjustment:   Large sample                   DF:     min       =   1.21e+08
+                                                        avg       =   1.65e+09
+Within VCE type:          OIM                           max       =   3.17e+09
+
+        _mi_1: _b[1.hiv]+_b[60.timeperiod#1.hiv]
+        _mi_2: _b[1.hiv]+_b[60.timeperiod#1.hiv] + _b[90.timeperiod#1.hiv]
+
+------------------------------------------------------------------------------
+          _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _mi_1 |   .5809724   .2897436     2.01   0.045     .0130854    1.148859
+       _mi_2 |   .1403361    .628737     0.22   0.823    -1.091966    1.372638
+------------------------------------------------------------------------------
+
+. 
+. mi test 60.timeperiod#1.hiv 90.timeperiod#1.hiv
+note: assuming equal fractions of missing information
+
+ ( 1)  60bn.timeperiod#1.hiv = 0
+ ( 2)  90.timeperiod#1.hiv = 0
+
+       F(  2, 1.3e+12) =    1.35
+            Prob > F =    0.2583
+
+. 
+. estimates save "./output/models/an_phcheck_interaction_mi", replace                                             
+(note: file ./output/models/an_phcheck_interaction_mi.ster not found)
+file ./output/models/an_phcheck_interaction_mi.ster saved
+
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\output/an_phcheck_interaction_mi.log
+  log type:  text
+ closed on:  22 Jul 2020, 10:12:06
+----------------------------------------------------------------------------------------------------------------------------------
