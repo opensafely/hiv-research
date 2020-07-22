@@ -5,28 +5,33 @@ run global
 
 use ./output/an_outcomes_MI_table_ESTIMATES, clear
 
-replace desc = "Age-sex adjusted" if substr(desc,1,16) == "Age-sex_adjusted"
-replace desc = "+ IMD/ethnicity" if substr(desc,1,14) == "+IMD/ethnicity"
-replace desc = "+ obesity/smoking/comorbidities" if substr(desc,1,30) == "+obesity/smoking/comorbidities"
+replace desc = "Age-sex adjusted" if desc == "Age-sex_adjusted"
+replace desc = "+ IMD/ethnicity" if desc == "+IMD/ethnicity"
+replace desc = "+ obesity/smoking/comorbidities" if desc == "+obesity/smoking/comorbidities"
 
-replace desc = "<60" if substr(desc,1,20) == "interac_NOTageover60"
-replace desc = "60+" if substr(desc,1,17) == "interac_ageover60"
+replace desc = "<60" if desc == "interac_NOTageover60"
+replace desc = "60+" if desc == "interac_ageover60"
 
-replace desc = "Males" if substr(desc,1,17) == "interac_NOTfemale"
-replace desc = "Females" if substr(desc,1,14) == "interac_female"
+replace desc = "Males" if desc == "interac_NOTfemale"
+replace desc = "Females" if desc == "interac_female"
 
-replace desc = "Black" if substr(desc,1,19) == "interac_NOTnonblack"
-replace desc = "Not Black" if substr(desc,1,16) == "interac_nonblack"
+replace desc = "Black" if desc == "interac_NOTnonblack"
+replace desc = "Not Black" if desc == "interac_nonblack"
 
-replace desc = "None" if substr(desc,1,25) == "interac_NOTanycomorbidity"
-replace desc = "1 or more" if substr(desc,1,22) == "interac_anycomorbidity"
+replace desc = "None" if desc == "interac_NOTanycomorbidity"
+replace desc = "1 or more" if desc == "interac_anycomorbidity"
+
+replace desc = "0-59" if desc == "int_time_base"
+replace desc = "60-89" if desc == "int_time_6090"
+replace desc = "90+" if desc == "int_time_90plus"
 
 gen obsorder=_n
-expand 2 if desc=="<60"|desc=="Males"|desc=="Black"|desc=="None", gen(expanded)
+expand 2 if desc=="<60"|desc=="Males"|desc=="Black"|desc=="None"|desc=="0-59", gen(expanded)
 gen header = "By age" if expanded==1 & desc=="<60"
 replace header = "By sex" if expanded==1 & desc=="Males"
 replace header = "By ethnicity" if expanded==1 & desc=="Black"
 replace header = "By comorbidities" if expanded==1 & desc=="None"
+replace header = "By epidemic period (days)*" if expanded==1 & desc=="0-59"
 expand 2 if header!="", gen(expanded2)
 replace header="" if expanded2==1
 replace desc="" if expanded==1|expanded2==1

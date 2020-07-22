@@ -8,7 +8,7 @@ cap prog drop writehrci
 prog define writehrci
 syntax anything, estimate(real) lci(real) uci(real)
 	file write outcometable ("HR (`1')") _tab (string(round(`estimate', .01), "%4.2f")) (" (") (string(round(`lci', .01), "%4.2f")) ("-") (string(round(`uci', .01), "%4.2f")) (")") _n
-	frame post estimates ("`0'") (`estimate') (`lci') (`uci') (.)
+	frame post estimates ("`1'") (`estimate') (`lci') (`uci') (.)
 end
 
 *Set up output file/frame
@@ -83,11 +83,40 @@ foreach var of any ageover60 female nonblack anycomorbidity{
 	}
 	else file write outcometable _n _n ("`var'_interaction _tab MODEL NOT FOUND")
 	}
+
+cap estimates use ./output/models/an_phcheck_interaction_mi
+if _rc==0{
+	file write outcometable _n _n
+	local estimate = exp( el(e(b_mi),1,2) )
+	local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
+	local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
+	writehrci int_time_base, estimate(`estimate') lci(`lci') uci(`uci')
+
+	local estimate = exp( el(e(b_Q_mi),1,1) )
+	local lci = exp( el(e(b_Q_mi),1,1) - 1.96* sqrt(el(e(V_Q_mi),1,1)) )
+	local uci = exp( el(e(b_Q_mi),1,1) + 1.96* sqrt(el(e(V_Q_mi),1,1)) )
+	writehrci int_time_6090, estimate(`estimate') lci(`lci') uci(`uci')
+	
+	local estimate = exp( el(e(b_Q_mi),1,2) )
+	local lci = exp( el(e(b_Q_mi),1,2) - 1.96* sqrt(el(e(V_Q_mi),1,2)) )
+	local uci = exp( el(e(b_Q_mi),1,2) + 1.96* sqrt(el(e(V_Q_mi),1,2)) )
+	writehrci int_time_90plus, estimate(`estimate') lci(`lci') uci(`uci')
+
+	mi test 60.timeperiod#1.hiv 90.timeperiod#1.hiv
+	local pint = r(p)
+	
+	frame post estimates ("int_time") (.) (.) (.) (`pint')
+	}
+	
 	
 file close outcometable
 
 frame estimates: replace pint = pint[_n+1] if pint==.
 frame estimates: replace pint = pint[_n+1] if pint==.
+frame estimates: replace pint = pint[_n+1] if pint==. & substr(desc,1,8)=="int_time"
+
+frame estimates: replace desc = subinstr(desc,",","",1)
+
 frame estimates: drop if hr==.
 
 frame estimates: save ./output/an_outcomes_MI_table_ESTIMATES, replace
