@@ -1,0 +1,161 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_furtherexploration_bmismok_omitbmismok.log
+  log type:  text
+ opened on:  20 Jul 2020, 20:49:39
+
+. 
+. run global 
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. use "an_impute_imputeddata", clear
+(Analysis dataset HIV project)
+
+. 
+. **************************
+. *  Analyse imputed data  *
+. **************************
+. 
+. // Declare imputed data as survival
+. 
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. 
+. if "`1'"=="omitbmismok"{
+. local adjlist_nobmismok = subinstr("$adjustmentlist", "i.obese4cat", "", 1)
+. local adjlist_nobmismok = subinstr("`adjlist_nobmismok'", "i.smoke_nomiss", "", 1)
+. mi estimate, eform: stcox i.hiv i.ethnicity `adjlist_nobmismok', strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0294
+                                                Largest FMI       =     0.4113
+DF adjustment:   Large sample                   DF:     min       =      58.71
+                                                        avg       =   1.36e+10
+                                                        max       =   2.08e+11
+Model F test:       Equal FMI                   F(  36,388065.3)  =    1046.77
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   2.252554   .4534136     4.03   0.000     1.518231    3.342046
+                              |
+                    ethnicity |
+                       Mixed  |   1.424056   .1860798     2.71   0.009      1.09638    1.849664
+      Asian or Asian British  |   1.236055   .0497013     5.27   0.000     1.142141    1.337692
+                       Black  |   1.412386   .0802079     6.08   0.000     1.263557    1.578744
+                       Other  |   1.220235   .1056638     2.30   0.022     1.029213     1.44671
+                              |
+                         age1 |   1.190163   .0235924     8.78   0.000      1.14481    1.237313
+                         age2 |   .8523591   .0364994    -3.73   0.000     .7837413    .9269845
+                         age3 |   1.464426   .1446331     3.86   0.000     1.206699    1.777198
+                       1.male |   1.505155   .0254701    24.16   0.000     1.456053    1.555913
+                              |
+                          imd |
+                           2  |   1.139787   .0310675     4.80   0.000     1.080493    1.202334
+                           3  |   1.231608   .0336857     7.62   0.000     1.167324    1.299433
+                           4  |   1.511872    .040722    15.35   0.000     1.434128     1.59383
+             5 most deprived  |   1.724162   .0477434    19.67   0.000     1.633081    1.820324
+                              |
+               1.hypertension |   .9952563   .0186959    -0.25   0.800     .9592794    1.032582
+1.chronic_respiratory_disease |   1.669599   .0353868    24.18   0.000     1.601663    1.740416
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   1.008554    .026629     0.32   0.747       .95769     1.06212
+                Yes with OCS  |   1.139577   .0556763     2.67   0.007     1.035515    1.254096
+                              |
+    1.chronic_cardiac_disease |   1.218276   .0224694    10.70   0.000     1.175023    1.263121
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.276165    .027559    11.29   0.000     1.223278    1.331339
+       Uncontrolled diabetes  |   1.945612   .0539765    23.99   0.000     1.842645    2.054333
+  Diabetes, no hba1c measure  |   1.832074   .0790179    14.04   0.000     1.683568    1.993681
+                              |
+            cancer_exhaem_cat |
+                   Last year  |    1.77631   .1035418     9.86   0.000     1.584535    1.991295
+               2-5 years ago  |   1.207261   .0497241     4.57   0.000     1.113634    1.308761
+                    5+ years  |   1.006698   .0270589     0.25   0.804     .9550367    1.061155
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.914662   .3724575     8.37   0.000       2.2689    3.744219
+               2-5 years ago  |   2.288753   .1881703    10.07   0.000     1.948127    2.688937
+                    5+ years  |   1.612774   .1065779     7.23   0.000     1.416847    1.835794
+                              |
+      1.chronic_liver_disease |   1.936385    .122726    10.43   0.000     1.710186    2.192501
+            1.stroke_dementia |   2.143042   .0441965    36.96   0.000     2.058146     2.23144
+                1.other_neuro |    2.70227   .0920461    29.18   0.000     2.527754    2.888836
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.301752   .0253967    13.52   0.000     1.252915    1.352493
+           Stage 4/5 egfr<30  |   2.465729   .0822305    27.06   0.000     2.309714    2.632281
+                              |
+           1.organ_transplant |   3.061067   .3470571     9.87   0.000     2.451125    3.822788
+                     1.spleen |   1.249017   .1755604     1.58   0.114     .9482536    1.645176
+           1.ra_sle_psoriasis |   1.210809    .035091     6.60   0.000     1.143949    1.281577
+       1.other_imm_except_hiv |    3.55002   .6630208     6.78   0.000     2.461817    5.119243
+-----------------------------------------------------------------------------------------------
+. estimates save "./output/models/an_sens_furtherexploration_bmismok_`1'", replace                                                
+(note: file ./output/models/an_sens_furtherexploration_bmismok_omitbmismok.ster not found)
+file ./output/models/an_sens_furtherexploration_bmismok_omitbmismok.ster saved
+. }
+
+. 
+. if "`1'"=="omitbmismokinccpop"{
+. local adjlist_nobmismok = subinstr("$adjustmentlist", "i.obese4cat", "", 1)
+. local adjlist_nobmismok = subinstr("`adjlist_nobmismok'", "i.smoke_nomiss", "", 1)
+. mi estimate, eform: stcox i.hiv i.ethnicity `adjlist_nobmismok' if bmicat<. & smoke<., strata(stp)
+. estimates save "./output/models/an_sens_furtherexploration_bmismok_`1'", replace                                                
+. }
+
+. 
+. if "`1'"=="ccbmismok"{
+. mi estimate, eform: stcox i.hiv i.ethnicity $adjustmentlist if bmicat<. & smoke<., strata(stp)
+. estimates save "./output/models/an_sens_furtherexploration_bmismok_`1'", replace                                                
+. }
+
+. 
+. if "`1'"=="ccbmionly"{
+. mi estimate, eform: stcox i.hiv i.ethnicity $adjustmentlist if bmicat<., strata(stp)
+. estimates save "./output/models/an_sens_furtherexploration_bmismok_`1'", replace                                                
+. }
+
+. 
+. if "`1'"=="ccsmokonly"{
+. mi estimate, eform: stcox i.hiv i.ethnicity $adjustmentlist if smoke<., strata(stp)
+. estimates save "./output/models/an_sens_furtherexploration_bmismok_`1'", replace                                                
+. }
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_furtherexploration_bmismok_omitbmismok.log
+  log type:  text
+ closed on:  21 Jul 2020, 04:22:44
+----------------------------------------------------------------------------------------------------------------------------------

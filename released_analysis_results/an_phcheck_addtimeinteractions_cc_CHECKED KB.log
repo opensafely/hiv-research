@@ -1,0 +1,759 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_phcheck_addtimeinteractions_cc.log
+  log type:  text
+ opened on:  21 Jul 2020, 11:30:26
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. stsplit timeperiod, at(60 90)
+(34,474,950 observations (episodes) created)
+
+. 
+. gen anyreduced_kidney_function = reduced_kidney_function_cat>=2
+
+. gen anyobesity = obese4cat>=2
+
+. gen highimd = imd>=3
+
+. 
+. 
+. stcox   i.hiv i.ethnicity $adjustmentlist                                                               ///
+>         60.timeperiod#3.ethnicity                                                                                       ///
+>         60.timeperiod#1.male                                                                                            ///
+>         60.timeperiod#1.anyobesity                                                                                      ///
+>         60.timeperiod#3.smoke_nomiss                                                                            ///
+>         60.timeperiod#1.highimd                                                                                         ///     
+>                 
+>         60.timeperiod#1.chronic_respiratory_disease                                                     ///
+>         60.timeperiod#1.diabetes                                                                                        ///
+>         60.timeperiod#1.chronic_liver_disease                                                           ///
+>         60.timeperiod#1.stroke_dementia                                                                         ///
+>         60.timeperiod#1.other_neuro                                                                                     ///
+>         60.timeperiod#1.anyreduced_kidney_function                                                      ///
+>         90.timeperiod#3.ethnicity                                                                                       ///
+>         90.timeperiod#1.male                                                                                            ///
+>         90.timeperiod#1.anyobesity                                                                                      ///
+>         90.timeperiod#3.smoke_nomiss                                                                            ///
+>         90.timeperiod#1.highimd                                                                                         ///     
+>                 
+>         90.timeperiod#1.chronic_respiratory_disease                                                     ///
+>         90.timeperiod#1.diabetes                                                                                        ///
+>         90.timeperiod#1.chronic_liver_disease                                                           ///
+>         90.timeperiod#1.stroke_dementia                                                                         ///
+>         90.timeperiod#1.other_neuro                                                                                     ///
+>         90.timeperiod#1.anyreduced_kidney_function                                                      ///
+>         , strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -146430.11
+Iteration 1:   log likelihood = -131961.38
+Iteration 2:   log likelihood = -126459.63
+Iteration 3:   log likelihood = -126168.08
+Iteration 4:   log likelihood = -126128.13
+Iteration 5:   log likelihood = -126118.59
+Iteration 6:   log likelihood = -126117.58
+Iteration 7:   log likelihood = -126117.57
+Iteration 8:   log likelihood = -126117.57
+Refining estimates:
+Iteration 0:   log likelihood = -126117.57
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,724,742                  Number of obs    =  38,110,350
+No. of failures =       11,091
+Time at risk    =   1802666381
+                                                LR chi2(63)      =    40625.09
+Log likelihood  =   -126117.57                  Prob > chi2      =      0.0000
+
+--------------------------------------------------------------------------------------------------------
+                                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+---------------------------------------+----------------------------------------------------------------
+                                 1.hiv |   2.197328   .4945413     3.50   0.000     1.413577    3.415627
+                                       |
+                             ethnicity |
+                                Mixed  |   1.409549   .1626253     2.98   0.003     1.124278    1.767204
+               Asian or Asian British  |   1.574923   .1683397     4.25   0.000     1.277252    1.941969
+                                Black  |   1.399543   .0870414     5.40   0.000     1.238932    1.580974
+                                Other  |   1.259391   .1125213     2.58   0.010     1.057084    1.500417
+                                       |
+                                  age1 |   1.186497   .0272387     7.45   0.000     1.134294    1.241104
+                                  age2 |   .8486704   .0420174    -3.31   0.001     .7701874     .935151
+                                  age3 |   1.498074   .1708973     3.54   0.000     1.197926    1.873427
+                                1.male |   2.178181   .1399238    12.12   0.000     1.920498    2.470439
+                                       |
+                             obese4cat |
+                    Obese I (30-34.9)  |   1.522115   .1022976     6.25   0.000      1.33426    1.736419
+                   Obese II (35-39.9)  |   2.057123   .1503698     9.87   0.000     1.782542    2.373999
+                      Obese III (40+)  |    2.76818    .228818    12.32   0.000     2.354149    3.255028
+                                       |
+                          smoke_nomiss |
+                               Former  |   1.211944   .0264976     8.79   0.000     1.161106    1.265007
+                              Current  |   .9091266   .1149217    -0.75   0.451     .7096184    1.164726
+                                       |
+                                   imd |
+                                    2  |   1.184157    .038627     5.18   0.000     1.110819    1.262337
+                                    3  |   1.085193   .0785442     1.13   0.259     .9416694    1.250591
+                                    4  |   1.323444   .0952828     3.89   0.000     1.149271    1.524014
+                      5 most deprived  |   1.490247    .108027     5.50   0.000     1.292871    1.717755
+                                       |
+                        1.hypertension |    .980988   .0217423    -0.87   0.386     .9392862    1.024541
+         1.chronic_respiratory_disease |   2.027739   .1463039     9.80   0.000     1.760341    2.335755
+                                       |
+                             asthmacat |
+                          Yes, no OCS  |   .9460292    .028926    -1.81   0.070     .8910006    1.004456
+                         Yes with OCS  |    1.09112   .0600171     1.59   0.113     .9796073    1.215326
+                                       |
+             1.chronic_cardiac_disease |   1.181182    .025228     7.80   0.000     1.132757    1.231678
+                                       |
+                               diabcat |
+                  Controlled diabetes  |    1.42143    .095344     5.24   0.000     1.246322    1.621141
+                Uncontrolled diabetes  |   2.076609   .1455926    10.42   0.000     1.809991    2.382501
+           Diabetes, no hba1c measure  |    2.04596   .1624327     9.02   0.000     1.751131    2.390428
+                                       |
+                     cancer_exhaem_cat |
+                            Last year  |   1.735212   .1179067     8.11   0.000     1.518846    1.982399
+                        2-5 years ago  |   1.227877   .0580633     4.34   0.000      1.11919     1.34712
+                             5+ years  |   1.009308   .0314599     0.30   0.766     .9494939    1.072891
+                                       |
+                       cancer_haem_cat |
+                            Last year  |   2.728365   .4184131     6.54   0.000     2.020064    3.685021
+                        2-5 years ago  |   2.368949   .2224689     9.18   0.000     1.970694    2.847688
+                             5+ years  |   1.621659    .123592     6.34   0.000     1.396647    1.882922
+                                       |
+               1.chronic_liver_disease |   1.794681   .3971952     2.64   0.008     1.163057    2.769322
+                     1.stroke_dementia |   1.443077   .1218864     4.34   0.000      1.22291    1.702881
+                         1.other_neuro |   2.121944   .3078577     5.19   0.000     1.596758    2.819868
+                                       |
+           reduced_kidney_function_cat |
+         Stage 3a/3b egfr 30-60        |   1.380832   .0887879     5.02   0.000      1.21733    1.566294
+                    Stage 4/5 egfr<30  |   2.549722   .1818378    13.12   0.000     2.217114    2.932228
+                                       |
+                    1.organ_transplant |   3.130175     .40582     8.80   0.000     2.427797    4.035757
+                              1.spleen |   1.178719   .1944809     1.00   0.319     .8530361    1.628744
+                    1.ra_sle_psoriasis |   1.151756     .03898     4.17   0.000     1.077835    1.230746
+                1.other_imm_except_hiv |   3.388413   .7433121     5.56   0.000     2.204293    5.208629
+                                       |
+                  timeperiod#ethnicity |
+            60#Asian or Asian British  |   .8918157   .1051027    -0.97   0.331     .7078788    1.123547
+            90#Asian or Asian British  |   .6228445   .0877386    -3.36   0.001     .4725773    .8208928
+                                       |
+                       timeperiod#male |
+                                 60 1  |   .7052523   .0483874    -5.09   0.000     .6165147    .8067622
+                                 90 1  |   .5392562   .0392784    -8.48   0.000     .4675147    .6220067
+                                       |
+                 timeperiod#anyobesity |
+                                 60 1  |   .6846552   .0488375    -5.31   0.000     .5953253    .7873892
+                                 90 1  |   .5136469   .0400439    -8.55   0.000     .4408644    .5984452
+                                       |
+               timeperiod#smoke_nomiss |
+                           60#Current  |   1.076622   .1448802     0.55   0.583     .8270233    1.401551
+                           90#Current  |    1.12928   .1610883     0.85   0.394     .8538479    1.493561
+                                       |
+                    timeperiod#highimd |
+                                 60 1  |   1.220447   .0890107     2.73   0.006     1.057885     1.40799
+                                 90 1  |   1.149922   .0889888     1.81   0.071       .98809    1.338259
+                                       |
+timeperiod#chronic_respiratory_disease |
+                                 60 1  |   .7763457   .0605649    -3.25   0.001     .6662704    .9046066
+                                 90 1  |   .7905959   .0661161    -2.81   0.005     .6710735     .931406
+                                       |
+                   timeperiod#diabetes |
+                                 60 1  |   .8829695    .062532    -1.76   0.079     .7685347    1.014444
+                                 90 1  |   .8476665   .0643207    -2.18   0.029     .7305268    .9835896
+                                       |
+      timeperiod#chronic_liver_disease |
+                                 60 1  |   1.032515   .2472523     0.13   0.894     .6457471    1.650936
+                                 90 1  |   1.166386    .297544     0.60   0.546     .7074594    1.923017
+                                       |
+            timeperiod#stroke_dementia |
+                                 60 1  |   1.523594   .1363261     4.71   0.000     1.278517    1.815649
+                                 90 1  |   1.666615   .1562589     5.45   0.000     1.386846    2.002822
+                                       |
+                timeperiod#other_neuro |
+                                 60 1  |   1.189408   .1832366     1.13   0.260     .8794223    1.608661
+                                 90 1  |   1.412126   .2260147     2.16   0.031     1.031897    1.932461
+                                       |
+ timeperiod#anyreduced_kidney_function |
+                                 60 1  |   .9271923   .0631891    -1.11   0.267     .8112591    1.059693
+                                 90 1  |   .9806377   .0712241    -0.27   0.788      .850522    1.130659
+--------------------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. 
+. estat phtest, d
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.hiv      |            .            .        1             .
+      1.hiv       |     -0.00935         0.96        1         0.3266
+      1b.ethnicity|            .            .        1             .
+      2.ethnicity |     -0.01003         1.10        1         0.2933
+      3.ethnicity |      0.00064         0.00        1         0.9463
+      4.ethnicity |     -0.01356         2.01        1         0.1558
+      5.ethnicity |     -0.01446         2.30        1         0.1293
+      age1        |      0.00864         1.03        1         0.3097
+      age2        |     -0.01122         1.69        1         0.1932
+      age3        |      0.01382         2.53        1         0.1117
+      0b.male     |            .            .        1             .
+      1.male      |      0.00582         0.38        1         0.5382
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |      0.00752         0.62        1         0.4306
+      3.obese4cat |      0.01216         1.62        1         0.2028
+      4.obese4cat |     -0.00351         0.14        1         0.7121
+      1b.smoke_n~s|            .            .        1             .
+      2.smoke_no~s|     -0.00459         0.23        1         0.6319
+      3.smoke_no~s|      0.00357         0.14        1         0.7057
+      1b.imd      |            .            .        1             .
+      2.imd       |      0.01841         3.75        1         0.0527
+      3.imd       |      0.00784         0.66        1         0.4149
+      4.imd       |      0.00682         0.50        1         0.4784
+      5.imd       |      0.00621         0.41        1         0.5195
+      0b.hyperte~n|            .            .        1             .
+      1.hyperten~n|      0.00005         0.00        1         0.9957
+      0b.c~respi~e|            .            .        1             .
+      1.c~respir~e|     -0.00059         0.00        1         0.9500
+      1b.asthmacat|            .            .        1             .
+      2.asthmacat |     -0.00344         0.13        1         0.7177
+      3.asthmacat |     -0.01097         1.34        1         0.2465
+      0b.c~cardi~e|            .            .        1             .
+      1.c~cardia~e|     -0.00619         0.45        1         0.5039
+      1b.diabcat  |            .            .        1             .
+      2.diabcat   |     -0.00219         0.05        1         0.8170
+      3.diabcat   |     -0.00314         0.11        1         0.7379
+      4.diabcat   |      0.00271         0.08        1         0.7763
+      1b.c~exhae~t|            .            .        1             .
+      2.cancer_e~t|      0.00206         0.05        1         0.8278
+      3.cancer_e~t|      0.00278         0.09        1         0.7692
+      4.cancer_e~t|      0.01362         2.07        1         0.1497
+      1b.cancer_h~|            .            .        1             .
+      2.cancer_h~t|      0.01276         1.83        1         0.1765
+      3.cancer_h~t|     -0.01154         1.48        1         0.2243
+      4.cancer_h~t|      0.01179         1.55        1         0.2132
+      0b.c~liver~e|            .            .        1             .
+      1.c~liver_~e|      0.00319         0.11        1         0.7360
+      0b.stroke_~a|            .            .        1             .
+      1.stroke_d~a|     -0.00296         0.10        1         0.7528
+      0b.other_n~o|            .            .        1             .
+      1.other_ne~o|      0.00200         0.04        1         0.8320
+      1b.reduced~t|            .            .        1             .
+      2.reduced_~t|     -0.01441         2.37        1         0.1237
+      3.reduced_~t|     -0.01131         1.49        1         0.2217
+      0b.organ_t~t|            .            .        1             .
+      1.organ_tr~t|     -0.01109         1.39        1         0.2386
+      0b.spleen   |            .            .        1             .
+      1.spleen    |     -0.01344         2.01        1         0.1567
+      0b.ra_sle_~s|            .            .        1             .
+      1.ra_sle_p~s|     -0.00425         0.20        1         0.6544
+      0b.other_i~v|            .            .        1             .
+      1.other_im~v|     -0.00580         0.38        1         0.5387
+      60bn.timep~y|     -0.00368         0.15        1         0.6973
+      90.timeper~y|      0.00300         0.10        1         0.7528
+      60bn.timep~e|     -0.00649         0.47        1         0.4926
+      90.timeper~e|     -0.00069         0.01        1         0.9419
+      60bn.timep~y|     -0.00881         0.85        1         0.3559
+      90.timeper~y|      0.00474         0.25        1         0.6188
+      60bn.timep~s|      0.00173         0.03        1         0.8550
+      90.timeper~s|      0.00589         0.39        1         0.5342
+      60bn.timep~d|      0.00151         0.02        1         0.8760
+      90.timeper~d|     -0.00248         0.07        1         0.7961
+      60bn.timep~y|     -0.00491         0.27        1         0.6034
+      90.timeper~y|     -0.00123         0.02        1         0.8964
+      60bn.timep~s|     -0.00219         0.05        1         0.8170
+      90.timeper~s|      0.00237         0.06        1         0.8020
+      60bn.timep~a|     -0.00197         0.04        1         0.8356
+      90.timeper~a|      0.00330         0.12        1         0.7285
+      60bn.timep~a|      0.00244         0.07        1         0.7945
+      90.timeper~a|     -0.00452         0.23        1         0.6291
+      60bn.timep~o|      0.00058         0.00        1         0.9507
+      90.timeper~o|      0.00268         0.08        1         0.7758
+      60bn.timep~f|      0.00278         0.09        1         0.7669
+      90.timeper~f|      0.00155         0.03        1         0.8684
+      ------------+---------------------------------------------------
+      global test |                    175.60       63         0.0000
+      ----------------------------------------------------------------
+
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_phcheck_addtimeinteractions_cc.log
+  log type:  text
+ closed on:  21 Jul 2020, 17:44:55
+----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_phcheck_addtimeinteractions_cc.log
+  log type:  text
+ opened on:  21 Jul 2020, 21:34:04
+
+. do "E:\STATATMP\STD8828_000000.tmp"
+
+. stcox   i.hiv i.ethnicity $adjustmentlist 60.timeperiod#1.hiv 90.timeperiod#1.hiv , strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -146430.11
+Iteration 1:   log likelihood = -132030.93
+Iteration 2:   log likelihood = -126586.62
+Iteration 3:   log likelihood = -126295.03
+Iteration 4:   log likelihood = -126254.69
+Iteration 5:   log likelihood = -126245.02
+Iteration 6:   log likelihood = -126243.99
+Iteration 7:   log likelihood = -126243.97
+Iteration 8:   log likelihood = -126243.97
+Refining estimates:
+Iteration 0:   log likelihood = -126243.97
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,724,742                  Number of obs    =  38,110,350
+No. of failures =       11,091
+Time at risk    =   1802666381
+                                                LR chi2(43)      =    40372.28
+Log likelihood  =   -126243.97                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   4.860173   1.997515     3.85   0.000     2.171754    10.87659
+                              |
+                    ethnicity |
+                       Mixed  |   1.403113   .1618713     2.94   0.003     1.119163    1.759107
+      Asian or Asian British  |   1.318223   .0559746     6.51   0.000     1.212956    1.432626
+                       Black  |   1.391808   .0865106     5.32   0.000     1.232171    1.572126
+                       Other  |   1.253001   .1119408     2.52   0.012     1.051736    1.492781
+                              |
+                         age1 |   1.187321   .0272855     7.47   0.000     1.135029    1.242022
+                         age2 |   .8473766   .0419905    -3.34   0.001      .768947    .9338057
+                         age3 |   1.503371    .171641     3.57   0.000     1.201943    1.880393
+                       1.male |   1.461355   .0292494    18.95   0.000     1.405138    1.519822
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |    .998307   .0265801    -0.06   0.949     .9475469    1.051786
+          Obese II (35-39.9)  |   1.346299   .0523732     7.64   0.000     1.247465    1.452963
+             Obese III (40+)  |   1.808389   .0986344    10.86   0.000     1.625044    2.012421
+                              |
+                 smoke_nomiss |
+                      Former  |   1.212493    .026518     8.81   0.000     1.161617    1.265597
+                     Current  |   .9875465   .0410397    -0.30   0.763     .9102988    1.071349
+                              |
+                          imd |
+                           2  |   1.184182   .0386259     5.18   0.000     1.110846     1.26236
+                           3  |   1.276873   .0416917     7.49   0.000     1.197718    1.361259
+                           4  |   1.556261   .0498171    13.82   0.000     1.461622    1.657029
+             5 most deprived  |   1.749978    .057328    17.08   0.000     1.641148    1.866024
+                              |
+               1.hypertension |   .9819824   .0217648    -0.82   0.412     .9402376    1.025581
+1.chronic_respiratory_disease |   1.623443   .0399586    19.69   0.000     1.546985     1.70368
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   .9459018   .0289215    -1.82   0.069     .8908817     1.00432
+                Yes with OCS  |   1.090636   .0599888     1.58   0.115     .9791757    1.214783
+                              |
+    1.chronic_cardiac_disease |   1.182251   .0252539     7.84   0.000     1.133776    1.232798
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.254863   .0311398     9.15   0.000     1.195291    1.317405
+       Uncontrolled diabetes  |   1.832871   .0587923    18.89   0.000     1.721188    1.951801
+  Diabetes, no hba1c measure  |   1.806941   .0892135    11.98   0.000      1.64028    1.990536
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   1.733112   .1177639     8.09   0.000     1.517008        1.98
+               2-5 years ago  |   1.227933   .0580653     4.34   0.000     1.119242     1.34718
+                    5+ years  |   1.009075   .0314526     0.29   0.772     .9492743    1.072643
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.723555   .4176805     6.53   0.000     2.016495    3.678537
+               2-5 years ago  |   2.373123   .2228595     9.20   0.000     1.974168    2.852702
+                    5+ years  |   1.621999   .1236141     6.35   0.000     1.396947    1.883309
+                              |
+      1.chronic_liver_disease |   1.914901   .1373934     9.05   0.000     1.663692    2.204041
+            1.stroke_dementia |   2.180783   .0518068    32.82   0.000     2.081571    2.284723
+                1.other_neuro |   2.631425   .1041584    24.44   0.000     2.434996    2.843699
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.311828   .0298026    11.95   0.000     1.254697     1.37156
+           Stage 4/5 egfr<30  |     2.4208   .0937491    22.83   0.000     2.243855    2.611698
+                              |
+           1.organ_transplant |   3.134555   .4063604     8.81   0.000     2.431235    4.041334
+                     1.spleen |   1.178276   .1944072     0.99   0.320     .8527172    1.628131
+           1.ra_sle_psoriasis |   1.152466   .0390041     4.19   0.000       1.0785    1.231505
+       1.other_imm_except_hiv |   3.391672    .744038     5.57   0.000     2.206399    5.213672
+                              |
+               timeperiod#hiv |
+                        60 1  |   .3676184   .1905803    -1.93   0.054     .1330817    1.015491
+                        90 1  |   .3730819   .2414882    -1.52   0.128     .1049153    1.326689
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. test 60.timeperiod#1.hiv 90.timeperiod#1.hiv 
+
+ ( 1)  60bn.timeperiod#1.hiv = 0
+ ( 2)  90.timeperiod#1.hiv = 0
+
+           chi2(  2) =    4.14
+         Prob > chi2 =    0.1264
+
+. 
+end of do-file
+
+. lincom hiv + 60.timeperiod#1.hiv
+regressor hiv not found
+r(111);
+
+. lincom 1.hiv + 60.timeperiod#1.hiv, eform
+
+ ( 1)  1.hiv + 60bn.timeperiod#1.hiv = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.786689   .5671341     1.83   0.067     .9590893    3.328426
+------------------------------------------------------------------------------
+
+. lincom 1.hiv + 90.timeperiod#1.hiv, eform
+
+ ( 1)  1.hiv + 90.timeperiod#1.hiv = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.813242   .9083862     1.19   0.235     .6792452    4.840444
+------------------------------------------------------------------------------
+
+. doedit
+
+. do "E:\analyses\hiv-research\analysis\an_outcomes_MI_table.do"
+
+. *an_outcomes_table
+. *KB 9/7/2020
+. 
+. run global 
+
+. 
+. *Utility
+. cap prog drop writehrci
+
+. prog define writehrci
+  1. syntax anything, estimate(real) lci(real) uci(real)
+  2.         file write outcometable ("HR (`1')") _tab (string(round(`estimate', .01), "%4.2f")) (" (") (string(round(`lci', .01),
+>  "%4.2f")) ("-") (string(round(`uci', .01), "%4.2f")) (")") _n
+  3.         frame post estimates ("`1'") (`estimate') (`lci') (`uci') (.)
+  4. end
+
+. 
+. *Set up output file/frame
+. cap file close outcometable
+
+. file open outcometable using ./output/an_outcomes_MI_table.txt, write text replace
+
+. 
+. frames reset
+
+. frame create estimates str40 desc hr lci uci pint
+
+. 
+. *Get rates ready
+. use ./output/an_outcomes_RATES, clear
+(Analysis dataset HIV project)
+
+. gen str12 ev_py = string(_D) + " / " + string(round(_Y, 0.01), "%4.2f")
+
+. gen rateci = string(_Rate, "%4.2f") + " (" + string(_Lower, "%4.2f") + "-" + string(_Upper, "%4.2f") + ")"
+
+. sort hiv 
+
+. 
+. *Write ev/py/rates
+. foreach hivlevel of numlist 1 0{
+  2.         local hivlevelobs = `hivlevel'+1
+  3.         file write outcometable ("HIV=`hivlevel' Events/1000py") _tab  (ev_py[`hivlevelobs']) _n
+  4.         file write outcometable ("HIV=`hivlevel' Rate/1000py") _tab (rateci[`hivlevelobs']) _n
+  5.         file write outcometable _n _n
+  6.         }
+
+.         
+. *Write non-interaction model results
+. cap estimates use ./output/models/an_outcomes_agesex
+
+. if _rc==0{
+.         lincom 1.hiv, eform
+
+ ( 1)  1.hiv = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   2.898844   .5817359     5.30   0.000     1.956171    4.295787
+------------------------------------------------------------------------------
+.         local estimate = r(estimate)
+.         local lci = r(lb)
+.         local uci = r(ub)
+.         writehrci Age-sex_adjusted, estimate(`estimate') lci(`lci') uci(`uci')
+.         }
+
+.         else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
+
+. 
+. cap estimates use ./output/models/an_imputed_demog
+
+. if _rc==0{
+.         local estimate = exp( el(e(b_mi),1,2) )
+.         local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
+.         local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
+.         writehrci +IMD/ethnicity, estimate(`estimate') lci(`lci') uci(`uci')
+.         }
+
+.         else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
+
+.                 
+. cap estimates use ./output/models/an_imputed_full
+
+. if _rc==0{
+.         local estimate = exp( el(e(b_mi),1,2) )
+.         local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
+.         local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
+.         writehrci +obesity/smoking/comorbidities, estimate(`estimate') lci(`lci') uci(`uci')
+.         }
+
+.         else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
+
+. 
+. *Write interaction model results
+. foreach var of any ageover60 female nonblack anycomorbidity{
+  2.         if "`var'"=="ageover60" local filesuffix "age"
+  3.         if "`var'"=="female" local filesuffix "sex"
+  4.         if "`var'"=="nonblack" local filesuffix "ethnicity"
+  5.         if "`var'"=="anycomorbidity" local filesuffix "comorbidities"
+  6.         cap estimates use ./output/models/an_imputed_by`filesuffix'
+  7.         if _rc==0{
+  8.         file write outcometable _n _n
+  9.         local estimate = exp( el(e(b_mi),1,2) )
+ 10.         local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
+ 11.         local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
+ 12.         writehrci interac_NOT`var', estimate(`estimate') lci(`lci') uci(`uci')
+ 13.         local estimate = exp( el(e(b_Q_mi),1,1) )
+ 14.         local lci = exp( el(e(b_Q_mi),1,1) - 1.96* sqrt(el(e(V_Q_mi),1,1)) )
+ 15.         local uci = exp( el(e(b_Q_mi),1,1) + 1.96* sqrt(el(e(V_Q_mi),1,1)) )
+ 16.         writehrci interac_`var', estimate(`estimate') lci(`lci') uci(`uci')
+ 17.         local pint = 2*(1-normal( abs(el ( e(b_mi), 1, colsof(e(b_mi))))/ sqrt( el ( e(V_mi), colsof(e(V_mi)), colsof(e(V_mi)
+> )) )))
+ 18.         frame post estimates ("int_`var'") (.) (.) (.) (`pint')
+ 19.         }
+ 20.         else file write outcometable _n _n ("`var'_interaction _tab MODEL NOT FOUND")
+ 21.         }
+
+. 
+. cap estimates use ./output/models/an_phcheck_interaction_mi
+
+. if _rc==0{
+.         file write outcometable _n _n
+.         local estimate = exp( el(e(b_mi),1,2) )
+.         local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
+.         local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
+.         writehrci int_time_base, estimate(`estimate') lci(`lci') uci(`uci')
+. 
+.         local estimate = exp( el(e(b_Q_mi),1,1) )
+.         local lci = exp( el(e(b_Q_mi),1,1) - 1.96* sqrt(el(e(V_Q_mi),1,1)) )
+.         local uci = exp( el(e(b_Q_mi),1,1) + 1.96* sqrt(el(e(V_Q_mi),1,1)) )
+.         writehrci int_time_6090, estimate(`estimate') lci(`lci') uci(`uci')
+.         
+.         local estimate = exp( el(e(b_Q_mi),1,2) )
+.         local lci = exp( el(e(b_Q_mi),1,2) - 1.96* sqrt(el(e(V_Q_mi),1,2)) )
+.         local uci = exp( el(e(b_Q_mi),1,2) + 1.96* sqrt(el(e(V_Q_mi),1,2)) )
+.         writehrci int_time_90plus, estimate(`estimate') lci(`lci') uci(`uci')
+. 
+.         mi test 60.timeperiod#1.hiv 90.timeperiod#1.hiv
+note: assuming equal fractions of missing information
+
+ ( 1)  60bn.timeperiod#1.hiv = 0
+ ( 2)  90.timeperiod#1.hiv = 0
+
+       F(  2, 1.3e+12) =    1.35
+            Prob > F =    0.2583
+.         local pint = r(p)
+.         
+.         frame post estimates ("int_time") (.) (.) (.) (`pint')
+.         }
+
+.         
+.         
+. file close outcometable
+
+. 
+. frame estimates: replace pint = pint[_n+1] if pint==.
+(5 real changes made)
+
+. frame estimates: replace pint = pint[_n+1] if pint==.
+(5 real changes made)
+
+. frame estimates: replace pint = pint[_n+1] if pint==. & substr(desc,1,8)=="int_time"
+(1 real change made)
+
+. 
+. frame estimates: replace desc = subinstr(desc,",","",1)
+(14 real changes made)
+
+. 
+. frame estimates: drop if hr==.
+(5 observations deleted)
+
+. 
+. frame estimates: save ./output/an_outcomes_MI_table_ESTIMATES, replace
+file ./output/an_outcomes_MI_table_ESTIMATES.dta saved
+
+. 
+. 
+end of do-file
+
+. do "E:\analyses\hiv-research\analysis\an_forestplot_MI.do"
+
+. *an_forestplot
+. *KB 9/7/2020
+. 
+. run global 
+
+. 
+. use ./output/an_outcomes_MI_table_ESTIMATES, clear
+
+. 
+. replace desc = "Age-sex adjusted" if desc == "Age-sex_adjusted"
+(1 real change made)
+
+. replace desc = "+ IMD/ethnicity" if desc == "+IMD/ethnicity"
+(1 real change made)
+
+. replace desc = "+ obesity/smoking/comorbidities" if desc == "+obesity/smoking/comorbidities"
+(1 real change made)
+
+. 
+. replace desc = "<60" if desc == "interac_NOTageover60"
+(1 real change made)
+
+. replace desc = "60+" if desc == "interac_ageover60"
+(1 real change made)
+
+. 
+. replace desc = "Males" if desc == "interac_NOTfemale"
+(1 real change made)
+
+. replace desc = "Females" if desc == "interac_female"
+(1 real change made)
+
+. 
+. replace desc = "Black" if desc == "interac_NOTnonblack"
+(1 real change made)
+
+. replace desc = "Not Black" if desc == "interac_nonblack"
+(1 real change made)
+
+. 
+. replace desc = "None" if desc == "interac_NOTanycomorbidity"
+(1 real change made)
+
+. replace desc = "1 or more" if desc == "interac_anycomorbidity"
+(1 real change made)
+
+. 
+. replace desc = "0-59" if desc == "int_time_base"
+(1 real change made)
+
+. replace desc = "60-89" if desc == "int_time_6090"
+(1 real change made)
+
+. replace desc = "90+" if desc == "int_time_90plus"
+(1 real change made)
+
+. 
+. gen obsorder=_n
+
+. expand 2 if desc=="<60"|desc=="Males"|desc=="Black"|desc=="None"|desc=="0-59", gen(expanded)
+(5 observations created)
+
+. gen header = "By age" if expanded==1 & desc=="<60"
+(18 missing values generated)
+
+. replace header = "By sex" if expanded==1 & desc=="Males"
+(1 real change made)
+
+. replace header = "By ethnicity" if expanded==1 & desc=="Black"
+variable header was str6 now str12
+(1 real change made)
+
+. replace header = "By comorbidities" if expanded==1 & desc=="None"
+variable header was str12 now str16
+(1 real change made)
+
+. replace header = "By epidemic period (days)*" if expanded==1 & desc=="0-59"
+variable header was str16 now str26
+(1 real change made)
+
+. expand 2 if header!="", gen(expanded2)
+(5 observations created)
+
+. replace header="" if expanded2==1
+(5 real changes made)
+
+. replace desc="" if expanded==1|expanded2==1
+(10 real changes made)
+
+. for var hr lci uci: replace X=. if expanded==1
+
+->  replace hr=. if expanded==1
+(10 real changes made, 10 to missing)
+
+->  replace lci=. if expanded==1
+(10 real changes made, 10 to missing)
+
+->  replace uci=. if expanded==1
+(10 real changes made, 10 to missing)
+
+. gsort obsorder -expanded2 -expanded
+
+. 
+. gen revorder = _N-_n+1
+
+. 
+. gen modeltextpos = .125
+
+. gen headertextpos = .09
+
+. gen pinttextpos = 5
+
+. local rangemax = _N+3
+
+. 
+. gen pintstr = "p-interaction " + string(pint, "%5.3f")
+
+. 
+. scatter revorder hr, mc(black) || rcap lci uci revorder, hor lc(black)                                                  ///
+> || scatter revorder modeltextpos if _n>3, m(i) mlab(desc) mlabsize(vsmall)      mlabcol(black)  ///
+> || scatter revorder headertextpos if _n<=3, m(i) mlab(desc) mlabsize(vsmall)    mlabcol(black)  ///
+> || scatter revorder headertextpos, m(i) mlab(header) mlabsize(vsmall) mlabcol(black)    ///
+> || scatter revorder pinttextpos if header!="", m(i) mlab(pintstr) mlabcol(black) mlabsize(vsmall) ///
+> ||, xscale(log r(16)) xline(1, lp(dash)) xlab(.5 1 2 4) legend(off) ytitle("") ylab(none) yscale(r(-2 `rangemax')) ysize(8) ///
+> xtitle("Hazard ratio and 95% CI") yscale(off)
+
+. 
+. graph export ./output/an_forestplot_MI.svg, as(svg) replace
+(file ./output/an_forestplot_MI.svg written in SVG format)
+
+. 
+end of do-file
+
