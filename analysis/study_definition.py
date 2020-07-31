@@ -1,4 +1,4 @@
-from cohortextractor import (
+from cohortextractor2 import (
     StudyDefinition,
     patients,
     codelist_from_csv,
