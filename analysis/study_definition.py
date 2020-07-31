@@ -25,12 +25,6 @@ study = StudyDefinition(
         "2019-02-01", "2020-02-01"
     ),
     # Outcomes
-    died_date_cpns=patients.with_death_recorded_in_cpns(
-        on_or_before="2020-07-01",
-        returning="date_of_death",
-        include_month=True,
-        include_day=True,
-    ),
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
         on_or_before="2020-07-01",
@@ -50,14 +44,42 @@ study = StudyDefinition(
         include_day=True,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-    sgss_first_tested_for_covid=patients.with_test_result_in_sgss(
-        pathogen="SARS-CoV-2",
-        test_result="any",
-        find_first_match_in_period=True,
-        returning="date",
-        date_format="YYYY-MM-DD",
-        return_expectations={"date": {"earliest": "2020-03-01"}},
-    ),
+    
+    covid_admission_date=patients.admitted_to_hospital(
+        returning= "date_admitted" ,  # defaults to "binary_flag"
+        with_these_diagnoses=covid_codelist,  # optional
+        on_or_after="2020-02-01",
+        find_first_match_in_period=True,  
+        date_format="YYYY-MM-DD",  
+   ),
+
+    covid_admission_primary_diagnosis=patients.admitted_to_hospital(
+        returning="primary_diagnosis",
+        with_these_diagnoses=covid_codelist,  # optional
+        on_or_after="2020-02-01",
+        find_first_match_in_period=True,  
+        date_format="YYYY-MM-DD", 
+        return_expectations={
+            "date": {"earliest": "2020-03-01"},
+            "category": {"ratios": {"I21":0.5, "C34":0.5}},
+        },
+   ),
+
+    covid_admission_discharge_date=patients.admitted_to_hospital(
+        returning= "date_admitted" ,  # defaults to "binary_flag"
+        with_these_diagnoses=covid_codelist,  # optional
+        on_or_after="2020-02-01",
+        find_first_match_in_period=True,  
+        date_format="YYYY-MM-DD",  
+   ),
+
+    covid_confirmed_admission_date=patients.admitted_to_hospital(
+        returning= "date_admitted" ,  # defaults to "binary_flag"
+        with_these_diagnoses=covidconf_codelist,  # optional
+        on_or_after="2020-02-01",
+        find_first_match_in_period=True,  
+        date_format="YYYY-MM-DD",  
+    ),  
     sgss_first_positive_test_date=patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
@@ -65,46 +87,7 @@ study = StudyDefinition(
         returning="date",
         date_format="YYYY-MM-DD",
         return_expectations={"date": {"earliest": "2020-03-01"}},
-    ),
-    
-
-
-    covid_exposure=patients.with_these_clinical_events(
-        covid_exposure_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Y20ce":0.5, "Y229e":0.5}},
-            },
-    ),
-    
-    covid_negtest_1arycare_rcrd=patients.with_these_clinical_events(
-        covid_test_negative_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Y20d2":0.5, "Y22a2":0.5}},
-            },
-    ),
-    
-    covid_advice_given=patients.with_these_clinical_events(
-        covid_advice_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Y212c":0.5, "Y212d":0.5}},
-            },
-    ),
-    
+    ),  
     covid_clinical_or_nos=patients.with_these_clinical_events(
         covid_clinical_or_nos_codes,
         returning="category",
@@ -115,44 +98,7 @@ study = StudyDefinition(
             "date": {"earliest": "2020-03-01"},
             "category": {"ratios": {"A795.":0.5, "Y22aa":0.5}},
             },
-    ),
-    
-    covid_had_test=patients.with_these_clinical_events(
-        covid_had_test_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Xab7a":0.5, "Xaboe":0.5}},
-            },
-    ),
-    
-    covid_isolated=patients.with_these_clinical_events(
-        covid_isolated_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Y228f":0.5, "Y22a6":0.5}},
-            },
-    ),
-    
-    covid_nonspec_clin_assssmnt=patients.with_these_clinical_events(
-        covid_nonspec_clinical_assessment_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Y244b":0.5, "Y244d":0.5}},
-            },
-    ),
-    
+    ),   
     covid_positive_test=patients.with_these_clinical_events(
         covid_positive_test_codes,
         returning="category",
@@ -163,8 +109,7 @@ study = StudyDefinition(
             "date": {"earliest": "2020-03-01"},
             "category": {"ratios": {"XaLTE":0.5, "Y20d1":0.5}},
             },
-    ),
-      
+    ),     
     covid_sequelae=patients.with_these_clinical_events(
         covid_sequelae_codes,
         returning="category",
@@ -177,17 +122,7 @@ study = StudyDefinition(
             },
     ),
     
-    covid_suspected=patients.with_these_clinical_events(
-        covid_suspected_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"XaaNq":0.5, "Y20cf":0.5}},
-            },
-    ),
+
     
     # The rest of the lines define the covariates with associated GitHub issues
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/33
@@ -257,27 +192,7 @@ study = StudyDefinition(
             },
         },
     ),
-    care_home_type=patients.care_home_status_as_of(
-        "2020-02-01",
-        categorised_as={
-            "PC": """
-              IsPotentialCareHome
-              AND LocationDoesNotRequireNursing='Y'
-              AND LocationRequiresNursing='N'
-            """,
-            "PN": """
-              IsPotentialCareHome
-              AND LocationDoesNotRequireNursing='N'
-              AND LocationRequiresNursing='Y'
-            """,
-            "PS": "IsPotentialCareHome",
-            "U": "DEFAULT",
-        },
-        return_expectations={
-            "rate": "universal",
-            "category": {"ratios": {"PC": 0.05, "PN": 0.05, "PS": 0.05, "U": 0.85,},},
-        },
-    ),
+
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/10
     bmi=patients.most_recent_bmi(
         on_or_after="2010-02-01",
