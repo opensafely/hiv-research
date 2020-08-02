@@ -24,7 +24,14 @@ study = StudyDefinition(
     population=patients.registered_with_one_practice_between(
         "2019-02-01", "2020-02-01"
     ),
-    # Outcomes
+    # Outcomeshiv
+    cpns_died_date=patients.with_death_recorded_in_cpns(
+        returning="date_of_death",
+        include_month=True,
+        include_day=True,
+        return_expectations={"date": {"earliest": "2020-03-01"}},
+    ),
+
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
         on_or_before="2020-07-01",
@@ -37,7 +44,7 @@ study = StudyDefinition(
         match_only_underlying_cause=True,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-    died_date_ons=patients.died_from_any_cause(
+    ons_died_date_=patients.died_from_any_cause(
         on_or_before="2020-07-01",
         returning="date_of_death",
         include_month=True,
@@ -51,6 +58,7 @@ study = StudyDefinition(
         on_or_after="2020-02-01",
         find_first_match_in_period=True,  
         date_format="YYYY-MM-DD",  
+        return_expectations={"date": {"earliest": "2020-03-01"}},
    ),
 
     covid_admission_primary_diagnosis=patients.admitted_to_hospital(
@@ -70,7 +78,8 @@ study = StudyDefinition(
         with_these_diagnoses=covid_codelist,  # optional
         on_or_after="2020-02-01",
         find_first_match_in_period=True,  
-        date_format="YYYY-MM-DD",  
+        date_format="YYYY-MM-DD",
+        return_expectations={"date": {"earliest": "2020-03-01"}},
    ),
 
     covid_confirmed_admission_date=patients.admitted_to_hospital(
@@ -79,7 +88,32 @@ study = StudyDefinition(
         on_or_after="2020-02-01",
         find_first_match_in_period=True,  
         date_format="YYYY-MM-DD",  
+        return_expectations={"date": {"earliest": "2020-03-01"}},
     ),  
+    
+    any_admission_primary_diagnosis = patients.admitted_to_hospital(
+    returning="primary_diagnosis", 
+    on_or_after="2002-02-01",  
+    find_first_match_in_period=True,  
+    date_format="YYYY-MM-DD",  
+    return_expectations={
+            "date": {"earliest": "2020-03-01"},
+            "category": {"ratios": {"I21":0.5, "C34":0.5}},
+        },
+    ),
+
+    any_admission_date = patients.admitted_to_hospital(
+    returning="date_admitted", 
+    on_or_after="2002-02-01",  
+    find_first_match_in_period=True,  
+    date_format="YYYY-MM-DD",  
+    return_expectations={
+            "date": {"earliest": "2020-03-01"},
+            "category": {"ratios": {"I21":0.5, "C34":0.5}},
+        },
+    ),
+
+    
     sgss_first_positive_test_date=patients.with_test_result_in_sgss(
         pathogen="SARS-CoV-2",
         test_result="positive",
@@ -254,7 +288,7 @@ study = StudyDefinition(
         },
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/21
-    chronic_respiratory_disease=patients.with_these_clinical_events(
+    chronic_resp_disease_date=patients.with_these_clinical_events(
         chronic_respiratory_disease_codes,
         return_first_date_in_period=True,
         include_month=True,
@@ -301,26 +335,26 @@ study = StudyDefinition(
         ),
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/7
-    chronic_cardiac_disease=patients.with_these_clinical_events(
+    chronic_cardiac_disease_date=patients.with_these_clinical_events(
         chronic_cardiac_disease_codes,
         return_first_date_in_period=True,
         include_month=True,
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/30
-    diabetes=patients.with_these_clinical_events(
+    diabetes_date=patients.with_these_clinical_events(
         diabetes_codes, return_first_date_in_period=True, include_month=True,
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/32
-    lung_cancer=patients.with_these_clinical_events(
+    lung_cancer_date=patients.with_these_clinical_events(
         lung_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
-    haem_cancer=patients.with_these_clinical_events(
+    haem_cancer_date=patients.with_these_clinical_events(
         haem_cancer_codes, return_first_date_in_period=True, include_month=True,
         return_expectations={
            "date": {"earliest": "2010-01-01", "latest": "2020-02-01"},
         },
     ),
-    other_cancer=patients.with_these_clinical_events(
+    other_cancer_date=patients.with_these_clinical_events(
         other_cancer_codes, return_first_date_in_period=True, include_month=True,
         return_expectations={
            "date": {"earliest": "2010-01-01", "latest": "2020-02-01"},
@@ -328,19 +362,19 @@ study = StudyDefinition(
     ),
 
     # # https://github.com/ebmdatalab/tpp-sql-notebook/issues/12
-    chronic_liver_disease=patients.with_these_clinical_events(
+    chronic_liver_disease_date=patients.with_these_clinical_events(
         chronic_liver_disease_codes,
         return_first_date_in_period=True,
         include_month=True,
     ),
     # # https://github.com/ebmdatalab/tpp-sql-notebook/issues/14
-    other_neuro=patients.with_these_clinical_events(
+    other_neuro_date=patients.with_these_clinical_events(
         other_neuro, return_first_date_in_period=True, include_month=True,
     ),
-    stroke=patients.with_these_clinical_events(
+    stroke_date=patients.with_these_clinical_events(
         stroke, return_first_date_in_period=True, include_month=True,
     ),
-    dementia=patients.with_these_clinical_events(
+    dementia_date=patients.with_these_clinical_events(
         dementia, return_first_date_in_period=True, include_month=True,
     ),
     # # Chronic kidney disease
@@ -358,22 +392,22 @@ study = StudyDefinition(
             "incidence": 0.95,
         },
     ),
-    dialysis=patients.with_these_clinical_events(
+    dialysis_date=patients.with_these_clinical_events(
         dialysis_codes, return_first_date_in_period=True, include_month=True,
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/31
-    organ_transplant=patients.with_these_clinical_events(
+    organ_transplant_date=patients.with_these_clinical_events(
         organ_transplant_codes, return_first_date_in_period=True, include_month=True,
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/13
-    dysplenia=patients.with_these_clinical_events(
+    dysplenia_date=patients.with_these_clinical_events(
         spleen_codes, return_first_date_in_period=True, include_month=True,
     ),
-    sickle_cell=patients.with_these_clinical_events(
+    sickle_cell_date=patients.with_these_clinical_events(
         sickle_cell_codes, return_first_date_in_period=True, include_month=True,
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/36
-    aplastic_anaemia=patients.with_these_clinical_events(
+    aplastic_anaemia_date=patients.with_these_clinical_events(
         aplastic_codes, return_last_date_in_period=True, include_month=True,
     ),
     hiv=patients.with_these_clinical_events(
@@ -397,16 +431,16 @@ study = StudyDefinition(
             "category": {"ratios": {"A70z0": 0.8, "X306e": 0.2}},
             },
     ),   
-    permanent_immunodeficiency=patients.with_these_clinical_events(
+    permanent_immunodeficiency_date=patients.with_these_clinical_events(
         permanent_immune_codes, return_first_date_in_period=True, include_month=True,
     ),
-    temporary_immunodeficiency=patients.with_these_clinical_events(
+    temporary_immunodeficiency_date=patients.with_these_clinical_events(
         temp_immune_codes, return_last_date_in_period=True, include_month=True,
     ),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/23
     # immunosuppressant_med=
     # hypertension
-    hypertension=patients.with_these_clinical_events(
+    hypertension_date=patients.with_these_clinical_events(
         hypertension_codes, return_first_date_in_period=True, include_month=True,
     ),
     # Blood pressure
@@ -462,7 +496,7 @@ study = StudyDefinition(
         },
     ),
     # # https://github.com/ebmdatalab/tpp-sql-notebook/issues/49
-    ra_sle_psoriasis=patients.with_these_clinical_events(
+    ra_sle_psoriasis_date=patients.with_these_clinical_events(
         ra_sle_psoriasis_codes, return_first_date_in_period=True, include_month=True,
     ),
 

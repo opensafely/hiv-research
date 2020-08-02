@@ -51,11 +51,9 @@ assert inlist(sex, "M", "F", "I", "U")
 noi di "DROPPING GENDER NOT M/F:" 
 drop if inlist(sex, "I", "U")
 
-for var hiv hepc covid_exposure covid_negtest_1arycare_rcrd ///
-	covid_advice_given covid_clinical_or_nos covid_had_test ///
-	covid_isolated covid_nonspec_clin_assssmnt ///
-	covid_positive_test covid_sequelae covid_suspected : rename X X_code
-
+for var hiv hepc covid_clinical_or_nos covid_positive_test covid_sequelae: rename X X_code
+rename bp_sys_date_measured bp_sys_date
+rename bp_dias_date_measured bp_dias_date
 
 ******************************
 *  Convert strings to dates  *
@@ -66,69 +64,59 @@ foreach var of varlist 	bp_sys_date 					///
 						bp_dias_date 					///
 						hba1c_percentage_date			///
 						hba1c_mmol_per_mol_date			///
-						hypertension					///
+						hypertension_date				///
 						bmi_date_measured				///
-						chronic_respiratory_disease 	///
-						chronic_cardiac_disease 		///
-						diabetes 						///
-						lung_cancer 					///
-						haem_cancer						///
-						other_cancer 					///
-						chronic_liver_disease 			///
-						stroke							///
-						dementia		 				///
-						other_neuro 					///
-						organ_transplant 				///	
-						dysplenia						///
-						sickle_cell 					///
-						aplastic_anaemia 				///
+						chronic_resp_disease_date 	///
+						chronic_cardiac_disease_date 	///
+						diabetes_date 					///
+						lung_cancer_date 				///
+						haem_cancer_date				///
+						other_cancer_date 				///
+						chronic_liver_disease_date 		///
+						stroke_date						///
+						dementia_date	 				///
+						other_neuro_date 				///
+						organ_transplant_date			///	
+						dysplenia_date					///
+						sickle_cell_date 				///
+						aplastic_anaemia_date 			///
 						hiv_date						///
 						hepc_date						///
-						permanent_immunodeficiency 		///
-						temporary_immunodeficiency		///
-						ra_sle_psoriasis  dialysis 	{
+						permanent_immunodeficiency_date ///
+						temporary_immunodeficiency_date	///
+						ra_sle_psoriasis_date  			///
+						dialysis_date 					///
+						covid_admission_date			///
+						covid_admission_discharge_date 	///
+						covid_confirmed_admission_date 	///
+						any_admission_date				///	
+						covid_clinical_or_nos_date 		///
+						covid_positive_test_date 		///
+						covid_sequelae_date 			///
+						ons_died_date					///
+						cpns_died_date					///
+						sgss_first_positive_test_date {
 	confirm string variable `var'
-	replace `var' = `var' + "-15"
-	rename `var' `var'_dstr
-	replace `var'_dstr = " " if `var'_dstr == "-15"
-	gen `var'_date = date(`var'_dstr, "YMD") 
-	order `var'_date, after(`var'_dstr)
-	drop `var'_dstr
-	format `var'_date %td
+	replace `var' = `var' + "-15" if length(`var')==7
+	rename `var' `var'D
+	replace `var'D = " " if `var'D == "-15"
+	gen `var' = date(`var'D, "YMD") 
+	order `var', after(`var'D)
+	drop `var'D
+	format `var' %td
 }
 
-rename bmi_date_measured_date      bmi_date_measured
-rename bp_dias_date_measured_date  bp_dias_date
-rename bp_sys_date_measured_date   bp_sys_date
-rename hba1c_percentage_date_date  hba1c_percentage_date
-rename hba1c_mmol_per_mol_date_date  hba1c_mmol_per_mol_date
-rename hiv_date_date hiv_date
-rename hepc_date_date hepc_date
+rename chronic_resp_disease_date chronic_respiratory_disease_date
 
-
-* Dates of: CPNS death, ONS-covid death
-foreach var of varlist 	died_date_ons died_date_cpns ///
-	covid_exposure_date covid_negtest_1arycare_rcrd_date ///
-	covid_advice_given_date covid_clinical_or_nos_date covid_had_test_date ///
-	covid_isolated_date covid_nonspec_clin_assssmnt_date ///
-	covid_positive_test_date covid_sequelae_date covid_suspected_date ///
-	sgss_first_tested_for_covid ///
-	sgss_first_positive_test_date {
-		confirm string variable `var'
-		rename `var' _tmp
-		gen `var' = date(_tmp, "YMD")
-		drop _tmp
-		format %d `var'
-}
-rename sgss_first_tested_for_covid sgss_first_tested_for_covid_date
- 
 ********* DEFAULT CENSORING IS MAX OUTCOME DATE MINUS 7 **********
-foreach var of varlist 	died_date_ons died_date_cpns {
+foreach var of varlist 	ons_died_date cpns_died_date covid_admission_date {
 		*Set default censoring date as max observed minus 7 days
-		local globstem = substr("`var'",11,.)
+		local endofname = strpos("`var'", "_date")-1
+		local globstem = substr("`var'",1,`endofname')
 		summ `var'
 		global `globstem'deathcensor = r(max)-7
 }
+
 ******************INPUT HERE TO OVERRIDE******************
 *Set censoring dates manually here if needed
 *global cpnsdeathcensor 		= d("25/04/2020")
@@ -142,10 +130,6 @@ foreach var of varlist 	died_date_ons died_date_cpns {
 
 
 * BMI 
-
-* Only keep if within certain time period? using bmi_date_measured ?
-* NB: Some BMI dates in future or after cohort entry
-
 * Set implausible BMIs to missing:
 replace bmi = . if !inrange(bmi, 15, 50)
 
@@ -399,14 +383,14 @@ gen c_ethnicity = ethnicity - 3
 * Comorbidities ever before
 foreach var of varlist	chronic_respiratory_disease_date 	///
 						chronic_cardiac_disease_date 		///
-						diabetes 							///
+						diabetes_date 							///
 						chronic_liver_disease_date 			///
 						stroke_date							///
 						dementia_date						///
 						other_neuro_date					///
 						organ_transplant_date 				///
 						aplastic_anaemia_date				///
-						hypertension 						///
+						hypertension_date 						///
 						dysplenia_date 						///
 						sickle_cell_date 					///
 						hiv_date							///
@@ -415,7 +399,7 @@ foreach var of varlist	chronic_respiratory_disease_date 	///
 						temporary_immunodeficiency_date		///
 						ra_sle_psoriasis_date dialysis_date {
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
-	gen `newvar' = (`var'< d(1/2/2020))
+	gen byte `newvar' = (`var'< d(1/2/2020))
 	order `newvar', after(`var')
 }
 
@@ -608,15 +592,9 @@ drop hba1c_pct hba1c_percentage hba1c_mmol_per_mol
 
 *Working definitions
 gen covid_composite_def_date = min(covid_clinical_or_nos_date, covid_positive_test_date)
-gen covid_composite_sus_date = min(covid_suspected_date, covid_had_test_date, covid_isolated_date)
-
-gen covid_composite_deforsus_date = min(covid_composite_def_date, covid_composite_sus_date )
 
 format %d covid_composite*
 label var covid_composite_def_date "date 1st clinical/nos covid code or + test code in 1o care"
-label var covid_composite_sus_date "date 1st suspected code, isolated, or had test"
-label var covid_composite_deforsus_date "date 1st clinical/nos code, +test code, suspected code, isolated, had test code"
-
 
 ********************************
 *  Outcomes and survival time  *
@@ -630,35 +608,32 @@ gen enter_date = date("01/02/2020", "DMY")
 format %d enter_date
 
 /*   Outcomes   */
-* Date of Covid death in ONS
-gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any==1
 
 * Binary indicators for outcomes
-gen cpnsdeath 		= (died_date_cpns		< .)
-*gen onscoviddeath 	= (died_date_onscovid 	< .)
-gen onsdeath 		= 2*(died_date_ons < .)
+gen byte cpnsdeath 		= (cpns_died_date		< .)
+gen byte onsdeath 		= 2*(ons_died_date < .)
 replace onsdeath 	= 1 if died_ons_covid_flag_any==1
 label define onsdeathlab 1 covid 2 noncovid
 label values onsdeath onsdeathlab 
+gen byte covidadmission = (covid_admission_date < .)
+
 
 /*  Create survival times  */
 * For looping later, name must be stime_binary_outcome_name
 
 * Survival time = last followup date (first: end study, death, or that outcome)
-gen stime_cpnsdeath  	= min($cpnsdeathcensor, died_date_cpns, died_date_ons)
-gen stime_onsdeath 		= min($onsdeathcensor, died_date_ons)
+gen stime_cpnsdeath  	= min($cpns_dieddeathcensor, cpns_died_date, ons_died_date)
+gen stime_onsdeath 		= min($ons_dieddeathcensor, ons_died_date)
+gen stime_covidadmission 	= min($covid_admissiondeathcensor, covid_admission_date, ons_died_date)
+
 
 * If outcome was after censoring occurred, set to zero
-replace cpnsdeath 		= 0 if (died_date_cpns > $cpnsdeathcensor) 
-*replace onscoviddeath 	= 0 if (died_date_onscovid	> $onsdeathcensor) 
-replace onsdeath 		= 0 if (died_date_ons > $onsdeathcensor) 
+replace cpnsdeath 		= 0 if (cpns_died_date > $cpnsdeathcensor | cpns_died_date > ons_died_date) 
+replace onsdeath 		= 0 if (ons_died_date > $onsdeathcensor) 
+replace covidadmission 	= 0 if (covid_admission_date > $covid_admissiondeathcensor | covid_admission_date > ons_died_date) 
 
 * Format date variables
 format stime* %td 
-format	stime* 				///
-		died_date_onscovid 	///
-		died_date_ons 		///
-		died_date_cpns %td 
 
 *********************
 *  Label variables  *
@@ -766,9 +741,12 @@ label var  stime_onsdeath 				"Survival time (date); outcome ONS covid death"
 
 * REDUCE DATASET SIZE TO VARIABLES NEEDED
 keep patient_id imd stp region enter_date  									///
-	cpnsdeath died_date_cpns  stime_cpnsdeath								///
-	onsdeath died_date_ons died_date_onscovid 								///
-	stime_onsdeath															///
+	cpnsdeath cpns_died_date  stime_cpnsdeath								///
+	onsdeath ons_died_date 													///
+	covidadmission covid_admission_date									///
+	stime*																	///
+	covid_admission_date covid_admission_discharge_date 					///
+ 	covid_confirmed_admission_date any_admission_date						///
 	sgss* covid* 															///
 	age agegroup age70 age1 age2 age3 male bmi smoke   						///
 	smoke smoke_nomiss bmicat bpcat_nomiss obese4cat ethnicity ethnicity_16	///
@@ -793,7 +771,18 @@ save "cr_create_analysis_dataset.dta", replace
 stset stime_onsdeath, fail(onsdeath=1) 				///
 	id(patient_id) enter(enter_date) origin(enter_date)
 
-save "cr_create_analysis_dataset_STSET_onsdeath_fail1.dta", replace
+save "cr_create_analysis_dataset_STSET_cpnsdeath.dta", replace
+
+* Save a version set on CPNS covid death outcome
+stset stime_cpnsdeath, fail(cpnsdeath=1) 				///
+	id(patient_id) enter(enter_date) origin(enter_date)
+
+* Save a version set on COVID hospital admission 
+stset stime_covidadmission , fail(covidadmission=1) 				///
+	id(patient_id) enter(enter_date) origin(enter_date)
+
+save "cr_create_analysis_dataset_STSET_covidadmission.dta", replace
+
 
 log close
 
