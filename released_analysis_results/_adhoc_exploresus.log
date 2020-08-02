@@ -1,0 +1,1420 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\output/_adhoc_exploresus.log
+  log type:  text
+ opened on:   1 Aug 2020, 10:31:13
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen cad = date(covid_admission_date, "YMD")
+variable cad already defined
+r(110);
+
+end of do-file
+
+r(110);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen cdd = date(covid_admission_discharge_date, "YMD")
+variable cdd already defined
+r(110);
+
+end of do-file
+
+r(110);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. format %d cad
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. format %d cdd
+
+. 
+end of do-file
+
+. br *adm*
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen dod = date(died_date_ons, "YMD")
+variable dod already defined
+r(110);
+
+end of do-file
+
+r(110);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. format %d dod
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. count if cad<.
+  29,300
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen ccad = date(covid_confirmed_admission_date, "YMD")
+(21,627,063 missing values generated)
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. format %d ccad
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. count if ccad<.
+  23,705
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. assert cad<. if ccad<.
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cout if cdd<.
+command cout is unrecognized
+r(199);
+
+end of do-file
+
+r(199);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. count if cdd<.
+  29,300
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. assert cdd<. if cad<.
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. summ cad, d f
+
+                             cad
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    27feb2020      01feb2020
+ 5%    16mar2020      01feb2020
+10%    22mar2020      01feb2020       Obs              29,300
+25%    30mar2020      02feb2020       Sum of Wgt.      29,300
+
+50%    08apr2020                      Mean          10apr2020
+                        Largest       Std. Dev.      18.36621
+75%    23apr2020      31may2020
+90%    07may2020      31may2020       Variance       337.3178
+95%    14may2020      31may2020       Skewness       .2010805
+99%    24may2020      31may2020       Kurtosis       3.129139
+
+. summ ccad, d f
+
+                            ccad
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    26feb2020      01feb2020
+ 5%    15mar2020      01feb2020
+10%    21mar2020      01feb2020       Obs              23,705
+25%    29mar2020      02feb2020       Sum of Wgt.      23,705
+
+50%    07apr2020                      Mean          09apr2020
+                        Largest       Std. Dev.      17.64214
+75%    20apr2020      31may2020
+90%    04may2020      31may2020       Variance       311.2451
+95%    12may2020      31may2020       Skewness       .2203295
+99%    23may2020      31may2020       Kurtosis       3.426194
+
+. summ cdd, d f
+
+                             cdd
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    27feb2020      01feb2020
+ 5%    16mar2020      01feb2020
+10%    22mar2020      01feb2020       Obs              29,300
+25%    30mar2020      02feb2020       Sum of Wgt.      29,300
+
+50%    08apr2020                      Mean          10apr2020
+                        Largest       Std. Dev.      18.36621
+75%    23apr2020      31may2020
+90%    07may2020      31may2020       Variance       337.3178
+95%    14may2020      31may2020       Skewness       .2010805
+99%    24may2020      31may2020       Kurtosis       3.129139
+
+. 
+end of do-file
+
+. d *cpns*
+variable *cpns* not found
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & cad<.
+  10,574
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & ccad<.
+  9,177
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & died_ons_covid_flag_any==1 
+  15,249
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & died_ons_covid_flag_any==1 & cad<.
+  9,232
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & died_ons_covid_flag_any==1 & dod<=d(31/5/2020)
+  14,118
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & died_ons_covid_flag_any==1 & dod<=d(31/5/2020) & cad<.
+  9,046
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. cou if dod<. & died_ons_covid_flag_any==1 & dod<=d(31/5/2020) & ccad<.
+  8,428
+
+. 
+end of do-file
+
+. help frames
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. di d(1/2/2020)
+21946
+
+. 
+end of do-file
+
+. di d(31/7/2020)
+22127
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.         di `startweek'
+  3. }
+21946
+21953
+21960
+21967
+21974
+21981
+21988
+21995
+22002
+22009
+22016
+22023
+22030
+22037
+22044
+22051
+22058
+22065
+22072
+22079
+22086
+22093
+22100
+22107
+22114
+22121
+
+. 
+end of do-file
+
+. di %d 22121
+25jul2020
+
+. di %d 22128
+01aug2020
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.         foreach var of varlist covid_admission_date covid_confirmed_admission_date died_date_onscovid died_date_onsnoncovid d
+> ied_date_ons
+  3.         {
+  4.                 safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post (`startweek') `postcontent'
+  9. }
+{ required
+r(100);
+
+end of do-file
+
+r(100);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.         foreach var of varlist covid_admission_date covid_confirmed_admission_date died_date_onscovid died_date_onsnoncovid d
+> ied_date_ons {
+  3.         
+.                 safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+  4.                 local N`var' = r(N)     
+  5.                 local postcontent "`postcontent' (`N`var'')" 
+  6.         }
+  7.         frame post (`startweek') `postcontent'
+  8. }
+variable died_date_onscovid not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen died_date_onscovid = died_date if died_ons_covid_flag_any==1
+(21,635,519 missing values generated)
+
+. gen died_date_onsnoncovid = died_date if died_ons_covid_flag_any==0
+died_date ambiguous abbreviation
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen died_date_onsnoncovid = died_date_ons if died_ons_covid_flag_any==0
+(21,577,052 missing values generated)
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.         foreach var of varlist covid_admission_date covid_confirmed_admission_date died_date_onscovid died_date_onsnoncovid d
+> ied_date_ons {
+  3.         
+.                 safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+  4.                 local N`var' = r(N)     
+  5.                 local postcontent "`postcontent' (`N`var'')" 
+  6.         }
+  7.         frame post (`startweek') `postcontent'
+  8. }
+command safecount is unrecognized
+r(199);
+
+end of do-file
+
+r(199);
+
+. cd
+e:\analyses\hiv-research\analysis
+
+. run global
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.         foreach var of varlist covid_admission_date covid_confirmed_admission_date died_date_onscovid died_date_onsnoncovid d
+> ied_date_ons {
+  3.         
+.                 safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+  4.                 local N`var' = r(N)     
+  5.                 local postcontent "`postcontent' (`N`var'')" 
+  6.         }
+  7.         frame post (`startweek') `postcontent'
+  8. }
+type mismatch
+r(109);
+
+end of do-file
+
+r(109);
+
+. set trace on
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.         foreach var of varlist covid_admission_date covid_confirmed_admission_date died_date_onscovid died_date_onsnoncovid d
+> ied_date_ons {
+  3.         
+.                 safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+  4.                 local N`var' = r(N)     
+  5.                 local postcontent "`postcontent' (`N`var'')" 
+  6.         }
+  7.         frame post (`startweek') `postcontent'
+  8. }
+- forvalues startweek = 21946(7)22127{
+- foreach var of varlist covid_admission_date covid_confirmed_admission_date died_date_onscovid died_date_onsnoncovid died_date_on
+> s {
+- safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+= safecount if covid_admission_date>=21946 & covid_admission_date<(21946+7)
+  ------------------------------------------------------------------------------------------------------------ begin safecount ---
+  - marksample touse
+  - local if " if `touse'"
+  = local if " if __000000"
+  - local ifpos = strpos("`0'", "if ")
+  = local ifpos = strpos("if covid_admission_date>=21946 & covid_admission_date<(21946+7)", "if ")
+  - local inpos = strpos("`0'", "in ")
+  = local inpos = strpos("if covid_admission_date>=21946 & covid_admission_date<(21946+7)", "in ")
+  - if `inpos'==1 & `ifpos'>0 {
+  = if 0==1 & 1>0 {
+    noi di in red "if cannot be combined with in"
+    error 999
+    }
+  - if `ifpos'>0{
+  = if 1>0{
+  - local if "`0' & `touse'"
+  = local if "if covid_admission_date>=21946 & covid_admission_date<(21946+7) & __000000"
+  - local if "`if' & `touse'"
+  = local if "if covid_admission_date>=21946 & covid_admission_date<(21946+7) & __000000 & __000000"
+  - }
+  - if `inpos'==1{
+  = if 0==1{
+    local in = substr("`0'", `inpos',.)
+    }
+  - qui cou `if' `in'
+  = qui cou if covid_admission_date>=21946 & covid_admission_date<(21946+7) & __000000 & __000000 
+type mismatch
+  -------------------------------------------------------------------------------------------------------------- end safecount ---
+  local N`var' = r(N)
+  local postcontent "`postcontent' (`N`var'')"
+  }
+  frame post (`startweek') `postcontent'
+  }
+r(109);
+
+end of do-file
+
+r(109);
+
+. set trace off
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+.         foreach var of varlist cad ccad dod died_date_onsnoncovid died_date_ons {
+  2.         
+.                 safecount if `var'>=`startweek' & `var'<(`startweek'+7)
+  3.                 local N`var' = r(N)     
+  4.                 local postcontent "`postcontent' (`N`var'')" 
+  5.         }
+invalid syntax
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.         foreach var of varlist cad ccad dod died_date_onsnoncovid died_date_ons {
+  4.         
+.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post (`startweek') `postcontent'
+  9. }
+  42
+  37
+  3,438
+type mismatch
+r(109);
+
+end of do-file
+
+r(109);
+
+. drop died_date_onscovid
+
+. drop died_date_onsnoncovid
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. gen died_date_onscovid = dod if died_ons_covid_flag_any==1
+(21,635,519 missing values generated)
+
+. gen died_date_onsnoncovid = dod if died_ons_covid_flag_any==0
+(21,577,052 missing values generated)
+
+. 
+end of do-file
+
+. frame change weekly
+frame weekly not found
+r(111);
+
+. frames dir
+* default  21650768 x 67
+
+Note: frames marked with * contain unsaved data
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. frame create weekly startdate hospadm hospadmcfrmd covdeaths noncovdeaths alldeaths 
+
+. 
+. di d(1/2/2020)
+21946
+
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.         foreach var of varlist cad ccad dod died_date_onsnoncovid died_date_ons {
+  4.         
+.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post weekly (`startweek') `postcontent'
+  9. }
+  42
+  37
+  3,438
+  3,438
+type mismatch
+r(109);
+
+end of do-file
+
+r(109);
+
+. frame drop weekly
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. frame create weekly startdate hospadm hospadmcfrmd covdeaths noncovdeaths alldeaths 
+
+. 
+. di d(1/2/2020)
+21946
+
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.         foreach var of varlist cad ccad dod died_date_onsnoncovid dod {
+  4.         
+.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post weekly (`startweek') `postcontent'
+  9. }
+  42
+  37
+  3,438
+  3,438
+  3,438
+  49
+  44
+  3,486
+  3,486
+  3,486
+6 expressions expected and more than 6 found
+r(198);
+
+end of do-file
+
+r(198);
+
+. frame drop weekly
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.         foreach var of varlist cad ccad dod died_date_onsnoncovid dod {
+  4.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post weekly (`startweek') `postcontent'
+  9.         local postcontent
+ 10. }
+  42
+  37
+  3,438
+  3,438
+  3,438
+frame weekly not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. frame create weekly startdate hospadm hospadmcfrmd covdeaths noncovdeaths alldeaths 
+
+. 
+. di d(1/2/2020)
+21946
+
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.         foreach var of varlist cad ccad dod died_date_onsnoncovid dod {
+  4.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post weekly (`startweek') `postcontent'
+  9.         local postcontent
+ 10. }
+  42
+  37
+  3,438
+  3,438
+  3,438
+  49
+  44
+  3,486
+  3,486
+  3,486
+  85
+  77
+  3,546
+  3,546
+  3,546
+  159
+  150
+  3,527
+  3,527
+  3,527
+  290
+  264
+  3,617
+  3,614
+  3,617
+  556
+  476
+  3,553
+  3,546
+  3,553
+  1,442
+  1,194
+  3,789
+  3,702
+  3,789
+  3,278
+  2,852
+  4,236
+  3,772
+  4,236
+  5,399
+  4,688
+  5,431
+  4,018
+  5,431
+  4,908
+  4,259
+--Break--
+r(1);
+
+end of do-file
+
+--Break--
+r(1);
+
+. frame drop weekly
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. frame create weekly startdate hospadm hospadmcfrmd covdeaths noncovdeaths alldeaths 
+
+. 
+. di d(1/2/2020)
+21946
+
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.         foreach var of varlist cad ccad died_date_onscovid died_date_onsnoncovid dod {
+  4.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post weekly (`startweek') `postcontent'
+  9.         local postcontent
+ 10. }
+  42
+  37
+  0
+  3,438
+  3,438
+  49
+  44
+  0
+  3,486
+  3,486
+  85
+  77
+  0
+  3,546
+  3,546
+  159
+  150
+  0
+  3,527
+  3,527
+  290
+  264
+
+** COUNT <=5 **
+  3,614
+  3,617
+  556
+  476
+  7
+  3,546
+  3,553
+  1,442
+  1,194
+  87
+  3,702
+  3,789
+  3,278
+  2,852
+  464
+  3,772
+  4,236
+  5,399
+  4,688
+  1,413
+  4,018
+  5,431
+  4,908
+  4,259
+  2,314
+  4,350
+  6,664
+  3,652
+  2,994
+  2,408
+  4,088
+  6,496
+  2,722
+  2,142
+  2,108
+  3,780
+  5,888
+  2,347
+  1,677
+  1,655
+  3,477
+  5,132
+  1,764
+  1,203
+  1,254
+  3,330
+  4,584
+  1,354
+  894
+  904
+  3,099
+  4,003
+  859
+  516
+  764
+  3,029
+  3,793
+  368
+  223
+  595
+  2,736
+  3,331
+  26
+  15
+  453
+  2,847
+  3,300
+  0
+  0
+  311
+  2,797
+  3,108
+  0
+  0
+  211
+  2,749
+  2,960
+  0
+  0
+  194
+  2,916
+  3,110
+  0
+  0
+  104
+  1,869
+  1,973
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+  0
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. frame change weekly
+
+. 
+end of do-file
+
+. br
+
+. d
+
+Contains data
+  obs:            26                          
+ vars:             6                          
+----------------------------------------------------------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+----------------------------------------------------------------------------------------------------------------------------------
+startdate       float   %9.0g                 
+hospadm         float   %9.0g                 
+hospadmcfrmd    float   %9.0g                 
+covdeaths       float   %9.0g                 
+noncovdeaths    float   %9.0g                 
+alldeaths       float   %9.0g                 
+----------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. format %d startweek
+variable startweek not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. format %d startdate
+
+. 
+end of do-file
+
+. br
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter hospadm startweek , c(l) || scatter hospadmc startweek , c(l) ///
+>         || scatter covdeaths startweek , c(l) 
+variable startweek not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter hospadm startd, c(l) || scatter hospadmc startd , c(l) ///
+>         || scatter covdeaths startd , c(l) 
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter hospadm startd, c(l) || scatter hospadmc startd , c(l) ///
+>         || scatter covdeaths startd , c(l) || scatter noncovdeaths startd , c(l) 
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter hospadm startd, c(l) || scatter hospadmc startd , c(l) ///
+>         || scatter covdeaths startd , c(l) || scatter noncovdeaths startd , c(l)  ///
+>         || scatter alldeaths startd , c(l) 
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter scatter hospadm  ///    
+>         || scatter noncovdeaths startd , c(l)  ///
+>         || scatter alldeaths startd , c(l) 
+variable scatter not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter hospadm  stard, c(l) ///        
+>         || scatter noncovdeaths startd , c(l)  ///
+>         || scatter alldeaths startd , c(l) 
+variable stard not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. scatter hospadm  startd, c(l) ///       
+>         || scatter noncovdeaths startd , c(l)  ///
+>         || scatter alldeaths startd , c(l) 
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STDb59c_000000.tmp"
+
+. frame change default
+
+. 
+end of do-file
+
+. tab hiv
+
+        hiv |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      43C3. |     20,503       73.07       73.07
+      65QA. |        143        0.51       73.58
+      65VE. |         11        0.04       73.61
+      A788. |         77        0.27       73.89
+      A7880 |         91        0.32       74.21
+      A7881 |         84        0.30       74.51
+      A7882 |         17        0.06       74.57
+      A7883 |         27        0.10       74.67
+      A7884 |          3        0.01       74.68
+      A7885 |          6        0.02       74.70
+      A7886 |          1        0.00       74.71
+      A788y |         10        0.04       74.74
+      A788z |         49        0.17       74.92
+      A789. |         22        0.08       74.99
+      A7890 |          6        0.02       75.02
+      A7891 |          4        0.01       75.03
+      A7892 |         14        0.05       75.08
+      A7893 |        118        0.42       75.50
+      A7894 |          3        0.01       75.51
+      A7895 |         12        0.04       75.55
+      A7896 |          5        0.02       75.57
+      A7897 |          2        0.01       75.58
+      A7899 |          2        0.01       75.59
+      AyuC. |        204        0.73       76.31
+      AyuC0 |          5        0.02       76.33
+      AyuC1 |          5        0.02       76.35
+      AyuC2 |          1        0.00       76.35
+      AyuC4 |          2        0.01       76.36
+      AyuC5 |          1        0.00       76.36
+      AyuC7 |          3        0.01       76.37
+      AyuC8 |          1        0.00       76.38
+      AyuCA |          2        0.01       76.38
+      AyuCB |         10        0.04       76.42
+      AyuCC |          5        0.02       76.44
+      AyuCD |         29        0.10       76.54
+      R109. |         59        0.21       76.75
+      X001B |         21        0.07       76.83
+      X001C |          1        0.00       76.83
+      X003P |          4        0.01       76.84
+      X00B7 |          1        0.00       76.85
+      X00cZ |          1        0.00       76.85
+      X303J |          2        0.01       76.86
+      X30IP |          5        0.02       76.88
+      X709a |          1        0.00       76.88
+      X70M6 |      2,754        9.81       86.69
+      X70O0 |          3        0.01       86.70
+      X70O1 |          3        0.01       86.71
+      X70O6 |          3        0.01       86.73
+      X73kd |        130        0.46       87.19
+      X73ke |         16        0.06       87.25
+      X80bg |        989        3.52       90.77
+      X80bh |         24        0.09       90.86
+      X80bi |         29        0.10       90.96
+      X80t8 |          9        0.03       90.99
+      XE0RX |        508        1.81       92.80
+      XE0Tk |          2        0.01       92.81
+      Xa0Ae |         19        0.07       92.88
+      Xa0Af |         26        0.09       92.97
+      Xa0ye |      1,165        4.15       97.12
+      Xa3e8 |          2        0.01       97.13
+      XaFuL |        381        1.36       98.49
+      XaILa |        174        0.62       99.11
+      XaMBK |         29        0.10       99.21
+      XaO9K |          2        0.01       99.22
+      XaQOu |         11        0.04       99.26
+      XaQOv |         18        0.06       99.32
+      XaZxo |         63        0.22       99.54
+      Xaapx |          1        0.00       99.55
+      Xaapy |         14        0.05       99.60
+      Xaapz |         46        0.16       99.76
+      XaaqE |         18        0.06       99.83
+      XaaqF |          9        0.03       99.86
+      ZV01A |         40        0.14      100.00
+------------+-----------------------------------
+      Total |     28,061      100.00
+
+. tab hiv if cad<.
+
+        hiv |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      43C3. |          4       40.00       40.00
+      A7893 |          1       10.00       50.00
+      R109. |          1       10.00       60.00
+      X70M6 |          1       10.00       70.00
+      X80bg |          1       10.00       80.00
+      Xa0ye |          1       10.00       90.00
+      ZV01A |          1       10.00      100.00
+------------+-----------------------------------
+      Total |         10      100.00
+
+. gen hivbin = hiv!=""
+
+. gen hospadmbin = cad<.
+
+. logistic hospadmbin hiv
+no observations
+r(2000);
+
+. logistic hospadmbin hivbin
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(1)        =      29.32
+                                                Prob > chi2       =     0.0000
+Log likelihood = -222798.12                     Pseudo R2         =     0.0001
+
+------------------------------------------------------------------------------
+  hospadmbin | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      hivbin |   .2628173   .0831391    -4.22   0.000     .1413795    .4885639
+       _cons |   .0013564   7.93e-06 -1129.28   0.000      .001341    .0013721
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. l *age* in 1/10
+
+     +---------------------------+
+     | age   hba1c~ge   h~e_date |
+     |---------------------------|
+  1. |  67          0            |
+  2. |  67        9.9    2011-07 |
+  3. |  64          0            |
+  4. |  20          0            |
+  5. |  77          0            |
+     |---------------------------|
+  6. |  47          0            |
+  7. |  40          0            |
+  8. |  27          0            |
+  9. |  69        8.4    2011-09 |
+ 10. |  61          0            |
+     +---------------------------+
+
+. logistic hospadmbin hivbin age
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(2)        =   44443.40
+                                                Prob > chi2       =     0.0000
+Log likelihood = -200591.08                     Pseudo R2         =     0.0997
+
+------------------------------------------------------------------------------
+  hospadmbin | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      hivbin |   .3490643   .1104484    -3.33   0.001     .1877476    .6489877
+         age |   1.063503    .000362   180.85   0.000     1.062793    1.064212
+       _cons |   .0000407   9.89e-07  -416.29   0.000     .0000388    .0000427
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. logistic died_ons_covid_flag_any hivbin age
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(2)        =   52325.92
+                                                Prob > chi2       =     0.0000
+Log likelihood = -99762.214                     Pseudo R2         =     0.2078
+
+-----------------------------------------------------------------------------------------
+died_ons_covid_flag_any | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                 hivbin |   3.622402   .7286203     6.40   0.000     2.442213    5.372912
+                    age |    1.12403    .000778   168.93   0.000     1.122506    1.125555
+                  _cons |   3.22e-07   1.81e-08  -265.78   0.000     2.89e-07    3.60e-07
+-----------------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. l organ in 1/10
+
+     +----------+
+     | organ_~t |
+     |----------|
+  1. |          |
+  2. |          |
+  3. |          |
+  4. |          |
+  5. |          |
+     |----------|
+  6. |          |
+  7. |          |
+  8. |          |
+  9. |          |
+ 10. |          |
+     +----------+
+
+. br organ
+
+. d organ
+
+              storage   display    value
+variable name   type    format     label      variable label
+----------------------------------------------------------------------------------------------------------------------------------
+organ_transpl~t str7    %9s                   
+
+. gen organbin = organ!=""
+
+. logistic died_ons_covid_flag_any organbin age
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(2)        =   52450.43
+                                                Prob > chi2       =     0.0000
+Log likelihood = -99699.961                     Pseudo R2         =     0.2083
+
+-----------------------------------------------------------------------------------------
+died_ons_covid_flag_any | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+               organbin |   5.792648   .6454055    15.77   0.000     4.656268    7.206367
+                    age |   1.124114   .0007785   168.94   0.000     1.122589     1.12564
+                  _cons |   3.19e-07   1.80e-08  -265.75   0.000     2.86e-07    3.57e-07
+-----------------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. d asthma
+
+              storage   display    value
+variable name   type    format     label      variable label
+----------------------------------------------------------------------------------------------------------------------------------
+asthma          byte    %8.0g                 
+
+. logistic died_ons_covid_flag_any asthma organbin age
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(3)        =   52506.62
+                                                Prob > chi2       =     0.0000
+Log likelihood = -99671.866                     Pseudo R2         =     0.2085
+
+-----------------------------------------------------------------------------------------
+died_ons_covid_flag_any | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                 asthma |   1.151989   .0211699     7.70   0.000     1.111235    1.194238
+               organbin |   5.804615   .6467174    15.78   0.000      4.66592    7.221202
+                    age |   1.124324   .0007798   168.96   0.000     1.122797    1.125853
+                  _cons |   3.08e-07   1.74e-08  -265.07   0.000     2.75e-07    3.44e-07
+-----------------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. logistic died_ons_covid_flag_any asthma organbin hib age
+variable hib not found
+r(111);
+
+. logistic died_ons_covid_flag_any asthma organbin hiv age
+no observations
+r(2000);
+
+. cou
+  21,650,768
+
+. logistic died_ons_covid_flag_any asthma organbin hiv age
+no observations
+r(2000);
+
+. logistic died_ons_covid_flag_any asthma organbin hivbin age
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(4)        =   52534.37
+                                                Prob > chi2       =     0.0000
+Log likelihood =  -99657.99                     Pseudo R2         =     0.2086
+
+-----------------------------------------------------------------------------------------
+died_ons_covid_flag_any | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                 asthma |   1.152098   .0211723     7.70   0.000     1.111339    1.194351
+               organbin |   5.791001   .6452084    15.76   0.000     4.654966    7.204285
+                 hivbin |   3.596973   .7236031     6.36   0.000     2.424939    5.335479
+                    age |    1.12446   .0007806   168.98   0.000     1.122931    1.125991
+                  _cons |   3.04e-07   1.72e-08  -264.96   0.000     2.72e-07    3.40e-07
+-----------------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. logistic hospadmbin asthma organbin hivbin age
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(4)        =   45377.30
+                                                Prob > chi2       =     0.0000
+Log likelihood = -200124.13                     Pseudo R2         =     0.1018
+
+------------------------------------------------------------------------------
+  hospadmbin | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      asthma |   1.343438   .0160586    24.70   0.000     1.312329    1.375283
+    organbin |   5.822719   .4089856    25.08   0.000     5.073851    6.682114
+      hivbin |   .3473694   .1099159    -3.34   0.001      .186832    .6458505
+         age |   1.063809   .0003636   180.96   0.000     1.063097    1.064522
+       _cons |   .0000376   9.25e-07  -414.24   0.000     .0000358    .0000394
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. tab sex
+
+        sex |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          F | 10,787,019       49.82       49.82
+          I |        137        0.00       49.82
+          M | 10,863,435       50.18      100.00
+          U |        177        0.00      100.00
+------------+-----------------------------------
+      Total | 21,650,768      100.00
+
+. gen byte male = sex=="M"
+
+. logistic hospadmbin asthma organbin hivbin age make
+variable make not found
+r(111);
+
+. logistic hospadmbin asthma organbin hivbin age male
+
+Logistic regression                             Number of obs     = 21,650,768
+                                                LR chi2(5)        =   46446.16
+                                                Prob > chi2       =     0.0000
+Log likelihood =  -199589.7                     Pseudo R2         =     0.1042
+
+------------------------------------------------------------------------------
+  hospadmbin | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      asthma |   1.373243   .0164447    26.49   0.000     1.341388    1.405855
+    organbin |   5.576208   .3918176    24.46   0.000     4.858794     6.39955
+      hivbin |   .3225568   .1020684    -3.58   0.000     .1734825    .5997312
+         age |   1.064881   .0003685   181.67   0.000     1.064159    1.065603
+        male |   1.470897   .0174308    32.56   0.000     1.437127    1.505461
+       _cons |   .0000287   7.55e-07  -397.32   0.000     .0000272    .0000302
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. logistic hospadmbin asthma organbin hivbin age male if age<=70
+
+Logistic regression                             Number of obs     = 18,790,240
+                                                LR chi2(5)        =   11449.82
+                                                Prob > chi2       =     0.0000
+Log likelihood = -101656.72                     Pseudo R2         =     0.0533
+
+------------------------------------------------------------------------------
+  hospadmbin | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      asthma |   1.535538   .0260762    25.26   0.000     1.485271    1.587506
+    organbin |   7.703234   .6192438    25.40   0.000     6.580321    9.017768
+      hivbin |   .3602201   .1201525    -3.06   0.002     .1873471      .69261
+         age |   1.054469   .0006337    88.26   0.000     1.053228    1.055712
+        male |   1.347092   .0239866    16.73   0.000      1.30089    1.394935
+       _cons |   .0000485   1.69e-06  -284.51   0.000     .0000453     .000052
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. logistic hospadmbin asthma organbin hivbin age male i.ethnicity
+
+Logistic regression                             Number of obs     = 15,468,496
+                                                LR chi2(9)        =   35774.27
+                                                Prob > chi2       =     0.0000
+Log likelihood = -151302.58                     Pseudo R2         =     0.1057
+
+------------------------------------------------------------------------------
+  hospadmbin | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      asthma |   1.355037   .0182938    22.50   0.000     1.319652    1.391371
+    organbin |   5.152854   .4140885    20.40   0.000     4.401943    6.031859
+      hivbin |   .2408925   .0804238    -4.26   0.000     .1252112    .4634507
+         age |   1.068264   .0004367   161.55   0.000     1.067409     1.06912
+        male |   1.486261   .0201041    29.30   0.000     1.447376    1.526191
+             |
+   ethnicity |
+          2  |   2.093483   .1296813    11.93   0.000     1.854136    2.363727
+          3  |   2.395943   .0538105    38.91   0.000     2.292764    2.503766
+          4  |   3.010585   .1005113    33.01   0.000     2.819893    3.214172
+          5  |    1.86935   .0897733    13.03   0.000     1.701425     2.05385
+             |
+       _cons |   .0000218   6.83e-07  -342.36   0.000     .0000205    .0000232
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. tab hospadmbin
+
+ hospadmbin |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 | 21,621,468       99.86       99.86
+          1 |     29,300        0.14      100.00
+------------+-----------------------------------
+      Total | 21,650,768      100.00
+
+. tab hospadmbin ons_died_covid_flag_any
+variable ons_died_covid_flag_any not found
+r(111);
+
+. tab hospadmbin died_ons_covid_flag_any
+
+           | died_ons_covid_flag_a
+           |          ny
+hospadmbin |         0          1 |     Total
+-----------+----------------------+----------
+         0 |21,615,451      6,017 |21,621,468 
+         1 |    20,068      9,232 |    29,300 
+-----------+----------------------+----------
+     Total |21,635,519     15,249 |21,650,768 
+
+. tab hospadmbin hivbin
+
+           |        hivbin
+hospadmbin |         0          1 |     Total
+-----------+----------------------+----------
+         0 |21,593,417     28,051 |21,621,468 
+         1 |    29,290         10 |    29,300 
+-----------+----------------------+----------
+     Total |21,622,707     28,061 |21,650,768 
+
+. tab hospadmbin hivbin if age<=60
+
+           |        hivbin
+hospadmbin |         0          1 |     Total
+-----------+----------------------+----------
+         0 |16,394,952     24,230 |16,419,182 
+         1 |     8,505          8 |     8,513 
+-----------+----------------------+----------
+     Total |16,403,457     24,238 |16,427,695 
+
+. tab hospadmbin hivbin if age<=60 , col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+           |        hivbin
+hospadmbin |         0          1 |     Total
+-----------+----------------------+----------
+         0 |16,394,952     24,230 |16,419,182 
+           |     99.95      99.97 |     99.95 
+-----------+----------------------+----------
+         1 |     8,505          8 |     8,513 
+           |      0.05       0.03 |      0.05 
+-----------+----------------------+----------
+     Total |16,403,457     24,238 |16,427,695 
+           |    100.00     100.00 |    100.00 
+
+. tab hospadmbin hivbin , col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+           |        hivbin
+hospadmbin |         0          1 |     Total
+-----------+----------------------+----------
+         0 |21,593,417     28,051 |21,621,468 
+           |     99.86      99.96 |     99.86 
+-----------+----------------------+----------
+         1 |    29,290         10 |    29,300 
+           |      0.14       0.04 |      0.14 
+-----------+----------------------+----------
+     Total |21,622,707     28,061 |21,650,768 
+           |    100.00     100.00 |    100.00 
+
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\output/_adhoc_exploresus.log
+  log type:  text
+ closed on:   1 Aug 2020, 11:33:27
+----------------------------------------------------------------------------------------------------------------------------------
