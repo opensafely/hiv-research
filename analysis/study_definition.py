@@ -74,7 +74,7 @@ study = StudyDefinition(
    ),
 
     covid_admission_discharge_date=patients.admitted_to_hospital(
-        returning= "date_admitted" ,  # defaults to "binary_flag"
+        returning= "date_discharged" ,  # defaults to "binary_flag"
         with_these_diagnoses=covid_codelist,  # optional
         on_or_after="2020-02-01",
         find_first_match_in_period=True,  

@@ -28,7 +28,7 @@ cou if covid_admission_date>=. & covid_confirmed_admission_date<.
 if r(N)>0 noi di in red _n "WARNING - " r(N) " records of with confirmed covid admission date but no covid admission date"
 
 safecount if covid_admission_discharge_date<.
-noi di _n "N with a discharge date = " r(N) " (" %3.1f r(N)/`totaladmissions' "%)"
+noi di _n "N with a discharge date = " r(N) " (" %3.1f 100*r(N)/`totaladmissions' "%)"
 cou if covid_admission_date>=. & covid_admission_discharge_date<. /*must be an admission there's a discharge*/
 if r(N)>0 noi di in red _n "WARNING - " r(N) " records of with confirmed covid discharge date but no covid admission date"
 
@@ -37,7 +37,7 @@ noi di _n "Summary of admission lengths:"
 noi summ admission_length,d  
 
 cou if ons_died_date<. & covid_admission_date<.
-noi di _n "N deaths among admitted = " r(N) " (" %3.1f r(N)/`totaladmissions' "%)"
+noi di _n "N deaths among admitted = " r(N) " (" %3.1f 100*r(N)/`totaladmissions' "%)"
 cou if ons_died_date<. & onsdeath==1 & covid_admission_date<.
 noi di "...of which COVID deaths are N = " r(N)
 
