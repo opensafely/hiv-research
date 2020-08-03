@@ -181,26 +181,6 @@ hypertension_codes = codelist_from_csv(
     "codelists/opensafely-hypertension.csv", system="ctv3", column="CTV3ID"
 )
 
-covid_exposure_codes = codelist_from_csv(
-    "codelists/opensafely-covid-identification-in-primary-care-exposure-to-disease.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
-
-covid_test_negative_codes = codelist_from_csv(
-    "codelists/opensafely-covid-identification-in-primary-care-antigen-test-negative.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
-
-covid_advice_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_advice.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
 
 covid_clinical_or_nos_codes = codelist_from_csv(
     "local-codelists/exploratory_covid_clinical_or_nos.csv",
@@ -209,26 +189,6 @@ covid_clinical_or_nos_codes = codelist_from_csv(
     category_column="CTV3ID"
 )
 
-covid_had_test_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_had_test.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
-
-covid_isolated_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_isolated.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
-
-covid_nonspec_clinical_assessment_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_nonspec_clinical_assessment.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
 
 covid_positive_test_codes = codelist_from_csv(
     "local-codelists/exploratory_covid_positive_test.csv",
@@ -244,9 +204,3 @@ covid_sequelae_codes = codelist_from_csv(
     category_column="CTV3ID"
 )
 
-covid_suspected_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_suspected_codes.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
