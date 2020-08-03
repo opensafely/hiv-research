@@ -772,11 +772,13 @@ save "cr_create_analysis_dataset.dta", replace
 stset stime_onsdeath, fail(onsdeath=1) 				///
 	id(patient_id) enter(enter_date) origin(enter_date)
 
-save "cr_create_analysis_dataset_STSET_cpnsdeath.dta", replace
+save "cr_create_analysis_dataset_STSET_onsdeath_fail1.dta", replace
 
 * Save a version set on CPNS covid death outcome
 stset stime_cpnsdeath, fail(cpnsdeath=1) 				///
 	id(patient_id) enter(enter_date) origin(enter_date)
+
+save "cr_create_analysis_dataset_STSET_cpnsdeath.dta", replace
 
 * Save a version set on COVID hospital admission 
 stset stime_covidadmission , fail(covidadmission=1) 				///
