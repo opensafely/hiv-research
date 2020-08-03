@@ -628,8 +628,8 @@ gen stime_covidadmission 	= min($covid_admissiondeathcensor, covid_admission_dat
 
 
 * If outcome was after censoring occurred, set to zero
-replace cpnsdeath 		= 0 if (cpns_died_date > $cpnsdeathcensor | cpns_died_date > ons_died_date) 
-replace onsdeath 		= 0 if (ons_died_date > $onsdeathcensor) 
+replace cpnsdeath 		= 0 if (cpns_died_date > $cpns_dieddeathcensor | cpns_died_date > ons_died_date) 
+replace onsdeath 		= 0 if (ons_died_date > $ons_dieddeathcensor) 
 replace covidadmission 	= 0 if (covid_admission_date > $covid_admissiondeathcensor | covid_admission_date > ons_died_date) 
 
 * Format date variables
@@ -747,6 +747,7 @@ keep patient_id imd stp region enter_date  									///
 	stime*																	///
 	covid_admission_date covid_admission_discharge_date 					///
  	covid_confirmed_admission_date any_admission_date						///
+	any_admission_primary_diagnosis											///
 	sgss* covid* 															///
 	age agegroup age70 age1 age2 age3 male bmi smoke   						///
 	smoke smoke_nomiss bmicat bpcat_nomiss obese4cat ethnicity ethnicity_16	///
