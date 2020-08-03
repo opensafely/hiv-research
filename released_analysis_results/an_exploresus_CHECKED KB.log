@@ -1,0 +1,806 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\an_exploresus.log
+  log type:  text
+ opened on:   3 Aug 2020, 14:01:25
+
+
+N COVID admissions (U071+U072) = 28803
+
+N 'confirmed COVID' admissions (U071 only) = 23408
+
+Summary of admission dates:
+
+                    covid_admission_date
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    27feb2020      01feb2020
+ 5%    16mar2020      01feb2020
+10%    22mar2020      01feb2020       Obs              28,803
+25%    30mar2020      02feb2020       Sum of Wgt.      28,803
+
+50%    08apr2020                      Mean          10apr2020
+                        Largest       Std. Dev.      18.32617
+75%    23apr2020      31may2020
+90%    07may2020      31may2020       Variance       335.8486
+95%    14may2020      31may2020       Skewness       .2026775
+99%    24may2020      31may2020       Kurtosis       3.139722
+
+
+N with a discharge date = 28803 (100.0%)
+
+Summary of admission lengths:
+
+                      admission_length
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            1              0       Obs              28,803
+25%            3              0       Sum of Wgt.      28,803
+
+50%            7                      Mean           10.06142
+                        Largest       Std. Dev.      11.03139
+75%           13             95
+90%           24             98       Variance       121.6916
+95%           32            105       Skewness       2.304416
+99%           54            106       Kurtosis       10.31386
+
+N deaths among admitted = 10521 (36.5%)
+...of which COVID deaths are N = 9162
+
+
+ONS died date - SUS discharge date, among patients that died
+
+                    died_minus_discharged
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           -1            -51
+ 5%           -1            -11
+10%            0            -10       Obs              10,521
+25%            0             -9       Sum of Wgt.      10,521
+
+50%            0                      Mean           3.992491
+                        Largest       Std. Dev.      11.51825
+75%            0             90
+90%           14             95       Variance       132.6702
+95%           29             97       Skewness       3.738373
+99%           58             98       Kurtosis       18.90754
+
+
+. gen onscovid_died_date = ons_died_date if onsdeath==1
+(17,272,656 missing values generated)
+
+. gen onsnoncovid_died_date = ons_died_date if onsdeath==2
+(17,217,122 missing values generated)
+
+. 
+. frame change default
+
+. cap frame drop weekly
+
+. frame create weekly startdate cov_admissions conf_cov_admissions covdeaths noncovdeaths alldeaths 
+
+. 
+. forvalues startweek = 21946(7)22127{
+  2.                 local endweek = `startweek' + 6
+  3.                                 foreach var of varlist covid_admission_date covid_confirmed_admission_date onscovid_died_date
+>  onsnoncovid_died_date ons_died_date {
+  4.                 safecount if `var'>=`startweek' & `var'<=`endweek'
+  5.                 local N`var' = r(N)     
+  6.                 local postcontent "`postcontent' (`N`var'')" 
+  7.         }
+  8.         frame post weekly (`startweek') `postcontent'
+  9.         local postcontent
+ 10. }
+. 
+. frame change weekly
+
+. 
+. format %d startdate
+
+. 
+. scatter cov_admissions startd, c(l) || scatter conf_cov_admissions startd , c(l) ///
+>          || scatter covdeaths startd , c(l)
+
+. graph export ./output/an_exploresus_ADMISSIONS_DTHS_OVER_TIME.svg, as(svg) replace 
+(note: file ./output/an_exploresus_ADMISSIONS_DTHS_OVER_TIME.svg not found)
+(file ./output/an_exploresus_ADMISSIONS_DTHS_OVER_TIME.svg written in SVG format)
+
+.                  
+. 
+. scatter covdeaths startd , c(l) || scatter noncovdeaths startd , c(l)  ///
+>          || scatter alldeaths startd , c(l) 
+
+. graph export ./output/an_exploresus_COV_NONCOV_DTHS_OVER_TIME.svg, as(svg) replace
+(note: file ./output/an_exploresus_COV_NONCOV_DTHS_OVER_TIME.svg not found)
+(file ./output/an_exploresus_COV_NONCOV_DTHS_OVER_TIME.svg written in SVG format)
+
+. 
+. 
+. frame change default
+
+. 
+. *Relationship with HIV and other variables
+. noi di _n _n "Relationship with HIV and other variables" _n _dup(50) "*"
+
+
+Relationship with HIV and other variables
+**************************************************
+
+. noi safetab covidadmission hiv , col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+covidadmis |          HIV
+      sion |         0          1 |     Total
+-----------+----------------------+----------
+         0 |17,231,594     27,486 |17,259,080 
+           |     99.83      99.96 |     99.83 
+-----------+----------------------+----------
+         1 |    28,549         10 |    28,559 
+           |      0.17       0.04 |      0.17 
+-----------+----------------------+----------
+     Total |17,260,143     27,496 |17,287,639 
+           |    100.00     100.00 |    100.00 
+
+. noi safetab covidadmission hiv if agegroup<=4, col /*<70s*/
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+covidadmis |          HIV
+      sion |         0          1 |     Total
+-----------+----------------------+----------
+         0 |14,176,179     26,338 |14,202,517 
+           |     99.92      99.97 |     99.92 
+-----------+----------------------+----------
+         1 |    11,895          9 |    11,904 
+           |      0.08       0.03 |      0.08 
+-----------+----------------------+----------
+     Total |14,188,074     26,347 |14,214,421 
+           |    100.00     100.00 |    100.00 
+
+. 
+. use cr_create_analysis_dataset_STSET_covidadmission, clear
+(Analysis dataset HIV project)
+
+. 
+. noi stcox i.hiv age1 age2 age3 i.male, strata(stp)
+
+         failure _d:  covidadmission == 1
+   analysis time _t:  (stime_covidadmission-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -384556.09
+Iteration 1:   log likelihood = -367962.63
+Iteration 2:   log likelihood = -365608.95
+Iteration 3:   log likelihood = -365494.25
+Iteration 4:   log likelihood = -365489.55
+Iteration 5:   log likelihood = -365489.54
+Refining estimates:
+Iteration 0:   log likelihood = -365489.54
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,287,163                  Number of obs    =  17,287,163
+No. of failures =       28,556
+Time at risk    =   1948798446
+                                                LR chi2(5)       =    38133.11
+Log likelihood  =   -365489.54                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       1.hiv |   .2929691   .0926884    -3.88   0.000     .1575876     .544655
+        age1 |    1.09143   .0040699    23.46   0.000     1.083482    1.099436
+        age2 |    .894928   .0087189   -11.39   0.000     .8780013     .912181
+        age3 |   1.393744   .0341735    13.54   0.000     1.328349    1.462358
+      1.male |   1.487533   .0178497    33.09   0.000     1.452956    1.522932
+------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. 
+. ****************************************************************************    
+. 
+. cap prog drop basecoxmodel
+
+. prog define basecoxmodel
+  1.         syntax , age(string) [ethnicity(real 0) if(string)] 
+  2. 
+.         if `ethnicity'==1 local ethnicity "i.ethnicity"
+  3.         else local ethnicity
+  4. 
+. capture stcox   i.hiv                   ///
+>                         `age'                                   ///
+>                         i.male                                                  ///
+>                         i.obese4cat                                             ///
+>                         i.smoke_nomiss                                  ///
+>                         `ethnicity'                                             ///
+>                         i.imd                                                   ///
+>                         i.htdiag_or_highbp                              ///
+>                         i.chronic_respiratory_disease   ///
+>                         i.asthmacat                                             ///
+>                         i.chronic_cardiac_disease               ///
+>                         i.diabcat                                               ///
+>                         i.cancer_exhaem_cat                             ///
+>                         i.cancer_haem_cat                               ///
+>                         i.chronic_liver_disease                 ///
+>                         i.stroke_dementia                               ///
+>                         i.other_neuro                                   ///
+>                         i.reduced_kidney_function_cat   ///
+>                         i.organ_transplant                              ///
+>                         i.spleen                                                ///
+>                         i.ra_sle_psoriasis                      ///
+>                         i.other_imm_except_hiv                  ///
+>                         `if'                                                    ///
+>                         , strata(stp)
+  5. end
+
+. ****************************************************************************
+. noi di _n _n "ALL hospital admissions" _n _dup(50) "*"
+
+
+COVID hospital admissions
+**************************************************
+
+. 
+. basecoxmodel, age("age1 age2 age3") ethnicity(1) 
+
+. if _rc==0{
+. noi di _n  "FULLY ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)" _n 
+
+FULLY ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)
+
+. noi estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,729,504                  Number of obs    =  12,729,504
+No. of failures =       21,921
+Time at risk    =   1435072672
+                                                LR chi2(41)      =    39014.29
+Log likelihood  =   -269740.87                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   .2253579   .0752157    -4.46   0.000     .1171588    .4334818
+                         age1 |   1.091104   .0047973    19.83   0.000     1.081742    1.100547
+                         age2 |   .8620999   .0098487   -12.99   0.000     .8430113    .8816208
+                         age3 |   1.522349   .0437828    14.61   0.000      1.43891    1.610626
+                       1.male |   1.406647   .0198359    24.20   0.000     1.368302    1.446067
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   1.239101    .021876    12.14   0.000     1.196958    1.282728
+          Obese II (35-39.9)  |   1.580951   .0389441    18.59   0.000     1.506435    1.659153
+             Obese III (40+)  |   2.087428   .0664975    23.10   0.000     1.961081    2.221916
+                              |
+                 smoke_nomiss |
+                      Former  |   1.120544   .0172966     7.37   0.000     1.087151    1.154963
+                     Current  |   .7508965   .0196476   -10.95   0.000     .7133587    .7904096
+                              |
+                    ethnicity |
+                       Mixed  |   1.588684   .1010756     7.28   0.000     1.402433    1.799669
+      Asian or Asian British  |   1.525024   .0386025    16.67   0.000     1.451211    1.602592
+                       Black  |   1.841145   .0651999    17.24   0.000     1.717689    1.973473
+                       Other  |   1.517948   .0752239     8.42   0.000     1.377446    1.672782
+                              |
+                          imd |
+                           2  |     1.1203   .0267336     4.76   0.000     1.069109    1.173941
+                           3  |   1.259165   .0295918     9.81   0.000     1.202482    1.318521
+                           4  |   1.406477   .0325757    14.73   0.000     1.344058    1.471796
+             5 most deprived  |   1.597603   .0374189    20.00   0.000     1.525921    1.672652
+                              |
+           1.htdiag_or_highbp |    1.09284   .0181065     5.36   0.000     1.057922     1.12891
+1.chronic_respiratory_disease |   1.772459   .0337075    30.10   0.000      1.70761    1.839771
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   1.143043   .0223187     6.85   0.000     1.100126    1.187635
+                Yes with OCS  |    1.37083   .0488451     8.85   0.000     1.278361    1.469986
+                              |
+    1.chronic_cardiac_disease |   1.320099   .0223613    16.39   0.000     1.276991    1.364662
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.348227   .0252552    15.95   0.000     1.299625    1.398646
+       Uncontrolled diabetes  |   1.985073   .0452258    30.10   0.000     1.898382    2.075723
+  Diabetes, no hba1c measure  |   1.783437   .0674197    15.30   0.000     1.656073    1.920596
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   2.252047   .1062836    17.20   0.000     2.053079    2.470297
+               2-5 years ago  |   1.272117   .0468517     6.54   0.000     1.183525     1.36734
+                    5+ years  |   1.095289   .0276761     3.60   0.000     1.042366    1.150899
+                              |
+              cancer_haem_cat |
+                   Last year  |   3.304867   .3549015    11.13   0.000     2.677599    4.079081
+               2-5 years ago  |    2.63832   .1843364    13.89   0.000     2.300673    3.025519
+                    5+ years  |   1.641028   .0989754     8.21   0.000     1.458067    1.846947
+                              |
+      1.chronic_liver_disease |   1.923648   .0930286    13.53   0.000      1.74969    2.114902
+            1.stroke_dementia |   1.715492   .0362854    25.52   0.000     1.645828    1.788105
+                1.other_neuro |   2.391512   .0792002    26.33   0.000     2.241213     2.55189
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.366335   .0254429    16.76   0.000     1.317367    1.417124
+           Stage 4/5 egfr<30  |   2.692733   .0869135    30.69   0.000     2.527662    2.868584
+                              |
+           1.organ_transplant |   2.558279    .214119    11.22   0.000     2.171227    3.014328
+                     1.spleen |   1.766558   .1709596     5.88   0.000     1.461343    2.135518
+           1.ra_sle_psoriasis |   1.216314    .029427     8.09   0.000     1.159984    1.275379
+       1.other_imm_except_hiv |   4.234253    .591694    10.33   0.000     3.219808    5.568312
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+. estimates save ./output/models/an_exploresus_MULTIVARMODEL_agespline_cceth, replace
+(note: file ./output/models/an_exploresus_MULTIVARMODEL_agespline_cceth.ster not found)
+file ./output/models/an_exploresus_MULTIVARMODEL_agespline_cceth.ster saved
+.  }
+
+. else di "WARNING HIV model (CC eth) DID NOT FIT (OUTCOME `outcome')"
+
+. 
+. basecoxmodel, age("i.agegroup") ethnicity(0) 
+
+. if _rc==0{
+. noi di _n  "FULLY ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)" _n 
+
+FULLY ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)
+
+. noi estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,287,163                  Number of obs    =  17,287,163
+No. of failures =       28,556
+Time at risk    =   1948798446
+                                                LR chi2(39)      =    50313.07
+Log likelihood  =   -359399.56                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   .2434672    .077033    -4.47   0.000     .1309545    .4526478
+                              |
+                     agegroup |
+                      40-<50  |   2.195364   .0712912    24.22   0.000     2.059989    2.339634
+                      50-<60  |   3.278488   .0968287    40.20   0.000     3.094095    3.473869
+                      60-<70  |   4.083761   .1214082    47.33   0.000     3.852605    4.328786
+                      70-<80  |   6.113946    .182023    60.82   0.000     5.767397    6.481319
+                         80+  |   14.21079   .4312337    87.46   0.000     13.39023    15.08163
+                              |
+                       1.male |   1.354654   .0166502    24.70   0.000      1.32241    1.387684
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   1.194952   .0186179    11.43   0.000     1.159013    1.232005
+          Obese II (35-39.9)  |   1.484161   .0323061    18.14   0.000     1.422174     1.54885
+             Obese III (40+)  |    1.91917   .0539324    23.20   0.000     1.816323    2.027841
+                              |
+                 smoke_nomiss |
+                      Former  |    1.11469   .0148444     8.15   0.000     1.085972    1.144167
+                     Current  |   .7218849   .0164887   -14.27   0.000     .6902803    .7549366
+                              |
+                          imd |
+                           2  |   1.101234   .0223559     4.75   0.000     1.058278    1.145934
+                           3  |   1.255045   .0251559    11.33   0.000     1.206696    1.305331
+                           4  |   1.430253   .0283338    18.06   0.000     1.375784    1.486879
+             5 most deprived  |   1.684441   .0336834    26.08   0.000       1.6197     1.75177
+                              |
+           1.htdiag_or_highbp |   1.113955    .016115     7.46   0.000     1.082813    1.145992
+1.chronic_respiratory_disease |   1.733808   .0291999    32.68   0.000     1.677511    1.791993
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   1.136756   .0196746     7.41   0.000     1.098841    1.175979
+                Yes with OCS  |   1.399657   .0443392    10.61   0.000     1.315397    1.489315
+                              |
+    1.chronic_cardiac_disease |   1.339117   .0198421    19.71   0.000     1.300787    1.378577
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.394768   .0228683    20.29   0.000      1.35066    1.440317
+       Uncontrolled diabetes  |   2.014048   .0403627    34.94   0.000     1.936472    2.094732
+  Diabetes, no hba1c measure  |   1.851814   .0621769    18.35   0.000     1.733873    1.977778
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   2.219026   .0919293    19.24   0.000     2.045969    2.406721
+               2-5 years ago  |     1.2874   .0408824     7.96   0.000     1.209715    1.370074
+                    5+ years  |   1.109314   .0242433     4.75   0.000     1.062802    1.157863
+                              |
+              cancer_haem_cat |
+                   Last year  |   3.457558   .3169301    13.53   0.000     2.888988    4.138025
+               2-5 years ago  |   2.571953    .156869    15.49   0.000     2.282161    2.898542
+                    5+ years  |   1.663935   .0866686     9.78   0.000      1.50245    1.842775
+                              |
+      1.chronic_liver_disease |   1.895536   .0820036    14.78   0.000     1.741438    2.063271
+            1.stroke_dementia |    1.77563   .0327634    31.12   0.000     1.712562     1.84102
+                1.other_neuro |   2.343977   .0682633    29.25   0.000      2.21393    2.481662
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |    1.46071   .0233667    23.69   0.000     1.415622    1.507233
+           Stage 4/5 egfr<30  |   3.069683   .0851243    40.45   0.000     2.907295    3.241141
+                              |
+           1.organ_transplant |   2.458394    .179735    12.30   0.000     2.130196    2.837158
+                     1.spleen |    1.70039   .1482319     6.09   0.000     1.433326    2.017216
+           1.ra_sle_psoriasis |   1.224047   .0257836     9.60   0.000     1.174541     1.27564
+       1.other_imm_except_hiv |    4.01688   .5061985    11.03   0.000     3.137779    5.142277
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+. estimates save ./output/models/an_exploresus_MULTIVARMODEL_agegroup_noeth, replace
+(note: file ./output/models/an_exploresus_MULTIVARMODEL_agegroup_noeth.ster not found)
+file ./output/models/an_exploresus_MULTIVARMODEL_agegroup_noeth.ster saved
+.  }
+
+. else di "WARNING HIV model (no eth) DID NOT FIT (OUTCOME `outcome')"
+
+. 
+. basecoxmodel, age("age1 age2 age3") ethnicity(0) 
+
+. if _rc==0{
+. noi di _n  "FULLY ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)" _n 
+
+FULLY ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)
+
+. noi estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,287,163                  Number of obs    =  17,287,163
+No. of failures =       28,556
+Time at risk    =   1948798446
+                                                LR chi2(37)      =    51584.23
+Log likelihood  =   -358763.98                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   .2538685   .0803231    -4.33   0.000       .13655    .4719826
+                         age1 |    1.09624   .0041509    24.27   0.000     1.088135    1.104406
+                         age2 |   .8512672   .0084504   -16.22   0.000     .8348647    .8679919
+                         age3 |   1.569494   .0393254    17.99   0.000      1.49428    1.648494
+                       1.male |   1.394827   .0172121    26.97   0.000     1.361497    1.428973
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   1.233076   .0192766    13.40   0.000     1.195868    1.271442
+          Obese II (35-39.9)  |   1.550425   .0338578    20.08   0.000     1.485465    1.618226
+             Obese III (40+)  |   2.024302   .0570411    25.03   0.000     1.915535    2.139246
+                              |
+                 smoke_nomiss |
+                      Former  |   1.093186   .0145132     6.71   0.000     1.065108    1.122005
+                     Current  |   .7289188   .0166894   -13.81   0.000     .6969314    .7623744
+                              |
+                          imd |
+                           2  |    1.10094   .0223501     4.74   0.000     1.057994    1.145628
+                           3  |   1.255112   .0251547    11.34   0.000     1.206766    1.305396
+                           4  |   1.433286   .0283844    18.18   0.000     1.378719    1.490012
+             5 most deprived  |   1.696183    .033907    26.43   0.000     1.631012    1.763959
+                              |
+           1.htdiag_or_highbp |   1.080791   .0156191     5.38   0.000     1.050608    1.111842
+1.chronic_respiratory_disease |   1.731439   .0290893    32.67   0.000     1.675354    1.789402
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   1.152336   .0199511     8.19   0.000     1.113889    1.192111
+                Yes with OCS  |   1.419717   .0449803    11.06   0.000     1.334239    1.510672
+                              |
+    1.chronic_cardiac_disease |   1.307319   .0193267    18.13   0.000     1.269983    1.345753
+                              |
+                      diabcat |
+         Controlled diabetes  |   1.404687   .0229773    20.77   0.000     1.360367    1.450451
+       Uncontrolled diabetes  |   2.072166   .0415066    36.37   0.000      1.99239    2.155135
+  Diabetes, no hba1c measure  |    1.82613   .0612942    17.94   0.000     1.709862    1.950304
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   2.209403   .0915187    19.14   0.000     2.037118    2.396259
+               2-5 years ago  |   1.283931   .0407505     7.87   0.000     1.206495    1.366337
+                    5+ years  |   1.090108   .0237959     3.95   0.000     1.044452    1.137759
+                              |
+              cancer_haem_cat |
+                   Last year  |   3.490666    .319937    13.64   0.000     2.916698    4.177584
+               2-5 years ago  |   2.610541   .1591931    15.74   0.000     2.316453    2.941966
+                    5+ years  |   1.666728   .0867997     9.81   0.000     1.504998    1.845838
+                              |
+      1.chronic_liver_disease |   1.923157   .0832782    15.10   0.000      1.76667    2.093506
+            1.stroke_dementia |    1.71742   .0316997    29.30   0.000       1.6564    1.780687
+                1.other_neuro |   2.369234   .0689503    29.64   0.000     2.237876    2.508302
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.356384   .0219003    18.88   0.000     1.314133    1.399995
+           Stage 4/5 egfr<30  |    2.75998   .0771198    36.33   0.000     2.612893    2.915348
+                              |
+           1.organ_transplant |   2.662789   .1947732    13.39   0.000     2.307143    3.073258
+                     1.spleen |   1.724188   .1503162     6.25   0.000      1.45337     2.04547
+           1.ra_sle_psoriasis |   1.231077   .0259304     9.87   0.000     1.181289    1.282963
+       1.other_imm_except_hiv |   4.099656   .5165987    11.20   0.000     3.202486    5.248166
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+. estimates save ./output/models/an_exploresus_MULTIVARMODEL_agespline_noeth, replace
+(note: file ./output/models/an_exploresus_MULTIVARMODEL_agespline_noeth.ster not found)
+file ./output/models/an_exploresus_MULTIVARMODEL_agespline_noeth.ster saved
+.  }
+
+. else di "WARNING HIV model (no eth) DID NOT FIT (OUTCOME `outcome')"
+
+.  
+. ***********************
+. *All admissions
+. 
+. * Survival time = last followup date (first: end study, death, or that outcome)
+. summ any_admission_date
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+any_admiss~e |  6,706,911    21148.24    428.9288      15431      22066
+
+. local admcensor = r(max)-7
+
+. gen stime_anyadmission  = min(`admcensor', any_admission_date, ons_died_date)
+
+. gen anyadmission = 1 if any_admission_date<. 
+(10,580,728 missing values generated)
+
+. replace anyadmission    = 0 if (any_admission_date > `admcensor')|(any_admission_date > ons_died_date)  
+(10,587,627 real changes made)
+
+. 
+. stset stime_anyadmission , fail(anyadmission=1)                                 ///
+>         id(patient_id) enter(enter_date) origin(enter_date)
+
+                id:  patient_id
+     failure event:  anyadmission == 1
+obs. time interval:  (stime_anyadmission[_n-1], stime_anyadmission]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17287639  total observations
+  6,490,246  observations end on or before enter()
+------------------------------------------------------------------------------
+   10797393  observations remaining, representing
+   10797393  subjects
+    209,806  failures in single-failure-per-subject data
+ 1.2053e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       113
+
+. 
+. noi safetab anyadmission hiv , col
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+anyadmissi |          HIV
+        on |         0          1 |     Total
+-----------+----------------------+----------
+         0 |10,566,397     21,230 |10,587,627 
+           |     61.22      77.21 |     61.24 
+-----------+----------------------+----------
+         1 | 6,693,746      6,266 | 6,700,012 
+           |     38.78      22.79 |     38.76 
+-----------+----------------------+----------
+     Total |17,260,143     27,496 |17,287,639 
+           |    100.00     100.00 |    100.00 
+
+. noi safetab anyadmission hiv if agegroup<=4, col /*<70s*/
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+| column percentage |
++-------------------+
+
+anyadmissi |          HIV
+        on |         0          1 |     Total
+-----------+----------------------+----------
+         0 | 9,377,436     20,543 | 9,397,979 
+           |     66.09      77.97 |     66.12 
+-----------+----------------------+----------
+         1 | 4,810,638      5,804 | 4,816,442 
+           |     33.91      22.03 |     33.88 
+-----------+----------------------+----------
+     Total |14,188,074     26,347 |14,214,421 
+           |    100.00     100.00 |    100.00 
+
+. 
+. noi tab any_admission_primary if anyadmission==1 & hiv==1, sort
+
+any_admissi |
+on_primary_ |
+  diagnosis |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       Z121 |        110        1.90        1.90
+       K649 |         77        1.33        3.24
+       R074 |         74        1.28        4.52
+       K922 |         69        1.19        5.71
+       K573 |         67        1.16        6.87
+       K635 |         67        1.16        8.03
+       R104 |         64        1.11        9.14
+       R194 |         63        1.09       10.23
+       R101 |         62        1.07       11.30
+       H269 |         59        1.02       12.32
+		.
+		.
+		.
+------------+-----------------------------------
+      Total |      5,779      100.00
+
+. noi tab any_admission_primary if anyadmission==1 & hiv==0, sort
+
+any_admissi |
+on_primary_ |
+  diagnosis |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       H269 |    104,797        1.63        1.63
+       K573 |     77,620        1.21        2.84
+       M179 |     76,193        1.19        4.03
+       H251 |     72,613        1.13        5.16
+       R074 |     72,345        1.13        6.29
+       M169 |     61,090        0.95        7.24
+       R101 |     59,501        0.93        8.17
+       K409 |     58,667        0.91        9.08
+       R103 |     54,844        0.85        9.94
+       R104 |     54,452        0.85       10.79
+		.
+		.
+		.
+------------+-----------------------------------
+      Total |  6,417,288      100.00
+
+. 
+. noi stcox i.hiv age1 age2 age3 i.male, strata(stp)
+
+         failure _d:  anyadmission == 1
+   analysis time _t:  (stime_anyadmission-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -2720112.6
+Iteration 1:   log likelihood = -2708133.9
+Iteration 2:   log likelihood = -2697967.6
+Iteration 3:   log likelihood = -2697515.3
+Iteration 4:   log likelihood = -2697513.7
+Iteration 5:   log likelihood = -2697513.7
+Refining estimates:
+Iteration 0:   log likelihood = -2697513.7
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   10,797,393                  Number of obs    =  10,797,393
+No. of failures =      209,806
+Time at risk    =   1205299753
+                                                LR chi2(5)       =    45197.90
+Log likelihood  =   -2697513.7                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       1.hiv |   .5888758   .0412643    -7.56   0.000     .5133074    .6755693
+        age1 |   1.004149   .0006392     6.50   0.000     1.002897    1.005402
+        age2 |   1.010062   .0021276     4.75   0.000     1.005901    1.014241
+        age3 |   1.043529     .00615     7.23   0.000     1.031544    1.055652
+      1.male |   .7732121   .0034182   -58.18   0.000     .7665414    .7799408
+------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. basecoxmodel, age("age1 age2 age3") ethnicity(0) 
+
+. if _rc==0{
+. noi di _n  "FULLY ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)" _n 
+
+FULLY ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)
+
+. noi estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   10,797,393                  Number of obs    =  10,797,393
+No. of failures =      209,806
+Time at risk    =   1205299753
+                                                LR chi2(37)      =    63593.41
+Log likelihood  =   -2688315.9                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                        1.hiv |   .5334182   .0373954    -8.96   0.000     .4649372    .6119859
+                         age1 |   .9978864   .0006475    -3.26   0.001      .996618    .9991563
+                         age2 |   1.012952   .0021767     5.99   0.000     1.008695    1.017228
+                         age3 |   1.029947   .0062175     4.89   0.000     1.017833    1.042206
+                       1.male |   .7484285   .0033557   -64.63   0.000     .7418802    .7550346
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   1.184718   .0074316    27.02   0.000     1.170241    1.199374
+          Obese II (35-39.9)  |   1.278568    .011865    26.48   0.000     1.255524    1.302036
+             Obese III (40+)  |   1.286397   .0165381    19.59   0.000     1.254388    1.319223
+                              |
+                 smoke_nomiss |
+                      Former  |   1.220857   .0062116    39.22   0.000     1.208743    1.233093
+                     Current  |    1.27917   .0080917    38.92   0.000     1.263408    1.295128
+                              |
+                          imd |
+                           2  |   1.002651   .0069297     0.38   0.702     .9891602    1.016325
+                           3  |   1.024562   .0071331     3.49   0.000     1.010676    1.038638
+                           4  |   1.048588   .0073998     6.72   0.000     1.034185    1.063192
+             5 most deprived  |   1.081811   .0079457    10.71   0.000     1.066349    1.097497
+                              |
+           1.htdiag_or_highbp |   1.105962   .0059285    18.79   0.000     1.094403    1.117643
+1.chronic_respiratory_disease |   1.318915    .013892    26.28   0.000     1.291966    1.346426
+                              |
+                    asthmacat |
+                 Yes, no OCS  |   1.127156   .0071304    18.92   0.000     1.113267    1.141218
+                Yes with OCS  |   1.436025   .0229576    22.64   0.000     1.391726    1.481733
+                              |
+    1.chronic_cardiac_disease |   1.363989   .0121199    34.93   0.000      1.34044    1.387952
+                              |
+                      diabcat |
+         Controlled diabetes  |    1.21744   .0106361    22.52   0.000     1.196771    1.238466
+       Uncontrolled diabetes  |   1.402042    .016911    28.02   0.000     1.369285    1.435582
+  Diabetes, no hba1c measure  |    1.10125   .0218738     4.86   0.000     1.059202    1.144967
+                              |
+            cancer_exhaem_cat |
+                   Last year  |   8.769873   .2331864    81.66   0.000     8.324542    9.239029
+               2-5 years ago  |   1.423965   .0427648    11.77   0.000     1.342567    1.510299
+                    5+ years  |   1.206183   .0140095    16.14   0.000     1.179035    1.233956
+                              |
+              cancer_haem_cat |
+                   Last year  |   2.863052   .3039487     9.91   0.000     2.325217     3.52529
+               2-5 years ago  |   1.497652   .1177756     5.14   0.000     1.283726    1.747228
+                    5+ years  |   1.407477    .047082    10.22   0.000     1.318158    1.502848
+                              |
+      1.chronic_liver_disease |   1.646654   .0477983    17.18   0.000     1.555587    1.743054
+            1.stroke_dementia |   1.266605   .0183325    16.33   0.000     1.231179    1.303051
+                1.other_neuro |   1.566839     .03135    22.44   0.000     1.506584    1.629505
+                              |
+  reduced_kidney_function_cat |
+Stage 3a/3b egfr 30-60        |   1.104712   .0101491    10.84   0.000     1.084998    1.124784
+           Stage 4/5 egfr<30  |   1.660821   .0475799    17.71   0.000     1.570136    1.756743
+                              |
+           1.organ_transplant |   1.539031   .1247417     5.32   0.000     1.312973    1.804011
+                     1.spleen |   1.187952   .0682692     3.00   0.003     1.061407    1.329584
+           1.ra_sle_psoriasis |   1.154421   .0109958    15.08   0.000      1.13307    1.176175
+       1.other_imm_except_hiv |    1.81194   .2866931     3.76   0.000      1.32881    2.470726
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.  }
+
+. else di "WARNING HIV model on any admission (no eth) DID NOT FIT (OUTCOME `outcome')"
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\an_exploresus.log
+  log type:  text
+ closed on:   3 Aug 2020, 17:08:31
+----------------------------------------------------------------------------------------------------------------------------------
