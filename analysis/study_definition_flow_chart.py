@@ -57,16 +57,6 @@ study = StudyDefinition(
         }
     ),
 
-    ethnicity=patients.with_these_clinical_events(
-        ethnicity_codes,
-        returning="category",
-        find_last_match_in_period=True,
-        include_date_of_match=True,
-        return_expectations={
-            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
-            "incidence": 0.75,
-        },
-    ),
 
     imd=patients.address_as_of(
         "2020-02-29",
