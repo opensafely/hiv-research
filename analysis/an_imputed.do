@@ -49,6 +49,12 @@ estimates save "./output/models/an_imputed_full", replace
 mi estimate, eform 						
 }
 
+if "`1'"=="fullplushepc"{
+mi estimate: stcox i.hiv i.ethnicity i.hepc $adjustmentlist, strata(stp)
+estimates save "./output/models/an_imputed_fullplushepc", replace
+mi estimate, eform 						
+}
+
 if "`1'"=="byage"{
 gen ageover60 = agegroup>=4
 mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60, strata(stp)
