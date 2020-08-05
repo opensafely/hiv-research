@@ -1,0 +1,39 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\output/an_flow_chart.log
+  log type:  text
+ opened on:   5 Aug 2020, 22:24:56
+
+. 
+. *import delimited ../output/input_flow_chart.csv
+. 
+. count
+  33,409,652
+
+. di r(N)-corr
+33377725
+
+. count if under_fup_1feb==1
+  23,642,452
+
+. di r(N)-corr
+23610525
+
+. 
+. count if under_fup_1feb==1 & has_12 != 1
+  1,965,331
+
+. 
+. count if under_fup_1feb==1 & has_12 == 1
+  21,677,121
+
+. di r(N)-corr
+21645194
+
+. 
+. log close
+      name:  <unnamed>
+       log:  e:\analyses\hiv-research\analysis\output/an_flow_chart.log
+  log type:  text
+ closed on:   5 Aug 2020, 22:24:56
+----------------------------------------------------------------------------------------------------------------------------------
