@@ -30,7 +30,7 @@ twoway  (rarea _at1_lci _at1_uci date, color(red%25)) ///
                  (rarea _at2_lci _at2_uci date if _at2_uci<1, color(blue%25)) ///
                  (line _at1 date, sort lcolor(red)) ///
                  (line _at2  date, sort lcolor(blue)) ///
-                 , legend(order(1 "No HIV" 2 "HIV") ring(0) cols(1) pos(1)) ///
+                 , legend(order(1 "No HIV" 2 "HIV") ring(0) cols(1) pos(11)) ///
                  ylabel(0(0.05)0.15,angle(h) format(%4.2f)) ///
                  ytitle("Cumulative mortality (%)") ///
                  xtitle("Date in 2020")
