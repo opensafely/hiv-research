@@ -9,7 +9,7 @@ log using ./output/an_cumincidence, replace t
 use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
 *xi: stpm2 hiv i.ethnicity $adjustmentlist, df(3) scale(hazard) eform
-xi i.ethnicity $adjustmentlist 
+xi i.ethnicity i.male i.imd 
 stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
 
 summ _t

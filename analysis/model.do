@@ -48,7 +48,8 @@ do "an_imputed" bycomorbidities_exht
 do "an_imputed" cuminc
 
 do "an_phcheck_cc"
-do "an_phcheck_mi"
+*do "an_phcheck_mi"
+
 *posthoc
 do an_phcheck_addtimeinteractions_cc
 

@@ -20,7 +20,7 @@ foreach extract of numlist 1 5 10 {
 	frame copy default extract
 	frame change extract
 	mi extract `extract'
-	stcox i.hiv i.ethnicity $adjustmentlist, strata(stp)
+	stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd , strata(stp)
 
 	estat phtest, d
 
