@@ -22,15 +22,7 @@ stcox 	i.hiv i.ethnicity age1 age2 age3 i.male i.imd 60.timeperiod#2.ethnicity  
 	60.timeperiod#4.ethnicity											///
 	60.timeperiod#5.ethnicity											///
 	60.timeperiod#1.male												///
-*	60.timeperiod#1.anyobesity											///
-*	60.timeperiod#3.smoke_nomiss										///
 	60.timeperiod#1.highimd												///			
-*	60.timeperiod#1.chronic_respiratory_disease							///
-*	60.timeperiod#1.diabetes											///
-*	60.timeperiod#1.chronic_liver_disease								///
-*	60.timeperiod#1.stroke_dementia										///
-*	60.timeperiod#1.other_neuro											///
-*	60.timeperiod#1.anyreduced_kidney_function							///
 	, strata(stp)
 
 
