@@ -42,7 +42,7 @@ gen revorder = _N-_n+1
 
 gen modeltextpos = .125
 gen headertextpos = .09
-gen pinttextpos = 5
+gen pinttextpos = 10
 local rangemax = _N+3
 
 gen pintstr = "(p-interaction " + string(pint, "%5.3f") + ")"
@@ -55,7 +55,7 @@ scatter revorder hr, mc(black) || rcap lci uci revorder, hor lc(black)  						//
 || scatter revorder headertextpos, m(i) mlab(header) mlabsize(vsmall) mlabcol(black)	///
 || scatter revorder pinttextpos if header!="", m(i) mlab(pintstr) mlabcol(black) mlabsize(vsmall) ///
 || scatter revorder pinttextpos if hrandci!="", m(i) mlab(hrandci) mlabcol(black) mlabsize(vsmall) ///
-||, xscale(log r(16)) xline(1, lp(dash)) xlab(.5 1 2 4) legend(off) ytitle("") ylab(none) yscale(r(-2 `rangemax')) ysize(8) ///
+||, xscale(log r(48)) xline(1, lp(dash)) xlab(.5 1 2 4) legend(off) ytitle("") ylab(none) yscale(r(-2 `rangemax')) ysize(8) ///
 xtitle("Hazard ratio and 95% CI") yscale(off)
 
 graph export ./output/an_forestplot_MI.svg, as(svg) replace

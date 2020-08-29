@@ -93,7 +93,23 @@ gen anycomorbidity = 						///
 	|spleen 						///
 	|ra_sle_psoriasis  				///
 	|other_imm_except_hiv		
-mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.anycomorbidity 1.hiv#1.anycomorbidity, strata(stp)
+mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd ///
+	i.hypertension					///
+	i.chronic_respiratory_disease 	///
+	i.asthmacat						///
+	i.chronic_cardiac_disease 		///
+	i.diabcat						///
+	i.cancer_exhaem_cat 			///
+	i.cancer_haem_cat				///
+	i.chronic_liver_disease 		///
+	i.stroke_dementia		 		///
+	i.other_neuro					///
+	i.reduced_kidney_function_cat	///
+	i.organ_transplant 				///
+	i.spleen 						///
+	i.ra_sle_psoriasis  			///
+	i.other_imm_except_hiv		 	/// 
+	1.hiv#1.anycomorbidity, strata(stp)
 estimates save "./output/models/an_imputed_bycomorbidities", replace
 mi estimate, eform						
 }
@@ -114,7 +130,22 @@ gen anycomorbidity_exht = 			///
 	|spleen 						///
 	|ra_sle_psoriasis  				///
 	|other_imm_except_hiv		
-mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.anycomorbidity_exht 1.hiv#1.anycomorbidity_exht, strata(stp)
+mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd ///
+	i.chronic_respiratory_disease 	///
+	i.asthmacat						///
+	i.chronic_cardiac_disease 		///
+	i.diabcat						///
+	i.cancer_exhaem_cat 			///
+	i.cancer_haem_cat				///
+	i.chronic_liver_disease 		///
+	i.stroke_dementia		 		///
+	i.other_neuro					///
+	i.reduced_kidney_function_cat	///
+	i.organ_transplant 				///
+	i.spleen 						///
+	i.ra_sle_psoriasis  			///
+	i.other_imm_except_hiv		 	/// 
+	1.hiv#1.anycomorbidity_exht, strata(stp)
 estimates save "./output/models/an_imputed_bycomorbidities_exht", replace
 mi estimate, eform						
 }
