@@ -1,3 +1,4 @@
+
 cons	==1	25 (100)	14857 (100)
 
 
@@ -25,7 +26,8 @@ anycomorbidityexht	==1	21 (84)	13168 (89)
 
 
 
-ALL Comorbs (counts under 5 redacted to .)hypertension	==1	15 (60)	9752 (66)
+ALL Comorbs (counts under 5 redacted to .)
+hypertension	==1	15 (60)	9752 (66)
 chronic_respiratory_disease	==1	. ( .)	3039 (20)
 chronic_cardiac_disease	==1	. ( .)	5296 (36)
 chronic_liver_disease	==1	. ( .)	260 ( 2)
