@@ -1,8 +1,8 @@
 ----------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\hiv-research\analysis\output/an_imputed_full.log
+       log:  e:\analyses\hiv-research\analysis\output/an_imputed_full.log
   log type:  text
- opened on:  16 Jul 2020, 21:19:32
+ opened on:  28 Aug 2020, 17:38:45
 
 . 
 . ********************************   NOTES  **************************************
@@ -234,16 +234,24 @@ Stage 3a/3b egfr 30-60        |   1.283108   .0250438    12.77   0.000     1.234
 . }
 
 . 
+. if "`1'"=="fullplushepc"{
+. mi estimate: stcox i.hiv i.ethnicity i.hepc $adjustmentlist, strata(stp)
+. estimates save "./output/models/an_imputed_fullplushepc", replace
+. mi estimate, eform                                              
+. }
+
+. 
 . if "`1'"=="byage"{
 . gen ageover60 = agegroup>=4
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.ageover60, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.ageover60, strata(stp
+> )
 . estimates save "./output/models/an_imputed_byage", replace
 . mi estimate, eform                                              
 . }
 
 . 
 . if "`1'"=="bysex"{
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.male, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.male, strata(stp)
 . estimates save "./output/models/an_imputed_bysex", replace      
 . mi estimate, eform                                      
 . }
@@ -251,7 +259,7 @@ Stage 3a/3b egfr 30-60        |   1.283108   .0250438    12.77   0.000     1.234
 . 
 . if "`1'"=="byethnicity"{
 . mi passive: gen nonblack = (ethnicity != 4) if ethnicity<.
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.nonblack, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.nonblack, strata(stp)
 . estimates save "./output/models/an_imputed_byethnicity", replace        
 . mi estimate, eform                                      
 . }
@@ -275,7 +283,8 @@ Stage 3a/3b egfr 30-60        |   1.283108   .0250438    12.77   0.000     1.234
 >         |spleen                                                 ///
 >         |ra_sle_psoriasis                               ///
 >         |other_imm_except_hiv           
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.anycomorbidity, 
+> strata(stp)
 . estimates save "./output/models/an_imputed_bycomorbidities", replace
 . mi estimate, eform                                              
 . }
@@ -297,25 +306,16 @@ Stage 3a/3b egfr 30-60        |   1.283108   .0250438    12.77   0.000     1.234
 >         |spleen                                                 ///
 >         |ra_sle_psoriasis                               ///
 >         |other_imm_except_hiv           
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity $adjustmentlist 1.hiv#1.anycomorbidity_exht, st
-> rata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.anycomorbid
+> ity_exht, strata(stp)
 . estimates save "./output/models/an_imputed_bycomorbidities_exht", replace
 . mi estimate, eform                                              
-. }
-
-. 
-. if "`1'"=="cuminc"{
-. xi $adjustmentlist
-. for num 2/5: mi passive: gen _Iethnicity_X=(ethnicity==X) 
-. mi estimate, cmdok post: stpm2 hiv age1 age2 age3 _I*, df(3) scale(hazard) eform 
-. estimates save "./output/models/an_imputed_cuminc", replace
-. mi estimate, eform      
 . }
 
 .         
 . log close
       name:  <unnamed>
-       log:  E:\analyses\hiv-research\analysis\output/an_imputed_full.log
+       log:  e:\analyses\hiv-research\analysis\output/an_imputed_full.log
   log type:  text
- closed on:  17 Jul 2020, 06:59:01
+ closed on:  29 Aug 2020, 03:53:36
 ----------------------------------------------------------------------------------------------------------------------------------
