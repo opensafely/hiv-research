@@ -8,10 +8,14 @@ run global
 cap prog drop generaterow
 program define generaterow
 syntax, variable(varname) condition(string) 
+safecount if hiv==1
+local hivdenom = r(N)
 safecount if `variable' `condition' & hiv==1
-file write descdeathstable ("`variable'") _tab ("`condition'") _tab (r(N)) (" (") %2.0f (100*(r(N))/_N) (")") _tab
+file write descdeathstable ("`variable'") _tab ("`condition'") _tab (r(N)) (" (") %2.0f (100*(r(N))/`hivdenom') (")") _tab
+safecount if hiv==0
+local nohivdenom = r(N)
 safecount if `variable' `condition' & hiv==0
-file write descdeathstable (r(N)) (" (") %2.0f (100*(r(N))/_N) (")") _n
+file write descdeathstable (r(N)) (" (") %2.0f (100*(r(N))/`nohivdenom') (")") _n
 end
 
 use "cr_create_analysis_dataset_STSET_onsdeath_fail1" if _d==1, clear
