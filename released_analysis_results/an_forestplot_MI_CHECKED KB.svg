@@ -137,9 +137,9 @@
 	<text x="283.50" y="1101.16" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">(+ obesity/smoking/comorbidities)</text>
 	<text x="283.50" y="1439.74" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By age</text>
 	<text x="283.50" y="2116.90" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By sex</text>
-	<text x="283.50" y="2794.24" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By ethnicity</text>
-	<text x="283.50" y="3471.40" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By comorbidities</text>
-	<text x="283.50" y="4148.56" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By epidemic period (days)*</text>
+	<text x="283.50" y="2794.24" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By ethnicity*</text>
+	<text x="283.50" y="3471.40" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By comorbidities**</text>
+	<text x="283.50" y="4148.56" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">By epidemic period (days)***</text>
 	<text x="2915.64" y="1439.74" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">(p-interaction 0.493)</text>
 	<text x="2915.64" y="2116.90" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">(p-interaction 0.467)</text>
 	<text x="2915.64" y="2794.24" style="font-family:'Helvetica';font-size:82.44px;fill:#000000">(p-interaction 0.038)</text>
@@ -168,7 +168,5 @@
 	<text x="1958.58" y="5401.31" style="font-family:'Helvetica';font-size:137.52px;fill:#000000" text-anchor="middle">2</text>
 	<line x1="2345.76" y1="5222.70" x2="2345.76" y2="5277.60" style="stroke:#000000;stroke-width:7.92"/>
 	<text x="2345.76" y="5401.31" style="font-family:'Helvetica';font-size:137.52px;fill:#000000" text-anchor="middle">4</text>
-	<line x1="2733.12" y1="5222.70" x2="2733.12" y2="5277.60" style="stroke:#000000;stroke-width:7.92"/>
-	<text x="2733.12" y="5401.31" style="font-family:'Helvetica';font-size:137.52px;fill:#000000" text-anchor="middle">8</text>
 	<text x="1980.00" y="5552.51" style="font-family:'Helvetica';font-size:137.52px;fill:#000000" text-anchor="middle">Hazard ratio and 95% CI</text>
 </svg>

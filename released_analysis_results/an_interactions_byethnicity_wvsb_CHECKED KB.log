@@ -1,8 +1,8 @@
 ----------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\hiv-research\analysis\output/an_interactions_byethnicity_wvsb.log
+       log:  e:\analyses\hiv-research\analysis\output/an_interactions_byethnicity_wvsb.log
   log type:  text
- opened on:  16 Jul 2020, 19:21:40
+ opened on:  30 Aug 2020, 16:17:31
 
 . 
 . run global
@@ -54,8 +54,8 @@
 . *By black/white 
 . if "`1'"=="byethnicity_wvsb"{
 . gen whitevsblack = (ethnicity != 4) if ethnicity<.
-(4,557,826 missing values generated)
-. capture stcox   i.hiv i.ethnicity $adjustmentlist 1.hiv#1.whitevsblack if (ethnicity==1|ethnicity==4), strata(stp)
+(4,562,695 missing values generated)
+. capture stcox   i.hiv i.ethnicity age1 age2 age3 i.imd 1.hiv#1.whitevsblack if (ethnicity==1|ethnicity==4), strata(stp)
 . if _rc==0 {
 .                 noi di _n "BLACK/NON-BLACK INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
 
@@ -69,82 +69,34 @@ active results
 
 Stratified Cox regr. -- Breslow method for ties
 
-No. of subjects =   11,211,800                  Number of obs    =  11,211,800
-No. of failures =       10,166
-Time at risk    =   1588027136
-                                                LR chi2(39)      =    36788.54
-Log likelihood  =   -114397.39                  Prob > chi2      =      0.0000
+No. of subjects =   11,231,108                  Number of obs    =  11,231,108
+No. of failures =       10,246
+Time at risk    =   1613091761
+                                                LR chi2(10)      =    32324.90
+Log likelihood  =   -117689.15                  Prob > chi2      =      0.0000
 
------------------------------------------------------------------------------------------------
-                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
-------------------------------+----------------------------------------------------------------
-                        1.hiv |   4.238911   1.305839     4.69   0.000     2.317571    7.753101
-                              |
-                    ethnicity |
-                       Black  |   1.409541   .0897239     5.39   0.000     1.244214    1.596838
-                         age1 |   1.200011   .0344397     6.35   0.000     1.134374    1.269447
-                         age2 |   .8345046   .0507355    -2.98   0.003     .7407611    .9401115
-                         age3 |   1.556908   .2162955     3.19   0.001     1.185793    2.044172
-                       1.male |   1.454743   .0303299    17.98   0.000     1.396495     1.51542
-                              |
-                    obese4cat |
-           Obese I (30-34.9)  |   .9799752   .0274042    -0.72   0.469     .9277093    1.035186
-          Obese II (35-39.9)  |    1.33569   .0544055     7.11   0.000     1.233202    1.446695
-             Obese III (40+)  |   1.766663   .1015406     9.90   0.000     1.578447    1.977321
-                              |
-                 smoke_nomiss |
-                      Former  |   1.238274   .0284411     9.30   0.000     1.183767    1.295292
-                     Current  |   1.036611    .044929     0.83   0.407     .9521883    1.128518
-                              |
-                          imd |
-                           2  |   1.184931   .0393199     5.11   0.000     1.110318    1.264558
-                           3  |   1.261412   .0422607     6.93   0.000     1.181244    1.347022
-                           4  |   1.532568   .0506467    12.92   0.000     1.436449    1.635119
-             5 most deprived  |   1.738483   .0587676    16.36   0.000     1.627033    1.857566
-                              |
-               1.hypertension |   .9723511   .0223769    -1.22   0.223     .9294676    1.017213
-1.chronic_respiratory_disease |   1.642973    .041597    19.61   0.000     1.563434    1.726558
-                              |
-                    asthmacat |
-                 Yes, no OCS  |   .9481341   .0306141    -1.65   0.099     .8899908    1.010076
-                Yes with OCS  |   1.077993   .0633084     1.28   0.201     .9607858    1.209499
-                              |
-    1.chronic_cardiac_disease |    1.16632   .0259343     6.92   0.000     1.116581    1.218274
-                              |
-                      diabcat |
-         Controlled diabetes  |   1.237715   .0323364     8.16   0.000     1.175932    1.302744
-       Uncontrolled diabetes  |   1.848159   .0631198    17.98   0.000     1.728496    1.976106
-  Diabetes, no hba1c measure  |   1.806953   .0958411    11.15   0.000     1.628542     2.00491
-                              |
-            cancer_exhaem_cat |
-                   Last year  |   1.732505   .1207664     7.88   0.000     1.511265    1.986134
-               2-5 years ago  |   1.214345   .0591593     3.99   0.000     1.103758    1.336011
-                    5+ years  |   .9902007   .0316761    -0.31   0.758      .930023    1.054272
-                              |
-              cancer_haem_cat |
-                   Last year  |   2.608271   .4254483     5.88   0.000     1.894563    3.590844
-               2-5 years ago  |   2.360441   .2298004     8.82   0.000     1.950403    2.856681
-                    5+ years  |   1.648807   .1283109     6.43   0.000     1.415562    1.920484
-                              |
-      1.chronic_liver_disease |   2.002714   .1502335     9.26   0.000     1.728885    2.319913
-            1.stroke_dementia |   2.188901   .0537443    31.91   0.000     2.086058    2.296813
-                1.other_neuro |    2.69344   .1098241    24.30   0.000     2.486565    2.917527
-                              |
-  reduced_kidney_function_cat |
-Stage 3a/3b egfr 30-60        |   1.304713   .0306771    11.31   0.000     1.245952    1.366246
-           Stage 4/5 egfr<30  |    2.32043   .0951074    20.54   0.000     2.141313    2.514529
-                              |
-           1.organ_transplant |   2.708049   .4244282     6.36   0.000     1.991815    3.681832
-                     1.spleen |   1.149154   .1978028     0.81   0.419       .82009    1.610255
-           1.ra_sle_psoriasis |   1.159092   .0405447     4.22   0.000     1.082289    1.241345
-       1.other_imm_except_hiv |   3.160735   .7490125     4.86   0.000      1.98644    5.029223
-                              |
-             hiv#whitevsblack |
-                         1 1  |   .4263731   .1935558    -1.88   0.060     .1751376    1.038007
------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+           1.hiv |   4.626128   1.424222     4.98   0.000     2.530246    8.458096
+                 |
+       ethnicity |
+          Black  |   1.514471   .0949002     6.62   0.000     1.339438    1.712376
+            age1 |   1.163234   .0307817     5.71   0.000     1.104441    1.225157
+            age2 |   .9333571   .0527425    -1.22   0.222     .8355026    1.042672
+            age3 |   1.184747   .1535621     1.31   0.191     .9189592    1.527407
+                 |
+             imd |
+              2  |   1.221986   .0404117     6.06   0.000     1.145293    1.303815
+              3  |   1.348021   .0448948     8.97   0.000     1.262839    1.438948
+              4  |   1.697864   .0555805    16.17   0.000     1.592349     1.81037
+5 most deprived  |   2.031863   .0674816    21.35   0.000     1.903814    2.168524
+                 |
+hiv#whitevsblack |
+            1 1  |   .4992942   .2266185    -1.53   0.126     .2051234     1.21534
+----------------------------------------------------------------------------------
                                                              Stratified by stp
 .                 estimates save ./output/models/an_interactions_whitevsblack, replace
-(note: file ./output/models/an_interactions_whitevsblack.ster not found)
 file ./output/models/an_interactions_whitevsblack.ster saved
 .                 lincom 1.hiv + 1.hiv#1.whitevsblack, eform
 
@@ -153,7 +105,7 @@ file ./output/models/an_interactions_whitevsblack.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.807358   .6037361     1.77   0.076     .9390867    3.478423
+         (1) |   2.309799   .7712684     2.51   0.012     1.200462    4.444267
 ------------------------------------------------------------------------------
 .                 }
 .         else di "WARNING - hiv black/white interaction MODEL DID NOT SUCCESSFULLY FIT"
@@ -190,7 +142,7 @@ file ./output/models/an_interactions_whitevsblack.ster saved
 . 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\hiv-research\analysis\output/an_interactions_byethnicity_wvsb.log
+       log:  e:\analyses\hiv-research\analysis\output/an_interactions_byethnicity_wvsb.log
   log type:  text
- closed on:  16 Jul 2020, 20:09:25
+ closed on:  30 Aug 2020, 16:29:49
 ----------------------------------------------------------------------------------------------------------------------------------
