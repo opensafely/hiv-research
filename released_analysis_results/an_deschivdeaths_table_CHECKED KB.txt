@@ -1,43 +1,43 @@
-cons	==1	25 ( 0)	14969 (100)
+cons	==1	25 (100)	14857 (100)
 
 
-agegroup	<4	10 ( 0)	910 ( 6)
-agegroup	>=4	15 ( 0)	14059 (94)
+agegroup	<4	10 (40)	901 ( 6)
+agegroup	>=4	15 (60)	13956 (94)
 
 
-male	==1	18 ( 0)	8179 (55)
-male	==0	7 ( 0)	6790 (45)
+male	==1	18 (72)	8110 (55)
+male	==0	7 (28)	6747 (45)
 
 
-obese4cat	==1	15 ( 0)	11133 (74)
-obese4cat	>=2	10 ( 0)	3836 (26)
+obese4cat	==1	15 (60)	11044 (74)
+obese4cat	>=2	10 (40)	3813 (26)
 
 
-ethnicity	==4	11 ( 0)	288 ( 2)
-ethnicity	!=4	14 ( 0)	14681 (98)
+ethnicity	==4	11 (44)	284 ( 2)
+ethnicity	!=4	14 (56)	14573 (98)
 
 
-hypertension	==1	15 ( 0)	9817 (65)
-diabetes	==1	14 ( 0)	5408 (36)
-reduced_kidney_function_cat	>=2	9 ( 0)	6705 (45)
-anycomorbidity	==1	23 ( 0)	14002 (93)
-anycomorbidityexht	==1	21 ( 0)	13272 (89)
+hypertension	==1	15 (60)	9752 (66)
+diabetes	==1	14 (56)	5372 (36)
+reduced_kidney_function_cat	>=2	9 (36)	6659 (45)
+anycomorbidity	==1	23 (92)	13897 (94)
+anycomorbidityexht	==1	21 (84)	13168 (89)
 
 
 
-ALL Comorbs (counts under 5 redacted to .)hypertension	==1	15 ( 0)	9817 (65)
-chronic_respiratory_disease	==1	. ( .)	3067 (20)
-chronic_cardiac_disease	==1	. ( .)	5338 (36)
-chronic_liver_disease	==1	. ( .)	263 ( 2)
-stroke_dementia	==1	. ( .)	3388 (23)
-other_neuro	==1	. ( .)	957 ( 6)
+ALL Comorbs (counts under 5 redacted to .)hypertension	==1	15 (60)	9752 (66)
+chronic_respiratory_disease	==1	. ( .)	3039 (20)
+chronic_cardiac_disease	==1	. ( .)	5296 (36)
+chronic_liver_disease	==1	. ( .)	260 ( 2)
+stroke_dementia	==1	. ( .)	3366 (23)
+other_neuro	==1	. ( .)	948 ( 6)
 organ_transplant	==1	. ( .)	79 ( 1)
 spleen	==1	0 ( 0)	51 ( 0)
-ra_sle_psoriasis	==1	. ( .)	1326 ( 9)
+ra_sle_psoriasis	==1	. ( .)	1314 ( 9)
 other_imm_except_hiv	==1	. ( .)	28 ( 0)
-hepc	==1	0 ( 0)	35 ( 0)
-asthmacat	>=2	. ( .)	2111 (14)
-diabcat	>=2	14 ( 0)	5408 (36)
-cancer_exhaem_cat	>=2	. ( .)	2542 (17)
-cancer_haem_cat	>=2	0 ( 0)	451 ( 3)
-reduced_kidney_function_cat	>=2	9 ( 0)	6705 (45)
+hepc	==1	0 ( 0)	34 ( 0)
+asthmacat	>=2	. ( .)	2092 (14)
+diabcat	>=2	14 (56)	5372 (36)
+cancer_exhaem_cat	>=2	. ( .)	2516 (17)
+cancer_haem_cat	>=2	0 ( 0)	446 ( 3)
+reduced_kidney_function_cat	>=2	9 (36)	6659 (45)
