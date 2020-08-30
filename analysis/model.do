@@ -30,9 +30,6 @@ do "an_interactions" byethnicity
 do "an_interactions" byethnicity_wvsb
 do "an_interactions" bycomorbidities
 
-
-do "an_deschivdeaths_table" 
-
 do "an_cumincidence" 
 
 *MI for ethnicity
@@ -49,6 +46,9 @@ do "an_imputed" cuminc
 
 do "an_phcheck_cc"
 *do "an_phcheck_mi"
+
+do "an_deschivdeaths_table" 
+
 
 *posthoc
 do an_phcheck_addtimeinteractions_cc
