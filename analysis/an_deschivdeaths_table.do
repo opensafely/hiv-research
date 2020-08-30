@@ -18,7 +18,7 @@ safecount if `variable' `condition' & hiv==0
 file write descdeathstable (r(N)) (" (") %2.0f (100*(r(N))/`nohivdenom') (")") _n
 end
 
-use "cr_create_analysis_dataset_STSET_onsdeath_fail1" if _d==1, clear
+use "an_impute_imputeddata" if _d==1, clear
 
 cap file close descdeathstable
 file open descdeathstable using ./output/an_deschivdeaths_table.txt, write text replace

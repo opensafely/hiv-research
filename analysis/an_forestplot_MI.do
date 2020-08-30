@@ -29,9 +29,9 @@ gen obsorder=_n
 expand 2 if desc=="<60"|desc=="Males"|desc=="Black"|desc=="None"|desc=="0-59", gen(expanded)
 gen header = "By age" if expanded==1 & desc=="<60"
 replace header = "By sex" if expanded==1 & desc=="Males"
-replace header = "By ethnicity" if expanded==1 & desc=="Black"
-replace header = "By comorbidities" if expanded==1 & desc=="None"
-replace header = "By epidemic period (days)*" if expanded==1 & desc=="0-59"
+replace header = "By ethnicity*" if expanded==1 & desc=="Black"
+replace header = "By comorbidities**" if expanded==1 & desc=="None"
+replace header = "By epidemic period (days)***" if expanded==1 & desc=="0-59"
 expand 2 if header!="", gen(expanded2)
 replace header="" if expanded2==1
 replace desc="" if expanded==1|expanded2==1

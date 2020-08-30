@@ -47,7 +47,7 @@ if _rc==0 {
 *By black/white 
 if "`1'"=="byethnicity_wvsb"{
 gen whitevsblack = (ethnicity != 4) if ethnicity<.
-capture stcox 	i.hiv i.ethnicity $adjustmentlist 1.hiv#1.whitevsblack if (ethnicity==1|ethnicity==4), strata(stp)
+capture stcox 	i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.whitevsblack if (ethnicity==1|ethnicity==4), strata(stp)
 if _rc==0 {
 		noi di _n "BLACK/NON-BLACK INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
 		estimates
