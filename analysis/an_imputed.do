@@ -37,9 +37,13 @@ use "an_impute_imputeddata", clear
 mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)	///
 	origin(enter_date) id(patient_id)
 
-
 if "`1'"=="demog"{
 mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
+estimates save "./output/models/an_imputed_demog", replace						
+}
+
+if "`1'"=="demog_smokob"{
+mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity, strata(stp)
 estimates save "./output/models/an_imputed_demog", replace						
 }
 
@@ -57,20 +61,20 @@ mi estimate, eform
 
 if "`1'"=="byage"{
 gen ageover60 = agegroup>=4
-mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.ageover60, strata(stp)
+mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat 1.hiv#1.ageover60, strata(stp)
 estimates save "./output/models/an_imputed_byage", replace
 mi estimate, eform						
 }
 
 if "`1'"=="bysex"{
-mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.male, strata(stp)
+mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat  1.hiv#1.male, strata(stp)
 estimates save "./output/models/an_imputed_bysex", replace	
 mi estimate, eform					
 }
 
 if "`1'"=="byethnicity"{
 mi passive: gen nonblack = (ethnicity != 4) if ethnicity<.
-mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.nonblack, strata(stp)
+mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat  1.hiv#1.nonblack, strata(stp)
 estimates save "./output/models/an_imputed_byethnicity", replace	
 mi estimate, eform					
 }
@@ -93,7 +97,7 @@ gen anycomorbidity = 						///
 	|spleen 						///
 	|ra_sle_psoriasis  				///
 	|other_imm_except_hiv		
-mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd ///
+mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat ///
 	i.hypertension					///
 	i.chronic_respiratory_disease 	///
 	i.asthmacat						///
@@ -130,7 +134,7 @@ gen anycomorbidity_exht = 			///
 	|spleen 						///
 	|ra_sle_psoriasis  				///
 	|other_imm_except_hiv		
-mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd ///
+mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat ///
 	i.chronic_respiratory_disease 	///
 	i.asthmacat						///
 	i.chronic_cardiac_disease 		///

@@ -35,6 +35,7 @@ do "an_cumincidence"
 *MI for ethnicity
 do "an_impute" 
 do "an_imputed" demog
+do "an_imputed" demog_smokob
 do "an_imputed" full
 do "an_imputed" fullplushepc
 do "an_imputed" byage
@@ -53,10 +54,10 @@ do "an_deschivdeaths_table"
 *posthoc
 do an_phcheck_addtimeinteractions_cc
 
-do "an_sens_ccbmismok"
+*do "an_sens_ccbmismok"
 *posthoc
-do "an_sens_furtherexploration_bmismok" omitbmismok
-do "an_sens_furtherexploration_bmismok" omitbmismokinccpop
+*do "an_sens_furtherexploration_bmismok" omitbmismok
+*do "an_sens_furtherexploration_bmismok" omitbmismokinccpop
 do "an_sens_furtherexploration_bmismok" ccbmismok
 do "an_sens_furtherexploration_bmismok" ccbmionly
 do "an_sens_furtherexploration_bmismok" ccsmokonly

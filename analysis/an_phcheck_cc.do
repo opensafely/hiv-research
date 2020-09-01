@@ -9,7 +9,7 @@ log using ./output/an_phcheck_cc, replace t
 
 use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
-stcox 	i.hiv i.ethnicity age1 age2 age3 i.male i.imd , strata(stp)
+stcox 	i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat, strata(stp)
 
 estat phtest, d
 
