@@ -44,7 +44,7 @@ estimates save "./output/models/an_imputed_demog", replace
 
 if "`1'"=="demog_smokob"{
 mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity, strata(stp)
-estimates save "./output/models/an_imputed_demog", replace						
+estimates save "./output/models/an_imputed_demog_smokob", replace						
 }
 
 if "`1'"=="full"{

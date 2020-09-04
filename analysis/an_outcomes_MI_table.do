@@ -51,13 +51,23 @@ if _rc==0{
 	writehrci +IMD/ethnicity, estimate(`estimate') lci(`lci') uci(`uci')
 	}
 	else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
+
+	cap estimates use ./output/models/an_imputed_demog_smokob
+if _rc==0{
+	local estimate = exp( el(e(b_mi),1,2) )
+	local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
+	local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
+	writehrci +smoking/obesity, estimate(`estimate') lci(`lci') uci(`uci')
+	}
+	else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
 		
+	
 cap estimates use ./output/models/an_imputed_full
 if _rc==0{
 	local estimate = exp( el(e(b_mi),1,2) )
 	local lci = exp( el(e(b_mi),1,2)  - 1.96*  sqrt(el(e(V_mi),2,2))  )
 	local uci = exp( el(e(b_mi),1,2)  + 1.96*  sqrt(el(e(V_mi),2,2))  )
-	writehrci +obesity/smoking/comorbidities, estimate(`estimate') lci(`lci') uci(`uci')
+	writehrci +comorbidities, estimate(`estimate') lci(`lci') uci(`uci')
 	}
 	else file write outcometable ("AGESEX _tab MODEL NOT FOUND")
 
