@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_imputed_bycomorbidities_exht.log
   log type:  text
- opened on:  29 Aug 2020, 19:21:13
+ opened on:   1 Sep 2020, 08:50:40
 
 . 
 . ********************************   NOTES  **************************************
@@ -61,9 +61,14 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
                                           last observed exit t =       142
 
 . 
-. 
 . if "`1'"=="demog"{
 . mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
+. estimates save "./output/models/an_imputed_demog", replace                                              
+. }
+
+. 
+. if "`1'"=="demog_smokob"{
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity, strata(stp)
 . estimates save "./output/models/an_imputed_demog", replace                                              
 . }
 
@@ -84,15 +89,16 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 . 
 . if "`1'"=="byage"{
 . gen ageover60 = agegroup>=4
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.ageover60, strata(stp
-> )
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat 1.
+> hiv#1.ageover60, strata(stp)
 . estimates save "./output/models/an_imputed_byage", replace
 . mi estimate, eform                                              
 . }
 
 . 
 . if "`1'"=="bysex"{
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.male, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat  1.hiv#
+> 1.male, strata(stp)
 . estimates save "./output/models/an_imputed_bysex", replace      
 . mi estimate, eform                                      
 . }
@@ -100,7 +106,8 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 . 
 . if "`1'"=="byethnicity"{
 . mi passive: gen nonblack = (ethnicity != 4) if ethnicity<.
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.nonblack, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat  1.
+> hiv#1.nonblack, strata(stp)
 . estimates save "./output/models/an_imputed_byethnicity", replace        
 . mi estimate, eform                                      
 . }
@@ -124,7 +131,8 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 >         |spleen                                                 ///
 >         |ra_sle_psoriasis                               ///
 >         |other_imm_except_hiv           
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd ///
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4c
+> at ///
 >         i.hypertension                                  ///
 >         i.chronic_respiratory_disease   ///
 >         i.asthmacat                                             ///
@@ -139,7 +147,7 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 >         i.organ_transplant                              ///
 >         i.spleen                                                ///
 >         i.ra_sle_psoriasis                      ///
->         i.other_imm_except_hiv                  ///
+>         i.other_imm_except_hiv                  /// 
 >         1.hiv#1.anycomorbidity, strata(stp)
 . estimates save "./output/models/an_imputed_bycomorbidities", replace
 . mi estimate, eform                                              
@@ -162,7 +170,8 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 >         |spleen                                                 ///
 >         |ra_sle_psoriasis                               ///
 >         |other_imm_except_hiv           
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd ///
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.ob
+> ese4cat ///
 >         i.chronic_respiratory_disease   ///
 >         i.asthmacat                                             ///
 >         i.chronic_cardiac_disease               ///
@@ -176,93 +185,102 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 >         i.organ_transplant                              ///
 >         i.spleen                                                ///
 >         i.ra_sle_psoriasis                      ///
->         i.other_imm_except_hiv                  ///
+>         i.other_imm_except_hiv                  /// 
 >         1.hiv#1.anycomorbidity_exht, strata(stp)
 
 Multiple-imputation estimates                   Imputations       =         10
 Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
-                                                Average RVI       =     0.0294
-                                                Largest FMI       =     0.4111
-DF adjustment:   Large sample                   DF:     min       =      58.76
-                                                        avg       =   1.45e+10
-                                                        max       =   2.03e+11
-Model F test:       Equal FMI                   F(  36,388537.5)  =    1046.73
+                                                Average RVI       =     0.0259
+                                                Largest FMI       =     0.4101
+DF adjustment:   Large sample                   DF:     min       =      59.03
+                                                        avg       =   1.00e+10
+                                                        max       =   2.05e+11
+Model F test:       Equal FMI                   F(  41,566691.9)  =     925.50
 Within VCE type:          OIM                   Prob > F          =     0.0000
 
 -----------------------------------------------------------------------------------------------
                            _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 ------------------------------+----------------------------------------------------------------
-                        1.hiv |    .438556   .5009506     0.88   0.381    -.5432892    1.420401
+                        1.hiv |   .4533235   .5009665     0.90   0.366    -.5285528      1.4352
                               |
                     ethnicity |
-                       Mixed  |   .3537267   .1306492     2.71   0.009     .0922754    .6151779
-      Asian or Asian British  |     .21189   .0402089     5.27   0.000     .1328708    .2909092
-                       Black  |   .3454479   .0567679     6.09   0.000       .23414    .4567558
-                       Other  |      .1993   .0865885     2.30   0.022     .0290605    .3695394
+                       Mixed  |   .3790036   .1305766     2.90   0.005     .1177229    .6402843
+      Asian or Asian British  |    .287072    .040801     7.04   0.000     .2068765    .3672674
+                       Black  |   .3786163   .0568429     6.66   0.000     .2671637    .4900689
+                       Other  |    .238233   .0867772     2.75   0.006     .0676038    .4088621
                               |
-                         age1 |   .1743438   .0198252     8.79   0.000     .1354871    .2132004
-                         age2 |  -.1606591   .0428002    -3.75   0.000    -.2445459   -.0767723
-                         age3 |   .3838014    .098694     3.89   0.000     .1903648    .5772381
-                       1.male |   .4090427   .0169093    24.19   0.000      .375901    .4421844
+                         age1 |     .17562   .0200147     8.77   0.000      .136392     .214848
+                         age2 |  -.1707569   .0431603    -3.96   0.000    -.2553495   -.0861642
+                         age3 |   .4162576   .0994671     4.18   0.000     .2213056    .6112096
+                       1.male |   .3961709   .0172827    22.92   0.000     .3622974    .4300444
                               |
                           imd |
-                           2  |   .1308181   .0272571     4.80   0.000     .0773952    .1842409
-                           3  |   .2082678   .0273496     7.62   0.000     .1546635    .2618721
-                           4  |   .4132594   .0269318    15.34   0.000      .360474    .4660449
-             5 most deprived  |   .5446493   .0276882    19.67   0.000     .4903815    .5989172
+                           2  |    .125301   .0272651     4.60   0.000     .0718624    .1787396
+                           3  |   .1984578   .0273768     7.25   0.000     .1448003    .2521153
+                           4  |   .3995734   .0270008    14.80   0.000     .3466528    .4524941
+             5 most deprived  |   .5260173   .0278606    18.88   0.000     .4714116    .5806231
                               |
-1.chronic_respiratory_disease |   .5125534   .0211935    24.18   0.000     .4710148    .5540919
+                 smoke_nomiss |
+                      Former  |     .19978   .0187795    10.64   0.000     .1629728    .2365872
+                     Current  |  -.0148982   .0362787    -0.41   0.681    -.0860033    .0562068
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |  -.0076116   .0232806    -0.33   0.744    -.0532407    .0380176
+          Obese II (35-39.9)  |   .2932979   .0341113     8.60   0.000     .2264411    .3601547
+             Obese III (40+)  |   .6081198   .0473703    12.84   0.000     .5152756    .7009639
+                              |
+1.chronic_respiratory_disease |   .4831684   .0215415    22.43   0.000     .4409479     .525389
                               |
                     asthmacat |
-                 Yes, no OCS  |   .0082104   .0264012     0.31   0.756    -.0435351    .0599559
-                Yes with OCS  |   .1304758   .0488549     2.67   0.008     .0347221    .2262296
+                 Yes, no OCS  |  -.0077342   .0264314    -0.29   0.770    -.0595388    .0440704
+                Yes with OCS  |   .1017122   .0488893     2.08   0.037      .005891    .1975335
                               |
-    1.chronic_cardiac_disease |   .1970369   .0183807    10.72   0.000     .1610114    .2330623
+    1.chronic_cardiac_disease |   .1795347   .0183991     9.76   0.000     .1434732    .2155962
                               |
                       diabcat |
-         Controlled diabetes  |   .2429935   .0213951    11.36   0.000       .20106    .2849271
-       Uncontrolled diabetes  |   .6646351   .0275601    24.12   0.000     .6106182    .7186519
-  Diabetes, no hba1c measure  |   .6047057   .0430971    14.03   0.000     .5202369    .6891745
+         Controlled diabetes  |   .2059878   .0215885     9.54   0.000     .1636751    .2483004
+       Uncontrolled diabetes  |   .6073109   .0279468    21.73   0.000      .552536    .6620857
+  Diabetes, no hba1c measure  |   .5803548   .0431509    13.45   0.000     .4957805    .6649291
                               |
             cancer_exhaem_cat |
-                   Last year  |   .5744488   .0582901     9.85   0.000     .4602022    .6886954
-               2-5 years ago  |   .1881756   .0411867     4.57   0.000     .1074511    .2689001
-                    5+ years  |   .0065448   .0268778     0.24   0.808    -.0461347    .0592243
+                   Last year  |   .5703835   .0582956     9.78   0.000     .4561261    .6846409
+               2-5 years ago  |   .1827674   .0411885     4.44   0.000     .1020394    .2634955
+                    5+ years  |   .0024399   .0268802     0.09   0.928    -.0502444    .0551242
                               |
               cancer_haem_cat |
-                   Last year  |   1.069779   .1277858     8.37   0.000     .8193232    1.320234
-               2-5 years ago  |   .8279625    .082215    10.07   0.000     .6668241    .9891009
-                    5+ years  |   .4774884   .0660868     7.23   0.000     .3479608    .6070161
+                   Last year  |   1.074241   .1277804     8.41   0.000     .8237959    1.324686
+               2-5 years ago  |   .8268188   .0822205    10.06   0.000     .6656697    .9879679
+                    5+ years  |   .4829202   .0660887     7.31   0.000     .3533886    .6124517
                               |
-      1.chronic_liver_disease |     .66014   .0633789    10.42   0.000     .5359196    .7843604
-            1.stroke_dementia |   .7618039   .0205736    37.03   0.000     .7214803    .8021274
-                1.other_neuro |   .9939704   .0340629    29.18   0.000     .9272084    1.060732
+      1.chronic_liver_disease |   .6570726   .0634042    10.36   0.000     .5328025    .7813426
+            1.stroke_dementia |   .7625305   .0205733    37.06   0.000     .7222076    .8028535
+                1.other_neuro |   .9969123   .0340714    29.26   0.000     .9301336    1.063691
                               |
   reduced_kidney_function_cat |
-Stage 3a/3b egfr 30-60        |   .2631383   .0194275    13.54   0.000     .2250611    .3012155
-           Stage 4/5 egfr<30  |   .9015955   .0332268    27.13   0.000     .8364722    .9667187
+Stage 3a/3b egfr 30-60        |   .2463883   .0194448    12.67   0.000     .2082771    .2844994
+           Stage 4/5 egfr<30  |   .8752316   .0332582    26.32   0.000     .8100468    .9404164
                               |
-           1.organ_transplant |   1.117369   .1133444     9.86   0.000     .8952182     1.33952
-                     1.spleen |   .2223442   .1405583     1.58   0.114     -.053145    .4978335
-           1.ra_sle_psoriasis |   .1910816   .0289782     6.59   0.000     .1342853    .2478778
-       1.other_imm_except_hiv |     1.2659   .1867695     6.78   0.000     .8998381    1.631961
+           1.organ_transplant |    1.13699   .1133869    10.03   0.000     .9147557    1.359224
+                     1.spleen |   .2253905   .1405558     1.60   0.109    -.0500938    .5008748
+           1.ra_sle_psoriasis |   .1775886   .0289989     6.12   0.000     .1207517    .2344255
+       1.other_imm_except_hiv |   1.262186   .1867762     6.76   0.000      .896111     1.62826
                               |
       hiv#anycomorbidity_exht |
-                         1 1  |    .463604   .5459563     0.85   0.396    -.6064506    1.533659
+                         1 1  |    .470421   .5459575     0.86   0.389    -.5996361    1.540478
 -----------------------------------------------------------------------------------------------
 
 Transformations                                 Average RVI       =     0.0004
                                                 Largest FMI       =     0.0004
-DF adjustment:   Large sample                   DF:     min       =   5.16e+07
-                                                        avg       =   5.16e+07
-Within VCE type:          OIM                           max       =   5.16e+07
+DF adjustment:   Large sample                   DF:     min       =   4.61e+07
+                                                        avg       =   4.61e+07
+Within VCE type:          OIM                           max       =   4.61e+07
 
         _mi_1: _b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]
 
 ------------------------------------------------------------------------------
           _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-       _mi_1 |     .90216   .2193375     4.11   0.000     .4722665    1.332054
+       _mi_1 |   .9237444   .2193555     4.21   0.000     .4938156    1.353673
 ------------------------------------------------------------------------------
 . estimates save "./output/models/an_imputed_bycomorbidities_exht", replace
 file ./output/models/an_imputed_bycomorbidities_exht.ster saved
@@ -270,88 +288,97 @@ file ./output/models/an_imputed_bycomorbidities_exht.ster saved
 
 Multiple-imputation estimates                   Imputations       =         10
 Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
-                                                Average RVI       =     0.0294
-                                                Largest FMI       =     0.4111
-DF adjustment:   Large sample                   DF:     min       =      58.76
-                                                        avg       =   1.45e+10
-                                                        max       =   2.03e+11
-Model F test:       Equal FMI                   F(  36,388537.5)  =    1046.73
+                                                Average RVI       =     0.0259
+                                                Largest FMI       =     0.4101
+DF adjustment:   Large sample                   DF:     min       =      59.03
+                                                        avg       =   1.00e+10
+                                                        max       =   2.05e+11
+Model F test:       Equal FMI                   F(  41,566691.9)  =     925.50
 Within VCE type:          OIM                   Prob > F          =     0.0000
 
 -----------------------------------------------------------------------------------------------
                            _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
 ------------------------------+----------------------------------------------------------------
-                        1.hiv |   1.550467   .7767073     0.88   0.381     .5808346    4.138781
+                        1.hiv |   1.573533   .7882873     0.90   0.366     .5894574    4.200484
                               |
                     ethnicity |
-                       Mixed  |   1.424366   .1860923     2.71   0.009     1.096667    1.849986
-      Asian or Asian British  |   1.236012   .0496986     5.27   0.000     1.142102    1.337643
-                       Black  |   1.412623   .0801916     6.09   0.000     1.263821    1.578943
-                       Other  |   1.220548   .1056854     2.30   0.022     1.029487    1.447068
+                       Mixed  |   1.460828   .1907501     2.90   0.005     1.124932     1.89702
+      Asian or Asian British  |    1.33252   .0543681     7.04   0.000     1.229831    1.443784
+                       Black  |   1.460263   .0830056     6.66   0.000     1.306254    1.632429
+                       Other  |   1.269005   .1101206     2.75   0.006     1.069941    1.505104
                               |
-                         age1 |   1.190465   .0236012     8.79   0.000     1.145094    1.237633
-                         age2 |   .8515823   .0364479    -3.75   0.000       .78306    .9261007
-                         age3 |   1.467854   .1448683     3.89   0.000     1.209691    1.781112
-                       1.male |   1.505376   .0254549    24.19   0.000     1.456303    1.556103
+                         age1 |   1.191985   .0238572     8.77   0.000     1.146131    1.239673
+                         age2 |   .8430265   .0363853    -3.96   0.000     .7746457    .9174436
+                         age3 |   1.516276   .1508197     4.18   0.000     1.247705    1.842659
+                       1.male |   1.486123   .0256842    22.92   0.000     1.436626    1.537326
                               |
                           imd |
-                           2  |    1.13976   .0310665     4.80   0.000     1.080469    1.202305
-                           3  |   1.231543   .0336822     7.62   0.000     1.167265     1.29936
-                           4  |   1.511737   .0407139    15.34   0.000     1.434009    1.593679
-             5 most deprived  |   1.724004   .0477345    19.67   0.000     1.632939    1.820147
+                           2  |    1.13349   .0309047     4.60   0.000     1.074507    1.195709
+                           3  |   1.219521   .0333865     7.25   0.000     1.155809    1.286744
+                           4  |   1.491188   .0402633    14.80   0.000     1.414326    1.572229
+             5 most deprived  |   1.692179   .0471451    18.88   0.000     1.602254    1.787152
                               |
-1.chronic_respiratory_disease |   1.669549   .0353836    24.18   0.000     1.601619     1.74036
+                 smoke_nomiss |
+                      Former  |   1.221134   .0229323    10.64   0.000     1.177005    1.266918
+                     Current  |   .9852122   .0357423    -0.41   0.681     .9175912    1.057816
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   .9924173   .0231041    -0.33   0.744     .9481517     1.03875
+          Obese II (35-39.9)  |   1.340842   .0457378     8.60   0.000     1.254129    1.433551
+             Obese III (40+)  |   1.836974    .087018    12.84   0.000       1.6741    2.015695
+                              |
+1.chronic_respiratory_disease |   1.621203   .0349231    22.43   0.000      1.55418    1.691116
                               |
                     asthmacat |
-                 Yes, no OCS  |   1.008244   .0266189     0.31   0.756      .957399     1.06179
-                Yes with OCS  |    1.13937   .0556638     2.67   0.008     1.035332    1.253864
+                 Yes, no OCS  |   .9922956   .0262278    -0.29   0.770      .942199    1.045056
+                Yes with OCS  |   1.107065   .0541236     2.08   0.037     1.005908    1.218394
                               |
-    1.chronic_cardiac_disease |   1.217789   .0223838    10.72   0.000     1.174698     1.26246
+    1.chronic_cardiac_disease |    1.19666   .0220174     9.76   0.000     1.154276    1.240601
                               |
                       diabcat |
-         Controlled diabetes  |    1.27506     .02728    11.36   0.000     1.222698    1.329665
-       Uncontrolled diabetes  |   1.943781   .0535708    24.12   0.000      1.84157    2.051665
-  Diabetes, no hba1c measure  |   1.830713   .0788984    14.03   0.000     1.682426     1.99207
+         Controlled diabetes  |   1.228738   .0265266     9.54   0.000     1.177832    1.281845
+       Uncontrolled diabetes  |   1.835489   .0512961    21.73   0.000     1.737654    1.938832
+  Diabetes, no hba1c measure  |   1.786672   .0770966    13.45   0.000     1.641779    1.944353
                               |
             cancer_exhaem_cat |
-                   Last year  |   1.776151   .1035321     9.85   0.000     1.584394    1.991116
-               2-5 years ago  |   1.207045   .0497143     4.57   0.000     1.113436    1.308524
-                    5+ years  |   1.006566   .0270543     0.24   0.808     .9549133    1.061013
+                   Last year  |   1.768945   .1031218     9.78   0.000     1.577949     1.98306
+               2-5 years ago  |   1.200535   .0494483     4.44   0.000     1.107427    1.301471
+                    5+ years  |   1.002443   .0269459     0.09   0.928      .950997    1.056672
                               |
               cancer_haem_cat |
-                   Last year  |   2.914734   .3724615     8.37   0.000     2.268964    3.744298
-               2-5 years ago  |   2.288651   .1881614    10.07   0.000     1.948041    2.688816
-                    5+ years  |   1.612021   .1065332     7.23   0.000     1.416177    1.834948
+                   Last year  |    2.92777   .3741117     8.41   0.000     2.279135    3.761004
+               2-5 years ago  |   2.286035   .1879588    10.06   0.000     1.945793    2.685771
+                    5+ years  |     1.6208   .1071167     7.31   0.000     1.423884    1.844949
                               |
-      1.chronic_liver_disease |   1.935063   .1226422    10.42   0.000     1.709019    2.191005
-            1.stroke_dementia |   2.142137   .0440715    37.03   0.000     2.057477    2.230281
-                1.other_neuro |   2.701941   .0920359    29.18   0.000     2.527444    2.888486
+      1.chronic_liver_disease |   1.929137   .1223155    10.36   0.000       1.7037    2.184403
+            1.stroke_dementia |   2.143694   .0441029    37.06   0.000     2.058974    2.231901
+                1.other_neuro |   2.709901     .09233    29.26   0.000     2.534848    2.897044
                               |
   reduced_kidney_function_cat |
-Stage 3a/3b egfr 30-60        |   1.301007   .0252753    13.54   0.000     1.252399    1.351501
-           Stage 4/5 egfr<30  |   2.463531   .0818551    27.13   0.000      2.30821    2.629303
+Stage 3a/3b egfr 30-60        |   1.279396   .0248776    12.67   0.000     1.231554    1.329097
+           Stage 4/5 egfr<30  |   2.399431   .0798007    26.32   0.000     2.248013    2.561048
                               |
-           1.organ_transplant |   3.056801   .3464712     9.86   0.000      2.44787     3.81721
-                     1.spleen |   1.249001   .1755575     1.58   0.114     .9482425    1.645153
-           1.ra_sle_psoriasis |   1.210558   .0350798     6.59   0.000     1.143719    1.281303
-       1.other_imm_except_hiv |   3.546282   .6623374     6.78   0.000     2.459205    5.113894
+           1.organ_transplant |    3.11737   .3534688    10.03   0.000     2.496165    3.893171
+                     1.spleen |   1.252812     .17609     1.60   0.109     .9511402    1.650164
+           1.ra_sle_psoriasis |   1.194334   .0346344     6.12   0.000     1.128345    1.264182
+       1.other_imm_except_hiv |   3.533135   .6599057     6.76   0.000     2.450056    5.095004
                               |
       hiv#anycomorbidity_exht |
-                         1 1  |   1.589793   .8679576     0.85   0.396     .5452829    4.635104
+                         1 1  |   1.600668   .8738966     0.86   0.389     .5490114     4.66682
 -----------------------------------------------------------------------------------------------
 
 Transformations                                 Average RVI       =     0.0004
                                                 Largest FMI       =     0.0004
-DF adjustment:   Large sample                   DF:     min       =   5.16e+07
-                                                        avg       =   5.16e+07
-Within VCE type:          OIM                           max       =   5.16e+07
+DF adjustment:   Large sample                   DF:     min       =   4.61e+07
+                                                        avg       =   4.61e+07
+Within VCE type:          OIM                           max       =   4.61e+07
 
         _mi_1: _b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]
 
 ------------------------------------------------------------------------------
           _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-       _mi_1 |     .90216   .2193375     4.11   0.000     .4722665    1.332054
+       _mi_1 |   .9237444   .2193555     4.21   0.000     .4938156    1.353673
 ------------------------------------------------------------------------------
 . }
 
@@ -360,5 +387,5 @@ Within VCE type:          OIM                           max       =   5.16e+07
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_imputed_bycomorbidities_exht.log
   log type:  text
- closed on:  30 Aug 2020, 02:56:32
+ closed on:   1 Sep 2020, 18:11:34
 ----------------------------------------------------------------------------------------------------------------------------------

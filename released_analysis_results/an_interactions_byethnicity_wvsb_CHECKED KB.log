@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_interactions_byethnicity_wvsb.log
   log type:  text
- opened on:  30 Aug 2020, 16:17:31
+ opened on:   1 Sep 2020, 08:50:35
 
 . 
 . run global
@@ -55,7 +55,8 @@
 . if "`1'"=="byethnicity_wvsb"{
 . gen whitevsblack = (ethnicity != 4) if ethnicity<.
 (4,562,695 missing values generated)
-. capture stcox   i.hiv i.ethnicity age1 age2 age3 i.imd 1.hiv#1.whitevsblack if (ethnicity==1|ethnicity==4), strata(stp)
+. capture stcox   i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat 1.hiv#1.whitevsblack if (ethnicity==1|e
+> thnicity==4), strata(stp)
 . if _rc==0 {
 .                 noi di _n "BLACK/NON-BLACK INTERACTION MODEL INC ETHNICITY (COMPLETE CASES)" _n 
 
@@ -72,29 +73,39 @@ Stratified Cox regr. -- Breslow method for ties
 No. of subjects =   11,231,108                  Number of obs    =  11,231,108
 No. of failures =       10,246
 Time at risk    =   1613091761
-                                                LR chi2(10)      =    32324.90
-Log likelihood  =   -117689.15                  Prob > chi2      =      0.0000
+                                                LR chi2(16)      =    33501.93
+Log likelihood  =   -117100.64                  Prob > chi2      =      0.0000
 
-----------------------------------------------------------------------------------
-              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
------------------+----------------------------------------------------------------
-           1.hiv |   4.626128   1.424222     4.98   0.000     2.530246    8.458096
-                 |
-       ethnicity |
-          Black  |   1.514471   .0949002     6.62   0.000     1.339438    1.712376
-            age1 |   1.163234   .0307817     5.71   0.000     1.104441    1.225157
-            age2 |   .9333571   .0527425    -1.22   0.222     .8355026    1.042672
-            age3 |   1.184747   .1535621     1.31   0.191     .9189592    1.527407
-                 |
-             imd |
-              2  |   1.221986   .0404117     6.06   0.000     1.145293    1.303815
-              3  |   1.348021   .0448948     8.97   0.000     1.262839    1.438948
-              4  |   1.697864   .0555805    16.17   0.000     1.592349     1.81037
-5 most deprived  |   2.031863   .0674816    21.35   0.000     1.903814    2.168524
-                 |
-hiv#whitevsblack |
-            1 1  |   .4992942   .2266185    -1.53   0.126     .2051234     1.21534
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+                 _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------+----------------------------------------------------------------
+              1.hiv |   4.812519   1.481396     5.10   0.000     2.632416    8.798131
+                    |
+          ethnicity |
+             Black  |   1.574599   .0989175     7.23   0.000     1.392184    1.780914
+               age1 |   1.178912   .0324214     5.98   0.000      1.11705      1.2442
+               age2 |   .8859655   .0517749    -2.07   0.038     .7900843    .9934823
+               age3 |   1.376785   .1841053     2.39   0.017     1.059358    1.789327
+             1.male |    1.60247   .0327904    23.04   0.000     1.539474    1.668045
+                    |
+                imd |
+                 2  |   1.209098   .0400002     5.74   0.000     1.133187    1.290095
+                 3  |   1.319849   .0440188     8.32   0.000     1.236334    1.409007
+                 4  |   1.647075   .0541256    15.18   0.000     1.544335     1.75665
+   5 most deprived  |   1.939108   .0649792    19.76   0.000     1.815844    2.070741
+                    |
+       smoke_nomiss |
+            Former  |   1.416784   .0317668    15.54   0.000      1.35587    1.480434
+           Current  |   1.249919   .0529981     5.26   0.000     1.150243    1.358231
+                    |
+          obese4cat |
+ Obese I (30-34.9)  |   1.085042   .0298487     2.97   0.003     1.028088     1.14515
+Obese II (35-39.9)  |   1.564763    .062674    11.18   0.000     1.446622    1.692552
+   Obese III (40+)  |    2.18981   .1233544    13.91   0.000     1.960909    2.445432
+                    |
+   hiv#whitevsblack |
+               1 1  |   .4205643   .1909134    -1.91   0.056      .172756    1.023839
+-------------------------------------------------------------------------------------
                                                              Stratified by stp
 .                 estimates save ./output/models/an_interactions_whitevsblack, replace
 file ./output/models/an_interactions_whitevsblack.ster saved
@@ -105,7 +116,7 @@ file ./output/models/an_interactions_whitevsblack.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   2.309799   .7712684     2.51   0.012     1.200462    4.444267
+         (1) |   2.023974   .6760062     2.11   0.035      1.05173    3.894985
 ------------------------------------------------------------------------------
 .                 }
 .         else di "WARNING - hiv black/white interaction MODEL DID NOT SUCCESSFULLY FIT"
@@ -144,5 +155,5 @@ file ./output/models/an_interactions_whitevsblack.ster saved
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_interactions_byethnicity_wvsb.log
   log type:  text
- closed on:  30 Aug 2020, 16:29:49
+ closed on:   1 Sep 2020, 09:11:50
 ----------------------------------------------------------------------------------------------------------------------------------

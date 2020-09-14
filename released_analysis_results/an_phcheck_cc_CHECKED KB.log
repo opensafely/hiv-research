@@ -2,14 +2,14 @@
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_phcheck_cc.log
   log type:  text
- opened on:  28 Aug 2020, 17:38:21
+ opened on:   1 Sep 2020, 08:50:42
 
 . 
 . use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 (Analysis dataset HIV project)
 
 . 
-. stcox   i.hiv i.ethnicity age1 age2 age3 i.male i.imd , strata(stp)
+. stcox   i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat, strata(stp)
 
          failure _d:  onsdeath == 1
    analysis time _t:  (stime_onsdeath-origin)
@@ -18,45 +18,54 @@
                  id:  patient_id
 
 Iteration 0:   log likelihood = -147541.63
-Iteration 1:   log likelihood = -134592.29
-Iteration 2:   log likelihood = -129726.61
-Iteration 3:   log likelihood = -129465.09
-Iteration 4:   log likelihood = -129452.54
-Iteration 5:   log likelihood = -129451.29
-Iteration 6:   log likelihood = -129451.27
-Iteration 7:   log likelihood = -129451.27
+Iteration 1:   log likelihood = -134267.41
+Iteration 2:   log likelihood = -129537.52
+Iteration 3:   log likelihood = -129186.51
+Iteration 4:   log likelihood = -129169.86
+Iteration 5:   log likelihood = -129168.83
+Iteration 6:   log likelihood = -129168.81
+Iteration 7:   log likelihood = -129168.81
 Refining estimates:
-Iteration 0:   log likelihood = -129451.27
+Iteration 0:   log likelihood = -129168.81
 
 Stratified Cox regr. -- Breslow method for ties
 
 No. of subjects =   12,745,732                  Number of obs    =  12,745,732
 No. of failures =       11,174
 Time at risk    =   1830993197
-                                                LR chi2(13)      =    36180.72
-Log likelihood  =   -129451.27                  Prob > chi2      =      0.0000
+                                                LR chi2(18)      =    36745.64
+Log likelihood  =   -129168.81                  Prob > chi2      =      0.0000
 
 -----------------------------------------------------------------------------------------
                      _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ------------------------+----------------------------------------------------------------
-                  1.hiv |   2.428978    .546198     3.95   0.000     1.563206    3.774254
+                  1.hiv |   2.490945   .5602126     4.06   0.000     1.602984    3.870785
                         |
               ethnicity |
-                 Mixed  |   1.412771   .1627945     3.00   0.003     1.127165    1.770746
-Asian or Asian British  |    1.35887   .0560444     7.44   0.000     1.253348    1.473277
-                 Black  |   1.484491    .090871     6.45   0.000     1.316656    1.673719
-                 Other  |   1.182664   .1057998     1.88   0.061     .9924619    1.409318
+                 Mixed  |   1.467152   .1691079     3.33   0.001     1.170478    1.839021
+Asian or Asian British  |   1.527745   .0637959    10.15   0.000     1.407687    1.658042
+                 Black  |   1.562278   .0958843     7.27   0.000     1.385211    1.761978
+                 Other  |   1.259116   .1127074     2.57   0.010     1.056506    1.500581
                         |
-                   age1 |    1.16704    .025525     7.06   0.000     1.118069    1.218156
-                   age2 |   .9135988   .0432558    -1.91   0.056     .8326337    1.002437
-                   age3 |   1.260873   .1377874     2.12   0.034     1.017777    1.562033
-                 1.male |   1.669811   .0320489    26.71   0.000     1.608163    1.733822
+                   age1 |   1.170324   .0260602     7.06   0.000     1.120346    1.222532
+                   age2 |    .895446   .0430676    -2.30   0.022     .8148915    .9839634
+                   age3 |   1.341794   .1487858     2.65   0.008     1.079692    1.667523
+                 1.male |   1.608181   .0316062    24.17   0.000     1.547412    1.671337
                         |
                     imd |
-                     2  |   1.225902   .0398511     6.27   0.000     1.150232    1.306551
-                     3  |   1.373796   .0445984     9.78   0.000     1.289108    1.464048
-                     4  |   1.739978   .0552132    17.45   0.000     1.635058     1.85163
-       5 most deprived  |   2.072638   .0667591    22.63   0.000     1.945837    2.207701
+                     2  |   1.209531   .0393329     5.85   0.000     1.134845    1.289132
+                     3  |   1.338065    .043496     8.96   0.000     1.255474     1.42609
+                     4  |   1.672707   .0532577    16.16   0.000     1.571514    1.780416
+       5 most deprived  |   1.955749   .0635237    20.65   0.000     1.835125    2.084301
+                        |
+           smoke_nomiss |
+                Former  |   1.390679   .0296962    15.44   0.000     1.333677    1.450118
+               Current  |   1.177929   .0479458     4.02   0.000     1.087607    1.275751
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.107208   .0290211     3.89   0.000     1.051764    1.165575
+    Obese II (35-39.9)  |   1.584563   .0606762    12.02   0.000     1.469993    1.708062
+       Obese III (40+)  |   2.248303   .1203119    15.14   0.000      2.02444    2.496919
 -----------------------------------------------------------------------------------------
                                                              Stratified by stp
 
@@ -70,24 +79,31 @@ Asian or Asian British  |    1.35887   .0560444     7.44   0.000     1.253348   
                   |       rho            chi2       df       Prob>chi2
       ------------+---------------------------------------------------
       0b.hiv      |            .            .        1             .
-      1.hiv       |     -0.00937         0.97        1         0.3238
+      1.hiv       |     -0.00999         1.11        1         0.2930
       1b.ethnicity|            .            .        1             .
-      2.ethnicity |     -0.01167         1.51        1         0.2192
-      3.ethnicity |     -0.03589        14.10        1         0.0002
-      4.ethnicity |     -0.01430         2.26        1         0.1324
-      5.ethnicity |     -0.01614         2.89        1         0.0891
-      age1        |      0.00977         1.21        1         0.2712
-      age2        |     -0.01328         2.19        1         0.1392
-      age3        |      0.01615         3.20        1         0.0736
+      2.ethnicity |     -0.01169         1.51        1         0.2188
+      3.ethnicity |     -0.03930        16.76        1         0.0000
+      4.ethnicity |     -0.01365         2.06        1         0.1510
+      5.ethnicity |     -0.01794         3.57        1         0.0587
+      age1        |      0.00942         1.17        1         0.2802
+      age2        |     -0.01171         1.76        1         0.1850
+      age3        |      0.01397         2.47        1         0.1161
       0b.male     |            .            .        1             .
-      1.male      |     -0.06439        45.83        1         0.0000
+      1.male      |     -0.06581        47.75        1         0.0000
       1b.imd      |            .            .        1             .
-      2.imd       |      0.01687         3.17        1         0.0749
-      3.imd       |      0.01635         2.96        1         0.0853
-      4.imd       |      0.01164         1.50        1         0.2211
-      5.imd       |      0.00853         0.81        1         0.3692
+      2.imd       |      0.01812         3.66        1         0.0557
+      3.imd       |      0.01862         3.85        1         0.0498
+      4.imd       |      0.01455         2.35        1         0.1252
+      5.imd       |      0.01208         1.63        1         0.2013
+      1b.smoke_n~s|            .            .        1             .
+      2.smoke_no~s|     -0.01444         2.30        1         0.1296
+      3.smoke_no~s|      0.02091         4.94        1         0.0262
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |     -0.05677        35.67        1         0.0000
+      3.obese4cat |     -0.03355        12.46        1         0.0004
+      4.obese4cat |     -0.04405        21.40        1         0.0000
       ------------+---------------------------------------------------
-      global test |                    240.59       13         0.0000
+      global test |                    317.01       18         0.0000
       ----------------------------------------------------------------
 
 . 
@@ -103,5 +119,5 @@ Asian or Asian British  |    1.35887   .0560444     7.44   0.000     1.253348   
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_phcheck_cc.log
   log type:  text
- closed on:  28 Aug 2020, 18:28:18
+ closed on:   1 Sep 2020, 09:46:14
 ----------------------------------------------------------------------------------------------------------------------------------
