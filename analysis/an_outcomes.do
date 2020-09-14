@@ -8,6 +8,25 @@ run global
 
 use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
 
+if "`1'"=="crude"{
+
+******************************
+*  Crude Cox model  *
+******************************
+capture stcox i.hiv, strata(stp) 
+if _rc==0 {
+		noi di _n  "UNADJUSTED (FULL STUDY POP)" _n 
+		estimates
+		estimates save ./output/models/an_outcomes_crude, replace
+		}
+	else {
+	di "WARNING - CRUDE MODEL DID NOT SUCCESSFULLY FIT"
+	}
+
+}
+
+
+
 if "`1'"=="rates_agesex"{
 strate hiv, per(365000) output(./output/an_outcomes_RATES, replace)
 

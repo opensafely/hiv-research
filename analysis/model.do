@@ -17,6 +17,7 @@ do "an_hiv_desccodes"
 
 do "an_desctable" 
 
+do "an_outcomes" crude /*TO RUN*/
 do "an_outcomes" rates_agesex 
 do "an_outcomes" demog_cceth
 do "an_outcomes" demog_noeth
@@ -61,9 +62,10 @@ do an_phcheck_addtimeinteractions_cc
 do "an_sens_furtherexploration_bmismok" ccbmismok
 do "an_sens_furtherexploration_bmismok" ccbmionly
 do "an_sens_furtherexploration_bmismok" ccsmokonly
-
-
-do "an_outcomes_table"
+do "an_sensan_addhhsize" /*TO RUN*/
+do "an_checkcollinearity" /*TO RUN*/
+do "an_sens_addhtethinteraction" /*TO RUN*/
+do "an_outcomes_table" /*TO RUN*/
 do "an_outcomes_MI_table"
 do "an_forestplot_MI"
 

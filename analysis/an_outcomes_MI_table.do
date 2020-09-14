@@ -33,6 +33,17 @@ foreach hivlevel of numlist 1 0{
 	}
 	
 *Write non-interaction model results
+cap estimates use ./output/models/an_outcomes_crude
+if _rc==0{
+	lincom 1.hiv, eform
+	local estimate = r(estimate)
+	local lci = r(lb)
+	local uci = r(ub)
+	writehrci Unadjusted, estimate(`estimate') lci(`lci') uci(`uci')
+	}
+	else file write outcometable ("UNADJUSTED _tab MODEL NOT FOUND")
+
+	
 cap estimates use ./output/models/an_outcomes_agesex
 if _rc==0{
 	lincom 1.hiv, eform
