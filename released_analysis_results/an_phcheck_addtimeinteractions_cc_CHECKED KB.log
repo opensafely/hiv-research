@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_phcheck_addtimeinteractions_cc.log
   log type:  text
- opened on:  28 Aug 2020, 17:38:21
+ opened on:   1 Sep 2020, 08:50:42
 
 . 
 . use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
@@ -17,15 +17,22 @@
 . *gen anyobesity = obese4cat>=2
 . gen highimd = imd>=3
 
+. gen anyobese = obese4cat>=2
+
+. gen currsmok= smoke_nomiss==3
+
 . 
-. 
-. stcox   i.hiv i.ethnicity age1 age2 age3 i.male i.imd 60.timeperiod#2.ethnicity         ///
+. stcox   i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat 60.timeperiod#2.ethnicity      ///
 >         60.timeperiod#3.ethnicity                                                                                       ///
 >         60.timeperiod#4.ethnicity                                                                                       ///
 >         60.timeperiod#5.ethnicity                                                                                       ///
 >         60.timeperiod#1.male                                                                                            ///
 >         60.timeperiod#1.highimd                                                                                         ///     
->                 
+>         
+>         60.timeperiod#1.anyobese                                                                                        ///     
+>         
+>         60.timeperiod#1.currsmok                                                                                        ///     
+>         
 >         , strata(stp)
 
          failure _d:  onsdeath == 1
@@ -35,57 +42,72 @@
                  id:  patient_id
 
 Iteration 0:   log likelihood = -147541.63
-Iteration 1:   log likelihood =  -134570.5
-Iteration 2:   log likelihood = -129695.73
-Iteration 3:   log likelihood = -129434.81
-Iteration 4:   log likelihood = -129422.51
-Iteration 5:   log likelihood = -129421.31
-Iteration 6:   log likelihood = -129421.28
-Iteration 7:   log likelihood = -129421.28
+Iteration 1:   log likelihood = -134218.32
+Iteration 2:   log likelihood = -129476.05
+Iteration 3:   log likelihood = -129127.65
+Iteration 4:   log likelihood = -129111.42
+Iteration 5:   log likelihood = -129110.43
+Iteration 6:   log likelihood = -129110.42
+Iteration 7:   log likelihood = -129110.42
 Refining estimates:
-Iteration 0:   log likelihood = -129421.28
+Iteration 0:   log likelihood = -129110.42
 
 Stratified Cox regr. -- Breslow method for ties
 
 No. of subjects =   12,745,732                  Number of obs    =  25,468,648
 No. of failures =       11,174
 Time at risk    =   1830993197
-                                                LR chi2(19)      =    36240.68
-Log likelihood  =   -129421.28                  Prob > chi2      =      0.0000
+                                                LR chi2(26)      =    36862.42
+Log likelihood  =   -129110.42                  Prob > chi2      =      0.0000
 
 --------------------------------------------------------------------------------------------
                         _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ---------------------------+----------------------------------------------------------------
-                     1.hiv |   2.425056   .5453206     3.94   0.000     1.560675    3.768173
+                     1.hiv |   2.489451   .5598817     4.06   0.000     1.602017    3.868479
                            |
                  ethnicity |
-                    Mixed  |   1.384124   .4435422     1.01   0.310     .7385969    2.593835
-   Asian or Asian British  |   1.686059   .1805585     4.88   0.000     1.366842    2.079827
-                    Black  |   1.860238   .2744454     4.21   0.000     1.393121    2.483982
-                    Other  |   1.859992   .3658942     3.15   0.002     1.264924    2.735004
+                    Mixed  |   1.415804   .4537689     1.08   0.278     .7554242    2.653478
+   Asian or Asian British  |   1.948612    .209277     6.21   0.000     1.578731    2.405153
+                    Black  |   1.917076   .2830797     4.41   0.000     1.435321    2.560529
+                    Other  |   2.020259   .3978549     3.57   0.000     1.373339    2.971915
                            |
-                      age1 |   1.166912   .0255186     7.06   0.000     1.117953    1.218015
-                      age2 |   .9138171    .043261    -1.90   0.057     .8328419    1.002665
-                      age3 |   1.260159   .1376943     2.12   0.034     1.017225    1.561112
-                    1.male |   2.489178    .157913    14.38   0.000     2.198143    2.818746
+                      age1 |   1.169897   .0260366     7.05   0.000     1.119963    1.222057
+                      age2 |   .8961187   .0430795    -2.28   0.023     .8155402    .9846588
+                      age3 |   1.339519   .1484685     2.64   0.008     1.077963    1.664537
+                    1.male |   2.434451   .1551084    13.96   0.000      2.14866    2.758255
                            |
                        imd |
-                        2  |   1.225504   .0398404     6.26   0.000     1.149854    1.306131
-                        3  |   1.209847    .086823     2.65   0.008     1.051103    1.392566
-                        4  |   1.532612   .1093754     5.98   0.000     1.332557      1.7627
-          5 most deprived  |   1.826135   .1310462     8.39   0.000     1.586534    2.101921
+                        2  |   1.209195   .0393247     5.84   0.000     1.134525    1.288779
+                        3  |   1.145323   .0826078     1.88   0.060     .9943378    1.319234
+                        4  |   1.431995   .1027265     5.01   0.000     1.244169    1.648177
+          5 most deprived  |   1.675105   .1209113     7.15   0.000     1.454123     1.92967
+                           |
+              smoke_nomiss |
+                   Former  |   1.390084   .0296764    15.43   0.000     1.333119    1.449483
+                  Current  |    1.15386   .1408991     1.17   0.241     .9082633    1.465866
+                           |
+                 obese4cat |
+        Obese I (30-34.9)  |    1.77248   .1164306     8.71   0.000      1.55836    2.016021
+       Obese II (35-39.9)  |   2.541842   .1820373    13.03   0.000     2.208964    2.924883
+          Obese III (40+)  |   3.612385   .2925774    15.86   0.000     3.082143    4.233848
                            |
       timeperiod#ethnicity |
-                 60#Mixed  |   1.028513   .3530972     0.08   0.935     .5247899     2.01574
-60#Asian or Asian British  |   .7794764   .0903714    -2.15   0.032     .6210347    .9783406
-                 60#Black  |   .7688157   .1244456    -1.62   0.104     .5598107    1.055853
-                 60#Other  |   .5806268   .1282478    -2.46   0.014     .3766043     .895177
+                 60#Mixed  |   1.046055   .3591651     0.13   0.896     .5336945    2.050295
+60#Asian or Asian British  |     .75628   .0877575    -2.41   0.016     .6024356    .9494118
+                 60#Black  |   .7875467   .1275454    -1.47   0.140     .5733526     1.08176
+                 60#Other  |   .5675612   .1254661    -2.56   0.010     .3679972    .8753483
                            |
            timeperiod#male |
-                     60 1  |   .6435923   .0427699    -6.63   0.000     .5649945    .7331239
+                     60 1  |   .6332355   .0421564    -6.86   0.000      .555774    .7214932
                            |
         timeperiod#highimd |
-                     60 1  |    1.15031   .0812041     1.98   0.047     1.001673    1.321004
+                     60 1  |   1.186923   .0842168     2.42   0.016     1.032825    1.364013
+                           |
+       timeperiod#anyobese |
+                     60 1  |   .5910754   .0402294    -7.73   0.000     .5172601    .6754244
+                           |
+       timeperiod#currsmok |
+                     60 1  |   1.021991   .1300549     0.17   0.864     .7963911    1.311499
 --------------------------------------------------------------------------------------------
                                                              Stratified by stp
 
@@ -100,30 +122,39 @@ Log likelihood  =   -129421.28                  Prob > chi2      =      0.0000
                   |       rho            chi2       df       Prob>chi2
       ------------+---------------------------------------------------
       0b.hiv      |            .            .        1             .
-      1.hiv       |     -0.00930         0.96        1         0.3271
+      1.hiv       |     -0.00995         1.10        1         0.2948
       1b.ethnicity|            .            .        1             .
-      2.ethnicity |     -0.00080         0.01        1         0.9327
-      3.ethnicity |      0.00136         0.02        1         0.8849
-      4.ethnicity |      0.00155         0.03        1         0.8710
-      5.ethnicity |     -0.00018         0.00        1         0.9852
-      age1        |      0.00981         1.22        1         0.2696
-      age2        |     -0.01332         2.20        1         0.1380
-      age3        |      0.01620         3.22        1         0.0728
+      2.ethnicity |     -0.00100         0.01        1         0.9158
+      3.ethnicity |      0.00055         0.00        1         0.9538
+      4.ethnicity |      0.00105         0.01        1         0.9123
+      5.ethnicity |     -0.00053         0.00        1         0.9559
+      age1        |      0.00952         1.19        1         0.2751
+      age2        |     -0.01182         1.79        1         0.1809
+      age3        |      0.01409         2.51        1         0.1131
       0b.male     |            .            .        1             .
-      1.male      |      0.00587         0.39        1         0.5348
+      1.male      |      0.00579         0.37        1         0.5406
       1b.imd      |            .            .        1             .
-      2.imd       |      0.01703         3.24        1         0.0720
-      3.imd       |      0.00685         0.51        1         0.4756
-      4.imd       |      0.00457         0.23        1         0.6340
-      5.imd       |      0.00325         0.11        1         0.7355
-      60.timeper~y|     -0.00381         0.16        1         0.6874
-      60.timeper~y|     -0.01238         1.73        1         0.1884
-      60.timeper~y|     -0.00499         0.27        1         0.6000
-      60.timeper~y|     -0.00226         0.06        1         0.8126
-      60.timeper~e|     -0.01777         3.52        1         0.0605
-      60.timeper~d|     -0.00196         0.04        1         0.8390
+      2.imd       |      0.01827         3.72        1         0.0536
+      3.imd       |      0.00690         0.52        1         0.4710
+      4.imd       |      0.00491         0.26        1         0.6077
+      5.imd       |      0.00392         0.17        1         0.6825
+      1b.smoke_n~s|            .            .        1             .
+      2.smoke_no~s|     -0.01428         2.25        1         0.1338
+      3.smoke_no~s|      0.00107         0.01        1         0.9105
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |      0.00707         0.56        1         0.4538
+      3.obese4cat |      0.00916         0.94        1         0.3327
+      4.obese4cat |     -0.00512         0.29        1         0.5873
+      60.timeper~y|     -0.00368         0.15        1         0.6976
+      60.timeper~y|     -0.01267         1.81        1         0.1791
+      60.timeper~y|     -0.00446         0.22        1         0.6388
+      60.timeper~y|     -0.00258         0.07        1         0.7870
+      60.timeper~e|     -0.01832         3.76        1         0.0526
+      60.timeper~d|     -0.00147         0.02        1         0.8781
+      60.timeper~e|     -0.02066         4.80        1         0.0285
+      60.timeper~k|      0.00614         0.42        1         0.5167
       ------------+---------------------------------------------------
-      global test |                    193.64       19         0.0000
+      global test |                    220.30       26         0.0000
       ----------------------------------------------------------------
 
 . 
@@ -131,5 +162,5 @@ Log likelihood  =   -129421.28                  Prob > chi2      =      0.0000
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_phcheck_addtimeinteractions_cc.log
   log type:  text
- closed on:  28 Aug 2020, 19:39:49
+ closed on:   1 Sep 2020, 11:04:20
 ----------------------------------------------------------------------------------------------------------------------------------

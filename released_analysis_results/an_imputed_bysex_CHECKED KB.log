@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_imputed_bysex.log
   log type:  text
- opened on:  28 Aug 2020, 17:38:45
+ opened on:   1 Sep 2020, 08:50:39
 
 . 
 . ********************************   NOTES  **************************************
@@ -61,9 +61,14 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
                                           last observed exit t =       142
 
 . 
-. 
 . if "`1'"=="demog"{
 . mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.ethnicity, strata(stp)
+. estimates save "./output/models/an_imputed_demog", replace                                              
+. }
+
+. 
+. if "`1'"=="demog_smokob"{
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity, strata(stp)
 . estimates save "./output/models/an_imputed_demog", replace                                              
 . }
 
@@ -84,64 +89,74 @@ obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
 . 
 . if "`1'"=="byage"{
 . gen ageover60 = agegroup>=4
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.ageover60, strata(stp
-> )
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.ageover60]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat 1.
+> hiv#1.ageover60, strata(stp)
 . estimates save "./output/models/an_imputed_byage", replace
 . mi estimate, eform                                              
 . }
 
 . 
 . if "`1'"=="bysex"{
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.male, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.male]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat  1.hiv#
+> 1.male, strata(stp)
 
 Multiple-imputation estimates                   Imputations       =         10
 Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
-                                                Average RVI       =     0.0783
-                                                Largest FMI       =     0.4274
-DF adjustment:   Large sample                   DF:     min       =      54.41
-                                                        avg       =   2.34e+10
-                                                        max       =   2.14e+11
-Model F test:       Equal FMI                   F(  14,22489.7)   =    2047.08
+                                                Average RVI       =     0.0576
+                                                Largest FMI       =     0.4238
+DF adjustment:   Large sample                   DF:     min       =      55.33
+                                                        avg       =   7.18e+09
+                                                        max       =   6.38e+10
+Model F test:       Equal FMI                   F(  19,55128.0)   =    1565.02
 Within VCE type:          OIM                   Prob > F          =     0.0000
 
 -----------------------------------------------------------------------------------------
                      _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 ------------------------+----------------------------------------------------------------
-                  1.hiv |   1.166808   .3795103     3.07   0.002     .4229819    1.910635
+                  1.hiv |   1.135663   .3795484     2.99   0.003     .3917616    1.879564
                         |
               ethnicity |
-                 Mixed  |   .3935457   .1322317     2.98   0.004     .1284827    .6586086
-Asian or Asian British  |   .3187561   .0401229     7.94   0.000     .2398533    .3976589
-                 Black  |   .4299389   .0561538     7.66   0.000     .3198513    .5400265
-                 Other  |   .1764428   .0858863     2.05   0.041     .0076573    .3452282
+                 Mixed  |   .4294944   .1318826     3.26   0.002     .1652311    .6937577
+Asian or Asian British  |   .4343181   .0406253    10.69   0.000     .3544168    .5142195
+                 Black  |   .4821495   .0562844     8.57   0.000     .3718062    .5924927
+                 Other  |   .2467678   .0861047     2.87   0.004      .077533    .4160026
                         |
-                   age1 |   .1549501   .0190835     8.12   0.000     .1175472     .192353
-                   age2 |  -.0823381   .0413576    -1.99   0.046    -.1633976   -.0012786
-                   age3 |   .2024942   .0955277     2.12   0.034     .0152634     .389725
-                 1.male |   .5232692   .0166667    31.40   0.000      .490603    .5559354
+                   age1 |   .1590784   .0195173     8.15   0.000     .1208252    .1973316
+                   age2 |  -.1073583   .0421755    -2.55   0.011    -.1900208   -.0246959
+                   age3 |   .2779684   .0972758     2.86   0.004     .0873114    .4686254
+                 1.male |   .4839126   .0170421    28.40   0.000     .4505108    .5173145
                         |
                     imd |
-                     2  |    .156123   .0272553     5.73   0.000     .1027036    .2095425
-                     3  |   .2642856   .0273213     9.67   0.000     .2107368    .3178343
-                     4  |    .502534   .0268602    18.71   0.000      .449889    .5551789
-       5 most deprived  |   .6804137    .027493    24.75   0.000     .6265284     .734299
+                     2  |   .1427695   .0272648     5.24   0.000     .0893316    .1962075
+                     3  |   .2380515    .027358     8.70   0.000     .1844308    .2916723
+                     4  |   .4637324   .0269514    17.21   0.000     .4109085    .5165562
+       5 most deprived  |   .6251353   .0277229    22.55   0.000     .5707993    .6794712
+                        |
+           smoke_nomiss |
+                Former  |   .3468536   .0183666    18.89   0.000     .3108557    .3828515
+               Current  |   .1522876   .0357832     4.26   0.000     .0821538    .2224213
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   .1036512   .0230471     4.50   0.000     .0584798    .1488227
+    Obese II (35-39.9)  |   .4656974   .0337089    13.82   0.000     .3996293    .5317656
+       Obese III (40+)  |   .8287725   .0468761    17.68   0.000     .7368971    .9206479
                         |
                hiv#male |
-                   1 1  |  -.3242486   .4461524    -0.73   0.467    -1.198691    .5501941
+                   1 1  |  -.2492111   .4462093    -0.56   0.576    -1.123765    .6253431
 -----------------------------------------------------------------------------------------
 
 Transformations                                 Average RVI       =     0.0004
                                                 Largest FMI       =     0.0004
-DF adjustment:   Large sample                   DF:     min       =   6.43e+07
-                                                        avg       =   6.43e+07
-Within VCE type:          OIM                           max       =   6.43e+07
+DF adjustment:   Large sample                   DF:     min       =   6.40e+07
+                                                        avg       =   6.40e+07
+Within VCE type:          OIM                           max       =   6.40e+07
 
         _mi_1: _b[1.hiv]+_b[1.hiv#1.male]
 
 ------------------------------------------------------------------------------
           _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-       _mi_1 |   .8425597   .2366077     3.56   0.000     .3788172    1.306302
+       _mi_1 |   .8864518   .2366344     3.75   0.000     .4226569    1.350247
 ------------------------------------------------------------------------------
 . estimates save "./output/models/an_imputed_bysex", replace      
 file ./output/models/an_imputed_bysex.ster saved
@@ -149,59 +164,69 @@ file ./output/models/an_imputed_bysex.ster saved
 
 Multiple-imputation estimates                   Imputations       =         10
 Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
-                                                Average RVI       =     0.0783
-                                                Largest FMI       =     0.4274
-DF adjustment:   Large sample                   DF:     min       =      54.41
-                                                        avg       =   2.34e+10
-                                                        max       =   2.14e+11
-Model F test:       Equal FMI                   F(  14,22489.7)   =    2047.08
+                                                Average RVI       =     0.0576
+                                                Largest FMI       =     0.4238
+DF adjustment:   Large sample                   DF:     min       =      55.33
+                                                        avg       =   7.18e+09
+                                                        max       =   6.38e+10
+Model F test:       Equal FMI                   F(  19,55128.0)   =    1565.02
 Within VCE type:          OIM                   Prob > F          =     0.0000
 
 -----------------------------------------------------------------------------------------
                      _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
 ------------------------+----------------------------------------------------------------
-                  1.hiv |   3.211726   1.218883     3.07   0.002     1.526507    6.757377
+                  1.hiv |   3.113237   1.181624     2.99   0.003     1.479585     6.55065
                         |
               ethnicity |
-                 Mixed  |   1.482227   .1959973     2.98   0.004     1.137102    1.932102
-Asian or Asian British  |   1.375416   .0551857     7.94   0.000     1.271063    1.488336
-                 Black  |   1.537164   .0863175     7.66   0.000     1.376923    1.716052
-                 Other  |   1.192966   .1024594     2.05   0.041     1.007687    1.412312
+                 Mixed  |    1.53648   .2026351     3.26   0.002     1.179666    2.001221
+Asian or Asian British  |    1.54391   .0627219    10.69   0.000     1.425349    1.672333
+                 Black  |   1.619552   .0911556     8.57   0.000     1.450352    1.808491
+                 Other  |   1.279882   .1102038     2.87   0.004     1.080618     1.51589
                         |
-                   age1 |     1.1676   .0222818     8.12   0.000     1.124735    1.212098
-                   age2 |   .9209605   .0380888    -1.99   0.046     .8492534    .9987222
-                   age3 |   1.224453   .1169692     2.12   0.034      1.01538    1.476575
-                 1.male |   1.687536   .0281257    31.40   0.000     1.633301    1.743571
+                   age1 |    1.17243   .0228827     8.15   0.000     1.128428    1.218148
+                   age2 |   .8982038   .0378822    -2.55   0.011      .826942    .9756066
+                   age3 |   1.320444   .1284472     2.86   0.004     1.091236    1.597796
+                 1.male |    1.62241   .0276492    28.40   0.000     1.569113    1.677517
                         |
                     imd |
-                     2  |    1.16897   .0318607     5.73   0.000     1.108163    1.233114
-                     3  |     1.3025    .035586     9.67   0.000     1.234587    1.374149
-                     4  |   1.652904   .0443973    18.71   0.000     1.568138    1.742253
-       5 most deprived  |   1.974694   .0542903    24.75   0.000     1.871103    2.084021
+                     2  |   1.153464   .0314489     5.24   0.000     1.093443    1.216779
+                     3  |   1.268775   .0347112     8.70   0.000     1.202534    1.338664
+                     4  |   1.589997   .0428527    17.21   0.000     1.508187    1.676245
+       5 most deprived  |   1.868499   .0518002    22.55   0.000     1.769681    1.972834
+                        |
+           smoke_nomiss |
+                Former  |    1.41461   .0259816    18.89   0.000     1.364592     1.46646
+               Current  |   1.164495   .0416693     4.26   0.000     1.085623    1.249098
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.109214   .0255641     4.50   0.000     1.060224    1.160467
+    Obese II (35-39.9)  |   1.593125   .0537024    13.82   0.000     1.491272    1.701935
+       Obese III (40+)  |   2.290505   .1073699    17.68   0.000     2.089442    2.510917
                         |
                hiv#male |
-                   1 1  |   .7230704   .3225996    -0.73   0.467     .3015886    1.733589
+                   1 1  |   .7794154   .3477824    -0.56   0.576     .3250535    1.868887
 -----------------------------------------------------------------------------------------
 
 Transformations                                 Average RVI       =     0.0004
                                                 Largest FMI       =     0.0004
-DF adjustment:   Large sample                   DF:     min       =   6.43e+07
-                                                        avg       =   6.43e+07
-Within VCE type:          OIM                           max       =   6.43e+07
+DF adjustment:   Large sample                   DF:     min       =   6.40e+07
+                                                        avg       =   6.40e+07
+Within VCE type:          OIM                           max       =   6.40e+07
 
         _mi_1: _b[1.hiv]+_b[1.hiv#1.male]
 
 ------------------------------------------------------------------------------
           _t |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-       _mi_1 |   .8425597   .2366077     3.56   0.000     .3788172    1.306302
+       _mi_1 |   .8864518   .2366344     3.75   0.000     .4226569    1.350247
 ------------------------------------------------------------------------------
 . }
 
 . 
 . if "`1'"=="byethnicity"{
 . mi passive: gen nonblack = (ethnicity != 4) if ethnicity<.
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd  1.hiv#1.nonblack, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.nonblack]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat  1.
+> hiv#1.nonblack, strata(stp)
 . estimates save "./output/models/an_imputed_byethnicity", replace        
 . mi estimate, eform                                      
 . }
@@ -225,8 +250,24 @@ Within VCE type:          OIM                           max       =   6.43e+07
 >         |spleen                                                 ///
 >         |ra_sle_psoriasis                               ///
 >         |other_imm_except_hiv           
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.anycomorbidity, 
-> strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4c
+> at ///
+>         i.hypertension                                  ///
+>         i.chronic_respiratory_disease   ///
+>         i.asthmacat                                             ///
+>         i.chronic_cardiac_disease               ///
+>         i.diabcat                                               ///
+>         i.cancer_exhaem_cat                     ///
+>         i.cancer_haem_cat                               ///
+>         i.chronic_liver_disease                 ///
+>         i.stroke_dementia                               ///
+>         i.other_neuro                                   ///
+>         i.reduced_kidney_function_cat   ///
+>         i.organ_transplant                              ///
+>         i.spleen                                                ///
+>         i.ra_sle_psoriasis                      ///
+>         i.other_imm_except_hiv                  /// 
+>         1.hiv#1.anycomorbidity, strata(stp)
 . estimates save "./output/models/an_imputed_bycomorbidities", replace
 . mi estimate, eform                                              
 . }
@@ -248,8 +289,23 @@ Within VCE type:          OIM                           max       =   6.43e+07
 >         |spleen                                                 ///
 >         |ra_sle_psoriasis                               ///
 >         |other_imm_except_hiv           
-. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd 1.hiv#1.anycomorbid
-> ity_exht, strata(stp)
+. mi estimate (_b[1.hiv]+_b[1.hiv#1.anycomorbidity_exht]): stcox i.hiv i.ethnicity age1 age2 age3 i.male i.imd i.smoke_nomiss i.ob
+> ese4cat ///
+>         i.chronic_respiratory_disease   ///
+>         i.asthmacat                                             ///
+>         i.chronic_cardiac_disease               ///
+>         i.diabcat                                               ///
+>         i.cancer_exhaem_cat                     ///
+>         i.cancer_haem_cat                               ///
+>         i.chronic_liver_disease                 ///
+>         i.stroke_dementia                               ///
+>         i.other_neuro                                   ///
+>         i.reduced_kidney_function_cat   ///
+>         i.organ_transplant                              ///
+>         i.spleen                                                ///
+>         i.ra_sle_psoriasis                      ///
+>         i.other_imm_except_hiv                  /// 
+>         1.hiv#1.anycomorbidity_exht, strata(stp)
 . estimates save "./output/models/an_imputed_bycomorbidities_exht", replace
 . mi estimate, eform                                              
 . }
@@ -259,5 +315,5 @@ Within VCE type:          OIM                           max       =   6.43e+07
       name:  <unnamed>
        log:  e:\analyses\hiv-research\analysis\output/an_imputed_bysex.log
   log type:  text
- closed on:  28 Aug 2020, 21:19:39
+ closed on:   1 Sep 2020, 13:22:32
 ----------------------------------------------------------------------------------------------------------------------------------
