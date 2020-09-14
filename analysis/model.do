@@ -62,7 +62,7 @@ do an_phcheck_addtimeinteractions_cc
 do "an_sens_furtherexploration_bmismok" ccbmismok
 do "an_sens_furtherexploration_bmismok" ccbmionly
 do "an_sens_furtherexploration_bmismok" ccsmokonly
-*do "an_sensan_addhhsize" /*TO RUN*/
+*do "an_sens_addhhsize" /*TO RUN*/
 do "an_checkcollinearity" /*TO RUN*/
 do "an_sens_addhtethinteraction" /*TO RUN*/
 do "an_outcomes_table" /*TO RUN*/

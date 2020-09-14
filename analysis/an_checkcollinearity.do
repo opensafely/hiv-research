@@ -26,26 +26,3 @@ stcox i.obese4cat, strata(stp)
 	
 log close
 
-
-**************************
-*  Analyse imputed data  *
-**************************
-
-// Declare imputed data as survival
-
-mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)	///
-	origin(enter_date) id(patient_id)
-
-	
-mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity, strata(stp)
-
-mi estimate, eform: stcox i.hiv 
-
-
-mi extract 0 
-stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)	///
-	origin(enter_date) id(patient_id)
-
-
-stcox i.hiv 
-xi: collin age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity
