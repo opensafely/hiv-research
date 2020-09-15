@@ -5,7 +5,7 @@ run global
 
 use ./output/an_outcomes_MI_table_ESTIMATES, clear
 
-replace desc = "Age-sex adjusted" if desc == "Age-sex_adjusted"
+replace desc = "+ age and sex" if desc == "Age-sex_adjusted"
 replace desc = "+ IMD/ethnicity" if desc == "+IMD/ethnicity"
 replace desc = "+ smoking/obesity" if desc == "+smoking/obesity"
 replace desc = "(+ comorbidities)" if desc == "+comorbidities"
@@ -51,8 +51,8 @@ gen pintstr = "(p-interaction " + string(pint, "%5.3f") + ")"
 gen hrandci = string(hr, "%4.2f") + " (" + string(lci, "%4.2f") + "-" + string(uci, "%4.2f") + ")" if hr!=.
 
 scatter revorder hr, mc(black) || rcap lci uci revorder, hor lc(black)  						///
-|| scatter revorder modeltextpos if _n>4, m(i) mlab(desc) mlabsize(vsmall)	mlabcol(black)	///
-|| scatter revorder headertextpos if _n<=4, m(i) mlab(desc) mlabsize(vsmall)	mlabcol(black)	///
+|| scatter revorder modeltextpos if _n>5, m(i) mlab(desc) mlabsize(vsmall)	mlabcol(black)	///
+|| scatter revorder headertextpos if _n<=5, m(i) mlab(desc) mlabsize(vsmall)	mlabcol(black)	///
 || scatter revorder headertextpos, m(i) mlab(header) mlabsize(vsmall) mlabcol(black)	///
 || scatter revorder pinttextpos if header!="", m(i) mlab(pintstr) mlabcol(black) mlabsize(vsmall) ///
 || scatter revorder pinttextpos if hrandci!="", m(i) mlab(hrandci) mlabcol(black) mlabsize(vsmall) ///
