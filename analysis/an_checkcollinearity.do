@@ -1,13 +1,15 @@
 *an_checkcollinearity
 
+run global
+
 cap log close
 log using ./output/an_checkcollinearity, replace t
 
 use "an_impute_imputeddata", clear
 
-xi: collin age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity if _mi==0
+xi: collin age i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity if _mi==0
 
-xi: pwcorr age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity if _mi==0
+xi: pwcorr age i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity if _mi==0
 
 *Get univariate se's for comparison with demog_smokob model
 *ethnicity (needs mi)
