@@ -65,7 +65,10 @@ do "an_sens_furtherexploration_bmismok" ccsmokonly
 *do "an_sens_addhhsize" /*TO RUN*/
 do "an_checkcollinearity" /*TO RUN*/
 do "an_sens_addhtethinteraction" /*TO RUN*/
-do "an_outcomes_table" /*TO RUN*/
-do "an_outcomes_MI_table"
-do "an_forestplot_MI"
+do "an_sens_logistic" /*TO RUN*/
+
+do "an_outcomes_table" 
+do "an_outcomes_MI_table" /*TO RUN*/
+do "an_forestplot_MI" /*TO RUN*/
+
 
