@@ -9,6 +9,8 @@ opensafely/chemotherapy-or-radiotherapy-updated/2020-04-15
 opensafely/chronic-cardiac-disease/2020-04-08
 opensafely/chronic-liver-disease/2020-06-02
 opensafely/chronic-respiratory-disease/2020-04-10
+opensafely/covid-identification-in-primary-care-probable-covid-clinical-code/2020-07-16
+opensafely/covid-identification-in-primary-care-probable-covid-positive-test/2020-07-16
 opensafely/dementia/2020-04-22
 opensafely/diabetes/2020-04-15
 opensafely/chronic-kidney-disease/2020-04-14

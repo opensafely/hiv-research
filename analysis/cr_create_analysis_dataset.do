@@ -51,7 +51,7 @@ assert inlist(sex, "M", "F", "I", "U")
 noi di "DROPPING GENDER NOT M/F:" 
 drop if inlist(sex, "I", "U")
 
-for var hiv hepc covid_clinical_or_nos covid_positive_test covid_sequelae: rename X X_code
+for var hiv hepc covid_clinical_or_nos covid_positive_test : rename X X_code
 rename bp_sys_date_measured bp_sys_date
 rename bp_dias_date_measured bp_dias_date
 
@@ -92,7 +92,6 @@ foreach var of varlist 	bp_sys_date 					///
 						any_admission_date				///	
 						covid_clinical_or_nos_date 		///
 						covid_positive_test_date 		///
-						covid_sequelae_date 			///
 						ons_died_date					///
 						cpns_died_date					///
 						sgss_first_positive_test_date {

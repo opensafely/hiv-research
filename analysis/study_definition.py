@@ -144,17 +144,7 @@ study = StudyDefinition(
             "category": {"ratios": {"XaLTE":0.5, "Y20d1":0.5}},
             },
     ),     
-    covid_sequelae=patients.with_these_clinical_events(
-        covid_sequelae_codes,
-        returning="category",
-        find_first_match_in_period=True,
-        include_date_of_match=True,
-        date_format="YYYY-MM-DD",
-        return_expectations={
-            "date": {"earliest": "2020-03-01"},
-            "category": {"ratios": {"Y20fb":0.5, "Y20fc":0.5}},
-            },
-    ),
+
     
 
     
