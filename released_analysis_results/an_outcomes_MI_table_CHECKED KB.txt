@@ -6,9 +6,11 @@ HIV=0 Events/1000py	14857 / 6696
 HIV=0 Rate/1000py	2.22 (2.18-2.25)
 
 
+HR (Unadjusted,)	1.03 (0.70-1.52)
 HR (Age-sex_adjusted,)	2.90 (1.96-4.30)
-HR (+IMD/ethnicity,)	2.59 (1.74-3.84)
-HR (+obesity/smoking/comorbidities,)	2.30 (1.55-3.41)
+HR (+IMD/ethnicity,)	2.52 (1.70-3.73)
+HR (+smoking/obesity,)	2.59 (1.74-3.84)
+HR (+comorbidities,)	2.30 (1.55-3.41)
 
 
 HR (interac_NOTageover60,)	3.07 (1.65-5.74)
