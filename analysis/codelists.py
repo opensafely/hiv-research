@@ -12,7 +12,7 @@ aplastic_codes = codelist_from_csv(
 )
 
 hiv_codes = codelist_from_csv(
-    "local-codelists/hiv_corrected.csv", system="ctv3", column="CTV3ID", category_column="CTV3ID"
+    "codelists/opensafely-hiv.csv", system="ctv3", column="CTV3ID", category_column="CTV3ID"
 )
 
 hepc_codes = codelist_from_csv(
@@ -181,9 +181,8 @@ hypertension_codes = codelist_from_csv(
     "codelists/opensafely-hypertension.csv", system="ctv3", column="CTV3ID"
 )
 
-
 covid_clinical_or_nos_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_clinical_or_nos.csv",
+    "codelists/opensafely-covid-identification-in-primary-care-probable-covid-clinical-code.csv", 
     system="ctv3",
     column="CTV3ID",
     category_column="CTV3ID"
@@ -191,16 +190,11 @@ covid_clinical_or_nos_codes = codelist_from_csv(
 
 
 covid_positive_test_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_positive_test.csv",
+    "codelists/opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv", 
     system="ctv3",
     column="CTV3ID",
     category_column="CTV3ID"
 )
 
-covid_sequelae_codes = codelist_from_csv(
-    "local-codelists/exploratory_covid_sequelae.csv",
-    system="ctv3",
-    column="CTV3ID",
-    category_column="CTV3ID"
-)
+
 
