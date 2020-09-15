@@ -1,0 +1,351 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_checkcollinearity.log
+  log type:  text
+ opened on:  15 Sep 2020, 01:38:16
+
+. 
+. use "an_impute_imputeddata", clear
+(Analysis dataset HIV project)
+
+. 
+. xi: collin age i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity if _mi==0
+i.male            _Imale_0-1          (naturally coded; _Imale_0 omitted)
+i.imd             _Iimd_1-5           (naturally coded; _Iimd_1 omitted)
+i.smoke_nomiss    _Ismoke_nom_1-3     (naturally coded; _Ismoke_nom_1 omitted)
+i.obese4cat       _Iobese4cat_1-4     (naturally coded; _Iobese4cat_1 omitted)
+i.ethnicity       _Iethnicity_1-5     (naturally coded; _Iethnicity_1 omitted)
+(obs=12,724,742)
+
+  Collinearity Diagnostics
+
+                        SQRT                   R-
+  Variable      VIF     VIF    Tolerance    Squared
+----------------------------------------------------
+       age      1.12    1.06    0.8939      0.1061
+  _Imale_1      1.02    1.01    0.9850      0.0150
+   _Iimd_2      1.62    1.27    0.6160      0.3840
+   _Iimd_3      1.64    1.28    0.6092      0.3908
+   _Iimd_4      1.69    1.30    0.5927      0.4073
+   _Iimd_5      1.73    1.32    0.5766      0.4234
+_Ismoke_nom_2      1.22    1.11    0.8187      0.1813
+_Ismoke_nom_3      1.18    1.09    0.8447      0.1553
+_Iobese4cat_2      1.03    1.02    0.9669      0.0331
+_Iobese4cat_3      1.02    1.01    0.9768      0.0232
+_Iobese4cat_4      1.02    1.01    0.9833      0.0167
+_Iethnicity_2      1.01    1.00    0.9912      0.0088
+_Iethnicity_3      1.07    1.03    0.9352      0.0648
+_Iethnicity_4      1.03    1.01    0.9743      0.0257
+_Iethnicity_5      1.02    1.01    0.9814      0.0186
+----------------------------------------------------
+  Mean VIF      1.23
+
+                           Cond
+        Eigenval          Index
+---------------------------------
+    1     4.3562          1.0000
+    2     1.1806          1.9209
+    3     1.0280          2.0586
+    4     1.0181          2.0685
+    5     1.0028          2.0843
+    6     1.0004          2.0867
+    7     0.9999          2.0873
+    8     0.9973          2.0900
+    9     0.9828          2.1053
+    10     0.9076          2.1908
+    11     0.8456          2.2697
+    12     0.6941          2.5053
+    13     0.4506          3.1092
+    14     0.3343          3.6100
+    15     0.1588          5.2374
+    16     0.0429         10.0731
+---------------------------------
+ Condition Number        10.0731 
+ Eigenvalues & Cond Index computed from scaled raw sscp (w/ intercept)
+ Det(correlation matrix)    0.3240
+
+. 
+. xi: pwcorr age i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity if _mi==0
+i.male            _Imale_0-1          (naturally coded; _Imale_0 omitted)
+i.imd             _Iimd_1-5           (naturally coded; _Iimd_1 omitted)
+i.smoke_nomiss    _Ismoke_nom_1-3     (naturally coded; _Ismoke_nom_1 omitted)
+i.obese4cat       _Iobese4cat_1-4     (naturally coded; _Iobese4cat_1 omitted)
+i.ethnicity       _Iethnicity_1-5     (naturally coded; _Iethnicity_1 omitted)
+
+             |      age _Imale_1  _Iimd_2  _Iimd_3  _Iimd_4  _Iimd_5 _Ismok~2
+-------------+---------------------------------------------------------------
+         age |   1.0000 
+    _Imale_1 |  -0.0260   1.0000 
+     _Iimd_2 |   0.0468  -0.0062   1.0000 
+     _Iimd_3 |   0.0144  -0.0015  -0.2490   1.0000 
+     _Iimd_4 |  -0.0458   0.0064  -0.2529  -0.2553   1.0000 
+     _Iimd_5 |  -0.0902   0.0113  -0.2494  -0.2517  -0.2558   1.0000 
+_Ismoke_no~2 |   0.2606   0.0141   0.0235   0.0137  -0.0174  -0.0450   1.0000 
+_Ismoke_no~3 |  -0.1272   0.0732  -0.0613  -0.0186   0.0428   0.1368  -0.3302 
+_Iobese4ca~2 |   0.1033  -0.0037  -0.0084  -0.0004   0.0076   0.0186   0.0691 
+_Iobese4ca~3 |   0.0383  -0.0485  -0.0138  -0.0032   0.0108   0.0327   0.0411 
+_Iobese4ca~4 |   0.0051  -0.0599  -0.0162  -0.0048   0.0113   0.0375   0.0279 
+_Iethnicit~2 |  -0.0642   0.0003  -0.0110  -0.0035   0.0092   0.0234  -0.0268 
+_Iethnicit~3 |  -0.1151   0.0219  -0.0638  -0.0116   0.0603   0.0942  -0.1169 
+_Iethnicit~4 |  -0.0569   0.0057  -0.0401  -0.0165   0.0250   0.0837  -0.0549 
+_Iethnicit~5 |  -0.0864   0.0076  -0.0111  -0.0044   0.0169   0.0223  -0.0541 
+
+             | _Ismok~3 _Iobes~2 _Iobes~3 _Iobes~4 _Iethn~2 _Iethn~3 _Iethn~4
+-------------+---------------------------------------------------------------
+_Ismoke_no~3 |   1.0000 
+_Iobese4ca~2 |  -0.0261   1.0000 
+_Iobese4ca~3 |  -0.0139  -0.1011   1.0000 
+_Iobese4ca~4 |  -0.0095  -0.0702  -0.0412   1.0000 
+_Iethnicit~2 |   0.0087  -0.0080  -0.0047  -0.0026   1.0000 
+_Iethnicit~3 |  -0.0472  -0.0181  -0.0224  -0.0232  -0.0344   1.0000 
+_Iethnicit~4 |  -0.0183   0.0071   0.0054   0.0026  -0.0193  -0.0490   1.0000 
+_Iethnicit~5 |  -0.0025  -0.0279  -0.0207  -0.0163  -0.0187  -0.0475  -0.0266 
+
+             | _Iethn~5
+-------------+---------
+_Iethnicit~5 |   1.0000 
+
+. 
+. *Get univariate se's for comparison with demog_smokob model
+. *ethnicity (needs mi)
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. mi estimate, eform: stcox i.ethnicity, strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.2489
+                                                Largest FMI       =     0.4195
+DF adjustment:   Large sample                   DF:     min       =      56.46
+                                                        avg       =   1,347.87
+                                                        max       =   4,086.70
+Model F test:       Equal FMI                   F(   4,  739.4)   =      65.41
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+              ethnicity |
+                 Mixed  |   .4454035   .0582614    -6.18   0.000     .3427467    .5788073
+Asian or Asian British  |   .6551178   .0249954   -11.09   0.000     .6078314    .7060829
+                 Black  |   .8026932   .0440933    -4.00   0.000     .7207386    .8939666
+                 Other  |   .3955427   .0334345   -10.97   0.000     .3350381    .4669739
+-----------------------------------------------------------------------------------------
+
+. *the rest
+. mi extract 0
+
+. stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)       ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. stcox age1 age2 age3, strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -183336.31
+Iteration 2:   log likelihood = -177643.31
+Iteration 3:   log likelihood = -177381.19
+Iteration 4:   log likelihood = -177377.51
+Iteration 5:   log likelihood = -177377.37
+Iteration 6:   log likelihood = -177377.37
+Refining estimates:
+Iteration 0:   log likelihood = -177377.37
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(3)       =    46236.48
+Log likelihood  =   -177377.37                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        age1 |   1.164207   .0220465     8.03   0.000     1.121789    1.208229
+        age2 |   .9211534   .0378228    -2.00   0.045     .8499266    .9983493
+        age3 |   1.220246   .1157537     2.10   0.036     1.013215     1.46958
+------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. stcox i.male, strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -200432.14
+Iteration 2:   log likelihood = -200432.14
+Refining estimates:
+Iteration 0:   log likelihood = -200432.14
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(1)       =      126.95
+Log likelihood  =   -200432.14                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      1.male |   1.203385   .0198159    11.24   0.000     1.165167    1.242857
+------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. stcox i.imd, strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -200444.92
+Iteration 2:   log likelihood = -200444.86
+Iteration 3:   log likelihood = -200444.86
+Refining estimates:
+Iteration 0:   log likelihood = -200444.86
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(4)       =      101.51
+Log likelihood  =   -200444.86                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+             imd |
+              2  |   1.113027   .0303341     3.93   0.000     1.055134    1.174098
+              3  |   1.148991    .031381     5.09   0.000     1.089102    1.212172
+              4  |   1.262235   .0337718     8.70   0.000      1.19775    1.330193
+5 most deprived  |   1.257982   .0341998     8.44   0.000     1.192706     1.32683
+----------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. stcox i.smoke_nomiss, strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood =  -198099.4
+Iteration 2:   log likelihood = -198048.84
+Iteration 3:   log likelihood = -198048.76
+Refining estimates:
+Iteration 0:   log likelihood = -198048.76
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(2)       =     4893.70
+Log likelihood  =   -198048.76                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+smoke_nomiss |
+     Former  |     2.7656   .0490392    57.37   0.000     2.671136    2.863404
+    Current  |   .5848341   .0203134   -15.44   0.000     .5463455    .6260342
+------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. stcox i.obese4cat, strata(stp)
+
+         failure _d:  onsdeath == 1
+   analysis time _t:  (stime_onsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -200495.61
+Iteration 1:   log likelihood = -200437.21
+Iteration 2:   log likelihood = -200436.91
+Iteration 3:   log likelihood = -200436.91
+Refining estimates:
+Iteration 0:   log likelihood = -200436.91
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   17,282,435                  Number of obs    =  17,282,435
+No. of failures =       14,882
+Time at risk    =   2448136011
+                                                LR chi2(3)       =      117.40
+Log likelihood  =   -200436.91                  Prob > chi2      =      0.0000
+
+-------------------------------------------------------------------------------------
+                 _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------------+----------------------------------------------------------------
+          obese4cat |
+ Obese I (30-34.9)  |   1.190188   .0271022     7.65   0.000     1.138237    1.244511
+Obese II (35-39.9)  |   1.289353   .0428609     7.65   0.000     1.208026    1.376156
+   Obese III (40+)  |   1.272057   .0587133     5.21   0.000     1.162033    1.392499
+-------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+.         
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_checkcollinearity.log
+  log type:  text
+ closed on:  15 Sep 2020, 04:58:59
+----------------------------------------------------------------------------------------------------------------------------------

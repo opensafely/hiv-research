@@ -1,0 +1,258 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_addhtethinteraction.log
+  log type:  text
+ opened on:  15 Sep 2020, 01:12:25
+
+. 
+. 
+. use "an_impute_imputeddata", clear
+(Analysis dataset HIV project)
+
+. 
+. **************************
+. *  Analyse imputed data  *
+. **************************
+. 
+. // Declare imputed data as survival
+. 
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282435  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     14,882  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+. 
+. *Analyse without then with hypertension-ethnicity interaction
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity i.hypertension, strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0574
+                                                Largest FMI       =     0.4220
+DF adjustment:   Large sample                   DF:     min       =      55.79
+                                                        avg       =   6.89e+09
+                                                        max       =   6.75e+10
+Model F test:       Equal FMI                   F(  19,55465.1)   =    1561.96
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                  1.hiv |   2.590888   .5213692     4.73   0.000     1.746465    3.843594
+                   age1 |   1.176503   .0230994     8.28   0.000     1.132089    1.222659
+                   age2 |   .8850538   .0375426    -2.88   0.004     .8144475    .9617812
+                   age3 |   1.369795   .1339799     3.22   0.001     1.130836     1.65925
+                 1.male |    1.62724   .0277446    28.56   0.000      1.57376    1.682537
+                        |
+                    imd |
+                     2  |   1.152251   .0314156     5.20   0.000     1.092294    1.215499
+                     3  |   1.265518   .0346244     8.61   0.000     1.199442    1.335233
+                     4  |   1.583986   .0426979    17.06   0.000     1.502472    1.669923
+       5 most deprived  |   1.861525   .0516135    22.41   0.000     1.763064    1.965485
+                        |
+           smoke_nomiss |
+                Former  |   1.402334   .0258027    18.38   0.000     1.352663    1.453829
+               Current  |   1.165865   .0417239     4.29   0.000      1.08689    1.250578
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.085315   .0251677     3.53   0.000     1.037091    1.135781
+    Obese II (35-39.9)  |   1.545946   .0524028    12.85   0.000     1.446576    1.652143
+       Obese III (40+)  |   2.205231   .1038543    16.79   0.000     2.010792    2.418472
+                        |
+              ethnicity |
+                 Mixed  |   1.525234   .2008663     3.21   0.002     1.171527    1.985732
+Asian or Asian British  |   1.526561   .0620688    10.40   0.000      1.40924    1.653648
+                 Black  |   1.594708   .0897687     8.29   0.000     1.428081    1.780775
+                 Other  |   1.281959   .1104046     2.88   0.004     1.082333    1.518403
+                        |
+         1.hypertension |   1.166811   .0214101     8.41   0.000     1.125593    1.209537
+-----------------------------------------------------------------------------------------
+
+. mi estimate, eform                                              
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0574
+                                                Largest FMI       =     0.4220
+DF adjustment:   Large sample                   DF:     min       =      55.79
+                                                        avg       =   6.89e+09
+                                                        max       =   6.75e+10
+Model F test:       Equal FMI                   F(  19,55465.1)   =    1561.96
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                  1.hiv |   2.590888   .5213692     4.73   0.000     1.746465    3.843594
+                   age1 |   1.176503   .0230994     8.28   0.000     1.132089    1.222659
+                   age2 |   .8850538   .0375426    -2.88   0.004     .8144475    .9617812
+                   age3 |   1.369795   .1339799     3.22   0.001     1.130836     1.65925
+                 1.male |    1.62724   .0277446    28.56   0.000      1.57376    1.682537
+                        |
+                    imd |
+                     2  |   1.152251   .0314156     5.20   0.000     1.092294    1.215499
+                     3  |   1.265518   .0346244     8.61   0.000     1.199442    1.335233
+                     4  |   1.583986   .0426979    17.06   0.000     1.502472    1.669923
+       5 most deprived  |   1.861525   .0516135    22.41   0.000     1.763064    1.965485
+                        |
+           smoke_nomiss |
+                Former  |   1.402334   .0258027    18.38   0.000     1.352663    1.453829
+               Current  |   1.165865   .0417239     4.29   0.000      1.08689    1.250578
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.085315   .0251677     3.53   0.000     1.037091    1.135781
+    Obese II (35-39.9)  |   1.545946   .0524028    12.85   0.000     1.446576    1.652143
+       Obese III (40+)  |   2.205231   .1038543    16.79   0.000     2.010792    2.418472
+                        |
+              ethnicity |
+                 Mixed  |   1.525234   .2008663     3.21   0.002     1.171527    1.985732
+Asian or Asian British  |   1.526561   .0620688    10.40   0.000      1.40924    1.653648
+                 Black  |   1.594708   .0897687     8.29   0.000     1.428081    1.780775
+                 Other  |   1.281959   .1104046     2.88   0.004     1.082333    1.518403
+                        |
+         1.hypertension |   1.166811   .0214101     8.41   0.000     1.125593    1.209537
+-----------------------------------------------------------------------------------------
+
+. 
+. 
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity i.ethnicity##i.hypertension, 
+> strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0873
+                                                Largest FMI       =     0.4336
+DF adjustment:   Large sample                   DF:     min       =      52.88
+                                                        avg       =   4.14e+09
+                                                        max       =   7.32e+10
+Model F test:       Equal FMI                   F(  23,30956.9)   =    1256.03
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-------------------------------------------------------------------------------------------
+                       _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    1.hiv |    2.62293   .5281623     4.79   0.000     1.767607    3.892132
+                     age1 |   1.176767   .0231138     8.29   0.000     1.132326    1.222952
+                     age2 |   .8836855   .0375038    -2.91   0.004     .8131535    .9603354
+                     age3 |   1.375861   .1346632     3.26   0.001     1.135698    1.666811
+                   1.male |   1.627299   .0277454    28.56   0.000     1.573818    1.682598
+                          |
+                      imd |
+                       2  |   1.152296    .031417     5.20   0.000     1.092336    1.215547
+                       3  |   1.265671   .0346289     8.61   0.000     1.199588    1.335395
+                       4  |   1.584275   .0427069    17.07   0.000     1.502744     1.67023
+         5 most deprived  |   1.861638   .0516175    22.41   0.000     1.763169    1.965606
+                          |
+             smoke_nomiss |
+                  Former  |   1.402127   .0258003    18.37   0.000      1.35246    1.453617
+                 Current  |   1.165636    .041718     4.28   0.000     1.086672    1.250338
+                          |
+                obese4cat |
+       Obese I (30-34.9)  |   1.085185   .0251651     3.53   0.000     1.036966    1.135646
+      Obese II (35-39.9)  |   1.545733   .0523986    12.85   0.000     1.446371    1.651921
+         Obese III (40+)  |   2.204486   .1038247    16.78   0.000     2.010103    2.417666
+                          |
+                ethnicity |
+                   Mixed  |   1.589926   .3388977     2.18   0.034     1.036795    2.438153
+  Asian or Asian British  |   1.506647   .0996945     6.19   0.000     1.323039    1.715736
+                   Black  |    1.33507   .1589339     2.43   0.016     1.056503    1.687086
+                   Other  |   1.183846   .1617177     1.24   0.217     .9049541    1.548687
+                          |
+           1.hypertension |   1.159204   .0222725     7.69   0.000     1.116362    1.203691
+                          |
+   ethnicity#hypertension |
+                 Mixed#1  |   .9322108   .2223199    -0.29   0.769     .5820452     1.49304
+Asian or Asian British#1  |   1.019592   .0837681     0.24   0.814     .8672822    1.198649
+                 Black#1  |   1.270536   .1750067     1.74   0.083     .9687606    1.666315
+                 Other#1  |   1.143945   .1967249     0.78   0.435     .8160565    1.603579
+-------------------------------------------------------------------------------------------
+
+. mi estimate, eform                                              
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0873
+                                                Largest FMI       =     0.4336
+DF adjustment:   Large sample                   DF:     min       =      52.88
+                                                        avg       =   4.14e+09
+                                                        max       =   7.32e+10
+Model F test:       Equal FMI                   F(  23,30956.9)   =    1256.03
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-------------------------------------------------------------------------------------------
+                       _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------------------+----------------------------------------------------------------
+                    1.hiv |    2.62293   .5281623     4.79   0.000     1.767607    3.892132
+                     age1 |   1.176767   .0231138     8.29   0.000     1.132326    1.222952
+                     age2 |   .8836855   .0375038    -2.91   0.004     .8131535    .9603354
+                     age3 |   1.375861   .1346632     3.26   0.001     1.135698    1.666811
+                   1.male |   1.627299   .0277454    28.56   0.000     1.573818    1.682598
+                          |
+                      imd |
+                       2  |   1.152296    .031417     5.20   0.000     1.092336    1.215547
+                       3  |   1.265671   .0346289     8.61   0.000     1.199588    1.335395
+                       4  |   1.584275   .0427069    17.07   0.000     1.502744     1.67023
+         5 most deprived  |   1.861638   .0516175    22.41   0.000     1.763169    1.965606
+                          |
+             smoke_nomiss |
+                  Former  |   1.402127   .0258003    18.37   0.000      1.35246    1.453617
+                 Current  |   1.165636    .041718     4.28   0.000     1.086672    1.250338
+                          |
+                obese4cat |
+       Obese I (30-34.9)  |   1.085185   .0251651     3.53   0.000     1.036966    1.135646
+      Obese II (35-39.9)  |   1.545733   .0523986    12.85   0.000     1.446371    1.651921
+         Obese III (40+)  |   2.204486   .1038247    16.78   0.000     2.010103    2.417666
+                          |
+                ethnicity |
+                   Mixed  |   1.589926   .3388977     2.18   0.034     1.036795    2.438153
+  Asian or Asian British  |   1.506647   .0996945     6.19   0.000     1.323039    1.715736
+                   Black  |    1.33507   .1589339     2.43   0.016     1.056503    1.687086
+                   Other  |   1.183846   .1617177     1.24   0.217     .9049541    1.548687
+                          |
+           1.hypertension |   1.159204   .0222725     7.69   0.000     1.116362    1.203691
+                          |
+   ethnicity#hypertension |
+                 Mixed#1  |   .9322108   .2223199    -0.29   0.769     .5820452     1.49304
+Asian or Asian British#1  |   1.019592   .0837681     0.24   0.814     .8672822    1.198649
+                 Black#1  |   1.270536   .1750067     1.74   0.083     .9687606    1.666315
+                 Other#1  |   1.143945   .1967249     0.78   0.435     .8160565    1.603579
+-------------------------------------------------------------------------------------------
+
+. 
+. *test for interaction
+. mi test 2.ethnicity#1.hypertension 3.ethnicity#1.hypertension 4.ethnicity#1.hypertension 5.ethnicity#1.hypertension
+note: assuming equal fractions of missing information
+
+ ( 1)  2.ethnicity#1.hypertension = 0
+ ( 2)  3.ethnicity#1.hypertension = 0
+ ( 3)  4.ethnicity#1.hypertension = 0
+ ( 4)  5.ethnicity#1.hypertension = 0
+
+       F(  4, 842.5) =    0.92
+            Prob > F =    0.4542
+
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_addhtethinteraction.log
+  log type:  text
+ closed on:  15 Sep 2020, 09:34:56
+----------------------------------------------------------------------------------------------------------------------------------
