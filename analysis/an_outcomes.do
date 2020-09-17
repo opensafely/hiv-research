@@ -61,6 +61,17 @@ if _rc==0 {
 	else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
 }
 
+
+if "`1'"=="demog_smokob_cceth"{
+capture stcox age1 age2 age3 i.male i.imd i.ethnicity i.smoke_nomiss i.obese4cat i.hiv, strata(stp) 
+if _rc==0 {
+		noi di _n "DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)" _n 
+		estimates
+		estimates save ./output/models/an_outcomes_adjdemographics_smokob_inceth, replace
+		}
+	else di "WARNING - hiv adj demog smok ob inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+}
+
 if "`1'"=="demog_noeth"{
 capture stcox age1 age2 age3 i.male i.imd i.hiv, strata(stp) 
 if _rc==0 {

@@ -1,0 +1,157 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_underlyingandu071.log
+  log type:  text
+ opened on:  16 Sep 2020, 17:02:33
+
+. 
+. run global
+
+. 
+. * Add imputations to the full dataset
+. use "an_impute_imputeddata", clear
+(Analysis dataset HIV project)
+
+. 
+. merge 1:1 patient_id using diedcategory_16092020 
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                    17,267,409
+        from master                17,267,258  (_merge==1)
+        from using                        151  (_merge==2)
+
+    matched                            15,177  (_merge==3)
+    -----------------------------------------
+
+. 
+. tab _d hiv
+
+      1 if |
+failure; 0 |
+        if |          HIV
+  censored |         0          1 |     Total
+-----------+----------------------+----------
+         0 |17,240,098     27,455 |17,267,553 
+         1 |    14,857         25 |    14,882 
+-----------+----------------------+----------
+     Total |17,254,955     27,480 |17,282,435 
+
+. tab diedcat if hiv==1 & _d==1, male
+option male not allowed
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "E:\STATATMP\STD9dd4_000000.tmp"
+
+. tab diedcat if hiv==1 & _d==1, m
+
+                    diedcat |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+  underlying, not confirmed |          2        8.00        8.00
+    contributory, confirmed |          1        4.00       12.00
+contributory, not confirmed |         22       88.00      100.00
+----------------------------+-----------------------------------
+                      Total |         25      100.00
+
+. tab diedcat if hiv==0 & _d==1, m
+
+                    diedcat |      Freq.     Percent        Cum.
+----------------------------+-----------------------------------
+contributory, not confirmed |        142        0.96        0.96
+  underlying, not confirmed |        963        6.48        7.44
+    contributory, confirmed |        884        5.95       13.39
+contributory, not confirmed |     12,866       86.60       99.99
+                          . |          2        0.01      100.00
+----------------------------+-----------------------------------
+                      Total |     14,857      100.00
+
+. 
+. replace onsdeath=2 if onsdeath==1 & diedcat==1|diedcat==2|diedcat==3
+(2,076 real changes made)
+
+. 
+. **************************
+. *  Analyse imputed data  *
+. **************************
+. 
+. // Declare imputed data as survival
+. 
+. mi stset stime_onsdeath, fail(onsdeath==1) enter(enter_date)    ///
+>         origin(enter_date) id(patient_id)
+
+                id:  patient_id
+     failure event:  onsdeath == 1
+obs. time interval:  (stime_onsdeath[_n-1], stime_onsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+   17282586  total observations
+        151  event time missing (stime_onsdeath>=.)             PROBABLE ERROR
+------------------------------------------------------------------------------
+   17282435  observations remaining, representing
+   17282435  subjects
+     12,890  failures in single-failure-per-subject data
+ 2.4481e+09  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =       142
+
+.         
+. mi estimate, eform: stcox i.hiv age1 age2 age3 i.male i.imd i.smoke_nomiss i.obese4cat i.ethnicity, strata(stp)
+
+Multiple-imputation estimates                   Imputations       =         10
+Stratified Cox regr.: Breslow method for ties   Number of obs     = 17,282,435
+                                                Average RVI       =     0.0654
+                                                Largest FMI       =     0.4405
+DF adjustment:   Large sample                   DF:     min       =      51.24
+                                                        avg       =   6.99e+09
+                                                        max       =   6.77e+10
+Model F test:       Equal FMI                   F(  18,40976.0)   =    1406.81
+Within VCE type:          OIM                   Prob > F          =     0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t |     exp(b)   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                  1.hiv |   2.603652    .558603     4.46   0.000     1.709863     3.96465
+                   age1 |   1.174837   .0252061     7.51   0.000     1.126458    1.225293
+                   age2 |    .899745   .0415503    -2.29   0.022     .8218847    .9849814
+                   age3 |   1.306422   .1389215     2.51   0.012     1.060642    1.609155
+                 1.male |   1.681351   .0308295    28.34   0.000     1.621999    1.742875
+                        |
+                    imd |
+                     2  |   1.143886   .0337372     4.56   0.000     1.079637    1.211958
+                     3  |   1.290157   .0379581     8.66   0.000     1.217865    1.366741
+                     4  |   1.606272   .0465888    16.34   0.000     1.517506    1.700229
+       5 most deprived  |   1.905121   .0567465    21.64   0.000     1.797084    2.019653
+                        |
+           smoke_nomiss |
+                Former  |   1.415103   .0279589    17.57   0.000     1.361352    1.470977
+               Current  |   1.125417   .0436979     3.04   0.002     1.042949    1.214407
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.168501   .0284897     6.39   0.000     1.113975    1.225695
+    Obese II (35-39.9)  |   1.682871   .0598182    14.64   0.000      1.56962    1.804292
+       Obese III (40+)  |   2.436439   .1199593    18.09   0.000     2.212312    2.683273
+                        |
+              ethnicity |
+                 Mixed  |   1.503647   .2185439     2.81   0.007     1.123152    2.013044
+Asian or Asian British  |   1.602006   .0693841    10.88   0.000     1.471134    1.744519
+                 Black  |   1.657835   .0998331     8.39   0.000     1.473194    1.865618
+                 Other  |   1.325471   .1217863     3.07   0.002     1.106464    1.587828
+-----------------------------------------------------------------------------------------
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_sens_underlyingandu071.log
+  log type:  text
+ closed on:  17 Sep 2020, 00:09:26
+----------------------------------------------------------------------------------------------------------------------------------
