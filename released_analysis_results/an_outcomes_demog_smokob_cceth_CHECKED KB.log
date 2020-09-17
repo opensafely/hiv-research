@@ -1,0 +1,186 @@
+----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_outcomes_demog_smokob_cceth.log
+  log type:  text
+ opened on:  17 Sep 2020, 01:29:53
+
+. 
+. run global 
+
+. 
+. use "cr_create_analysis_dataset_STSET_onsdeath_fail1", clear
+(Analysis dataset HIV project)
+
+. 
+. if "`1'"=="crude"{
+. 
+. ******************************
+. *  Crude Cox model  *
+. ******************************
+. capture stcox i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "UNADJUSTED (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_crude, replace
+.                 }
+.         else {
+.         di "WARNING - CRUDE MODEL DID NOT SUCCESSFULLY FIT"
+.         }
+. 
+. }
+
+. 
+. 
+. 
+. if "`1'"=="rates_agesex"{
+. strate hiv, per(365000) output(./output/an_outcomes_RATES, replace)
+. 
+. 
+. ******************************
+. *  Age-sex Cox model  *
+. ******************************
+. capture stcox age1 age2 age3 i.male i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "AGE-SEX ADJUSTED (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_agesex, replace
+.                 }
+.         else {
+.         di "WARNING - AGESEX MODEL DID NOT SUCCESSFULLY FIT"
+.         }
+. 
+. }
+
+. 
+. 
+. **************************************
+. *  Demographics +/- ethnicity model  *
+. **************************************
+. 
+. if "`1'"=="demog_cceth"{
+. capture stcox age1 age2 age3 i.male i.imd i.ethnicity i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n "DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjdemographics_inceth, replace
+.                 }
+.         else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. 
+. if "`1'"=="demog_smokob_cceth"{
+. capture stcox age1 age2 age3 i.male i.imd i.ethnicity i.smoke_nomiss i.obese4cat i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n "DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)" _n 
+
+DEMOGRAPHICS ADJUSTED INCLUDING ETHNICITY (COMPLETE CASES)
+
+.                 estimates
+
+----------------------------------------------------------------------------------------------------------------------------------
+active results
+----------------------------------------------------------------------------------------------------------------------------------
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =   12,745,732                  Number of obs    =  12,745,732
+No. of failures =       11,174
+Time at risk    =   1830993197
+                                                LR chi2(18)      =    36745.64
+Log likelihood  =   -129168.81                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+                   age1 |   1.170324   .0260602     7.06   0.000     1.120346    1.222532
+                   age2 |    .895446   .0430676    -2.30   0.022     .8148915    .9839634
+                   age3 |   1.341794   .1487858     2.65   0.008     1.079692    1.667523
+                 1.male |   1.608181   .0316062    24.17   0.000     1.547412    1.671337
+                        |
+                    imd |
+                     2  |   1.209531   .0393329     5.85   0.000     1.134845    1.289132
+                     3  |   1.338065    .043496     8.96   0.000     1.255474     1.42609
+                     4  |   1.672707   .0532577    16.16   0.000     1.571514    1.780416
+       5 most deprived  |   1.955749   .0635237    20.65   0.000     1.835125    2.084301
+                        |
+              ethnicity |
+                 Mixed  |   1.467152   .1691079     3.33   0.001     1.170478    1.839021
+Asian or Asian British  |   1.527745   .0637959    10.15   0.000     1.407687    1.658042
+                 Black  |   1.562278   .0958843     7.27   0.000     1.385211    1.761978
+                 Other  |   1.259116   .1127074     2.57   0.010     1.056506    1.500581
+                        |
+           smoke_nomiss |
+                Former  |   1.390679   .0296962    15.44   0.000     1.333677    1.450118
+               Current  |   1.177929   .0479458     4.02   0.000     1.087607    1.275751
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.107208   .0290211     3.89   0.000     1.051764    1.165575
+    Obese II (35-39.9)  |   1.584563   .0606762    12.02   0.000     1.469993    1.708062
+       Obese III (40+)  |   2.248303   .1203119    15.14   0.000      2.02444    2.496919
+                        |
+                  1.hiv |   2.490945   .5602126     4.06   0.000     1.602984    3.870785
+-----------------------------------------------------------------------------------------
+                                                             Stratified by stp
+.                 estimates save ./output/models/an_outcomes_adjdemographics_smokob_inceth, replace
+(note: file ./output/models/an_outcomes_adjdemographics_smokob_inceth.ster not found)
+file ./output/models/an_outcomes_adjdemographics_smokob_inceth.ster saved
+.                 }
+.         else di "WARNING - hiv adj demog smok ob inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="demog_noeth"{
+. capture stcox age1 age2 age3 i.male i.imd i.hiv, strata(stp) 
+. if _rc==0 {
+.                 noi di _n  "DEMOGRAPHICS ADJUSTED EXCLUDING ETHNICITY (FULL STUDY POP)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjdemographics_noeth, replace
+.                 }
+.         else di "WARNING - hiv adj demog no eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. ******************************
+. *  Multivariable Cox model  *
+. ******************************
+. 
+. if "`1'"=="mv_cceth"{
+. capture stcox   i.hiv i.ethnicity $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES)" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_inceth, replace
+.                 }
+.         else di "WARNING - hiv adj demog inc CC eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="mv_noeth"{
+. capture stcox   i.hiv $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL NO ETHNICITY " _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_noeth, replace
+.                 }
+.         else di "WARNING - hiv full adj exc eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+. 
+. if "`1'"=="mv_addhepc"{
+. capture stcox   i.hiv  i.ethnicity i.hepc $adjustmentlist , strata(stp)
+. if _rc==0 {
+.                 noi di _n "FULLY ADJUSTED MODEL INC ETHNICITY (COMPLETE CASES) PLUS HEP C" _n 
+.                 estimates
+.                 estimates save ./output/models/an_outcomes_adjfull_plushepc_inceth, replace
+.                 }
+.         else di "WARNING - hiv full adj plus hepc inc eth MODEL DID NOT SUCCESSFULLY FIT"
+. }
+
+.         
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\hiv-research\analysis\output/an_outcomes_demog_smokob_cceth.log
+  log type:  text
+ closed on:  17 Sep 2020, 01:45:59
+----------------------------------------------------------------------------------------------------------------------------------
