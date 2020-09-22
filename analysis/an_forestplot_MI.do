@@ -46,7 +46,7 @@ gen headertextpos = .09
 gen pinttextpos = 10
 local rangemax = _N+3
 
-gen pintstr = "(p-interaction " + string(pint, "%5.3f") + ")"
+gen pintstr = "(p-interaction 0" + string(pint, "%5.2g") + ")"
 
 gen hrandci = string(hr, "%4.2f") + " (" + string(lci, "%4.2f") + "-" + string(uci, "%4.2f") + ")" if hr!=.
 
