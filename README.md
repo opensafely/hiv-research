@@ -1,17 +1,14 @@
-# OpenSAFELY Research Template
+# HIV infection and COVID-19 death: 
 
-This is a template repository for making new OpenSAFELY resarch projects.  Eventually it'll become a framework. To get started, create a new repo using this repo as a template, delete this front matter, and edit the text that follows.
+This is the code and confirguration for a study _HIV infection and COVID-19 death: a population-based cohort analysis of UK primary care data and linked national death registrations within the OpenSAFELY platform_.
 
-# _title goes here_
 
-This is the code and configuration for our paper, _name goes here_
-
-* The paper is [here]()
+* The paper is publish in the December issue of Lancet HIV and is [available here](https://doi.org/10.1016/S2352-3018(20)30305-2)
 * Raw model outputs, including charts, crosstabs, etc, are in `released_analysis_results/`
 * If you are interested in how we defined our variables, take a look at the [study definition](analysis/study_definition.py); this is written in `python`, but non-programmers should be able to understand what is going on there
-* If you are interested in how we defined our code lists, look in the [codelists folder](./codelists/).
+* If you are interested in how we defined our code lists, look in the [codelists folder](./codelists/).A new tool called OpenCodelists was developed to allow codelists to be versioned and all of the codelists hosted online at codelists.opensafely.org for open inspection and re-use by anyone.
 * Developers and epidemiologists interested in the code should review
-[DEVELOPERS.md](./docs/DEVELOPERS.md).
+the [OpenSAFELY documentation](https://docs.opensafely.org/en/latest/)
 
 # About the OpenSAFELY framework
 
