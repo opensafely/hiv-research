@@ -46,8 +46,8 @@ jobs:
     - name: Run model
       run: docker run --mount source=${{ github.workspace }},dst=/workspace,type=bind docker.opensafely.org/stata-mp analysis/model.do
 
-    - name: Create pre-release if on non-master branch
-      if: github.ref != 'master'
+    - name: Create pre-release if on non-main branch
+      if: github.ref != 'main'
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -57,8 +57,8 @@ jobs:
         prerelease: true
         files: |
           ./output/input*csv
-    - name: Create full release if on master branch
-      if: github.ref == 'master' || github.pull_request.merged == true
+    - name: Create full release if on main branch
+      if: github.ref == 'main' || github.pull_request.merged == true
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}

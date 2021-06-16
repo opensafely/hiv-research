@@ -7,7 +7,7 @@ jobs:
   delete_release:
     runs-on: ubuntu-latest
     steps:
-    - name: Delete non-master branch release
+    - name: Delete non-main branch release
       uses: author/action-rollback@stable
       with:
         tag: draft-assets-for-${{ github.event.pull_request.head.ref }}
