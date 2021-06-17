@@ -1,6 +1,6 @@
 # HIV infection and COVID-19 death: 
 
-This is the code and confirguration for a study _HIV infection and COVID-19 death: a population-based cohort analysis of UK primary care data and linked national death registrations within the OpenSAFELY platform_.
+This is the code and configuration for a study _HIV infection and COVID-19 death: a population-based cohort analysis of UK primary care data and linked national death registrations within the OpenSAFELY platform_.
 
 
 * The paper is publish in the December issue of Lancet HIV and is [available here](https://doi.org/10.1016/S2352-3018(20)30305-2)
