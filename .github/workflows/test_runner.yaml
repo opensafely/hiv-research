@@ -1,9 +1,7 @@
 name: Run tests and publish dummy data as release
 
 on: [push]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
+
 jobs:
   test_model:
     runs-on: ubuntu-latest
@@ -37,4 +35,7 @@ jobs:
       run: cohortextractor generate_cohort --expectations-population=100000
 
     - name: Run model
-      run: docker run --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp:latest analysis/model.do
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
+      run: bash -c "docker run --rm -e STATA_LICENSE --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp:latest analysis/model.do" > /dev/null
