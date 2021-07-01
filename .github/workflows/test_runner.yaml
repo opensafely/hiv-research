@@ -38,26 +38,3 @@ jobs:
 
     - name: Run model
       run: docker run --rm -e STATA_LICENSE --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp:latest analysis/model.do
-
-    - name: Create pre-release if on non-main branch
-      if: github.ref != 'main'
-      uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        title: "Development build of ${{ steps.extract_branch.outputs.branch }}"
-        automatic_release_tag: draft-assets-for-${{ steps.extract_branch.outputs.branch }}
-        draft: false
-        prerelease: true
-        files: |
-          ./output/input*csv
-    - name: Create full release if on main branch
-      if: github.ref == 'main' || github.pull_request.merged == true
-      uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        title: "Latest production build"
-        automatic_release_tag: "latest"
-        draft: false
-        prerelease: false
-        files: |
-          ./output/input*csv
