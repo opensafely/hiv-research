@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install opensafely-cohort-extractor==1.17.1
+        pip install opensafely-cohort-extractor==1.28.3
 
     - name: Update codelists
       run: cohortextractor update_codelists
@@ -37,4 +37,4 @@ jobs:
       run: cohortextractor generate_cohort --expectations-population=100000
 
     - name: Run model
-      run: docker run --rm -e STATA_LICENSE --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp@sha256:0f61ba23b310b90d7160793e6bb595bebeb4ab607485792df7e87c246776ec73 analysis/model.do
+      run: docker run --rm -e STATA_LICENSE --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp@sha256:1ee6b67d588d0d4c821cc978d076965b96ac613ab5f79a20da535bc7e93e5e34 analysis/model.do
