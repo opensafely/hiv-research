@@ -37,4 +37,4 @@ jobs:
       run: cohortextractor generate_cohort --expectations-population=100000
 
     - name: Run model
-      run: docker run --rm -e STATA_LICENSE --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp:latest analysis/model.do
+      run: docker run --rm -e STATA_LICENSE --mount source=${{ github.workspace }},dst=/workspace,type=bind ghcr.io/opensafely-core/stata-mp@sha256:0f61ba23b310b90d7160793e6bb595bebeb4ab607485792df7e87c246776ec73 analysis/model.do
